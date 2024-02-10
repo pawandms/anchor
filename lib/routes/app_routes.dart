@@ -1,3 +1,5 @@
+import 'package:anchor_getx/presentation/message_screen/binding/message_binding.dart';
+import 'package:anchor_getx/presentation/message_screen/message_screen.dart';
 import 'package:anchor_getx/presentation/splash_screen/splash_screen.dart';
 import 'package:anchor_getx/presentation/splash_screen/binding/splash_binding.dart';
 import 'package:anchor_getx/presentation/auth_screen/auth_screen.dart';
@@ -104,7 +106,7 @@ class AppRoutes {
   static const String accountDetailsScreen = '/account_details_screen';
 
   static const String messagesPage = '/messages_page';
-
+  static const String messageScreen = '/message_screen';
   static const String chatScreen = '/chat_screen';
 
   static const String friendsScreen = '/friends_screen';
@@ -275,6 +277,14 @@ class AppRoutes {
       middlewares: [RouteGuard()],
     ),
     GetPage(
+      name: messageScreen,
+      page: () => MessageScreen(),
+      bindings: [
+        MessageBinding(),
+      ],
+      // middlewares: [RouteGuard()],
+    ),
+    GetPage(
       name: chatScreen,
       page: () => ChatScreen(),
       bindings: [
@@ -308,7 +318,7 @@ class AppRoutes {
     ),
     GetPage(
       name: initialRoute,
-      page: () => SplashScreen(key: Key('SplashScreen')),
+      page: () => SplashScreen(),
       bindings: [
         SplashBinding(),
       ],

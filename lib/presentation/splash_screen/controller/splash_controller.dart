@@ -27,7 +27,7 @@ class SplashController extends GetxController {
       if(_authmanager.isLogged.isTrue)
       {
         Get.toNamed(
-          AppRoutes.trendingTabContainerScreen,
+          AppRoutes.messageScreen,
         );
       }
       else {

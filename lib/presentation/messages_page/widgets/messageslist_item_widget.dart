@@ -29,7 +29,7 @@ class MessageslistItemWidget extends StatelessWidget {
         children: [
           SizedBox(
             height: 54.v,
-            width: 52.h,
+          //  width: 52.h,
             child: Stack(
               alignment: Alignment.bottomRight,
               children: [

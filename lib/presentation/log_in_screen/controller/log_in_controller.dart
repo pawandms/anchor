@@ -29,6 +29,8 @@ class LogInController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     _loginService = Get.put(LoginService());
+    emailController.text = 'user1@anchor.com';
+    passwordController.text = 'Mumbai@123';
     _authManager = Get.find();
   }
 
@@ -45,12 +47,7 @@ class LogInController extends GetxController {
       isLoading(true);
       String email = emailController.text;
       String password = passwordController.text;
-      Get.toNamed(
-        AppRoutes.chatScreen,
-      );
 
-
-      /*
       final response = await _loginService
           .fetchLogin(LoginRequestModel(email: email, password: password));
 
@@ -58,7 +55,7 @@ class LogInController extends GetxController {
         /// Set isLogin to true
         _authManager.login(response);
         Get.toNamed(
-          AppRoutes.chatScreen,
+          AppRoutes.messageScreen,
         );
 
       } else {
@@ -67,12 +64,11 @@ class LogInController extends GetxController {
            MyDialog.showCustomSnackBar(response.error_description, isError: true, title: 'Exception');
          }
         else {
-          MyDialog.showCustomSnackBar('Invalid UserName or password', isError: true, title: 'Exception');
+          MyDialog.showCustomSnackBar('err_msg_invalid_email_pass'.tr, isError: true, title: 'Exception');
         }
 
       }
 
-       */
     }
     catch(e)
     {

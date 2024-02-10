@@ -205,4 +205,5 @@ final Map<String, String> enUs = {
   "err_msg_please_enter_valid_password": "Please enter valid password",
   "err_msg_please_enter_valid_text": "Please enter valid text",
   "err_msg_please_enter_valid_phone_number": "Please enter valid phone number",
+  "err_msg_invalid_email_pass" : "Invalid email or password ",
 };

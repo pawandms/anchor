@@ -33,9 +33,9 @@ class MessagesPage extends StatelessWidget {
                           child: Text("lbl_messages".tr,
                               style: theme.textTheme.headlineLarge)),
                       SizedBox(height: 18.v),
-                      _buildStories(),
+                      //_buildStories(),
                       SizedBox(height: 23.v),
-                      _buildMessagesList()
+                     _buildMessagesList()
                     ]))));
   }
 
@@ -79,26 +79,28 @@ class MessagesPage extends StatelessWidget {
 
   /// Section Widget
   Widget _buildMessagesList() {
-    return Obx(() => ListView.separated(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        separatorBuilder: (context, index) {
-          return Padding(
-              padding: EdgeInsets.symmetric(vertical: 12.0.v),
-              child: SizedBox(
-                  width: double.maxFinite,
-                  child: Divider(
-                      height: 2.v,
-                      thickness: 2.v,
-                      color: theme.colorScheme.secondaryContainer)));
-        },
-        itemCount:
-            controller.messagesModelObj.value.messageslistItemList.value.length,
-        itemBuilder: (context, index) {
-          MessageslistItemModel model = controller
-              .messagesModelObj.value.messageslistItemList.value[index];
-          return MessageslistItemWidget(model);
-        }));
+    return Obx(() => Expanded(
+      child: ListView.separated(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          separatorBuilder: (context, index) {
+            return Padding(
+                padding: EdgeInsets.symmetric(vertical: 12.0.v),
+                child: SizedBox(
+                    width: double.maxFinite,
+                    child: Divider(
+                        height: 2.v,
+                        thickness: 2.v,
+                        color: theme.colorScheme.secondaryContainer)));
+          },
+          itemCount:
+              controller.messagesModelObj.value.messageslistItemList.value.length,
+          itemBuilder: (context, index) {
+            MessageslistItemModel model = controller
+                .messagesModelObj.value.messageslistItemList.value[index];
+            return MessageslistItemWidget(model);
+          }),
+    ));
   }
 
   /// Navigates to the previous screen.

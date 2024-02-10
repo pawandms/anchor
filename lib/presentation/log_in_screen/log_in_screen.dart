@@ -44,6 +44,7 @@ class LogInScreen extends GetWidget<LogInController> {
         SizedBox(height: 33.v),
         CustomTextFormField(
     controller: controller.emailController,
+
     hintText: "lbl_email_id".tr,
     textInputType: TextInputType.emailAddress,
     textStyle: TextStyle(color: Colors.white, height: 0.1),
