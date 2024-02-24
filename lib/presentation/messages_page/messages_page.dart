@@ -81,7 +81,7 @@ class MessagesPage extends StatelessWidget {
   Widget _buildMessagesList() {
     return Obx(() => Expanded(
       child: ListView.separated(
-          physics: NeverScrollableScrollPhysics(),
+        //  physics: AlwaysScrollableScrollPhysics(),
           shrinkWrap: true,
           separatorBuilder: (context, index) {
             return Padding(

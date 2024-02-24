@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
 
-import '../controller/message_controller.dart';
+import '../controller/messageScreenController.dart';
 
 /// A binding class for the InviteFriendsScreen.
 ///
 /// This class ensures that the InviteFriendsController is created when the
 /// InviteFriendsScreen is first loaded.
-class MessageBinding extends Bindings {
+class MessageScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => MessageController());
+    Get.lazyPut(() => MessageScreenController());
   }
 }

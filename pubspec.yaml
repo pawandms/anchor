@@ -19,6 +19,7 @@ dependencies:
   images_picker: ^1.2.11
   url_launcher:
   loggy: ^2.0.3
+  badges: ^3.1.2
 
 dev_dependencies: 
   flutter_test: 

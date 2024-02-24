@@ -53,7 +53,7 @@ class LogInController extends GetxController {
 
       if ((response != null) & (response?.valid == true)) {
         /// Set isLogin to true
-        _authManager.login(response);
+        _authManager.login(response!);
         Get.toNamed(
           AppRoutes.messageScreen,
         );

@@ -14,7 +14,7 @@ class AuthenticationManager extends GetxService with CacheManager {
     //removeToken();
   }
 
-  void login(LoginResponseModel? resp) async {
+  void login(LoginResponseModel resp) async {
     isLogged.value = true;
     //Token is cached
     await saveLoginResp(resp);
@@ -25,5 +25,9 @@ class AuthenticationManager extends GetxService with CacheManager {
     if (resp != null) {
       isLogged.value = true;
     }
+  }
+
+  LoginResponseModel? getUserLoginDetails()  {
+    return getLoginResp();
   }
 }

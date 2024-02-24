@@ -1,18 +1,24 @@
-import '../controller/messages_controller.dart';
-import '../models/messageslist_item_model.dart';
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
+import '../../../data/models/channel/UserChannel.dart';
+import 'package:badges/badges.dart' as badges;
+
+import '../controller/messageScreenController.dart';
 // ignore: must_be_immutable
-class MessageslistItemWidget extends StatelessWidget {
-  MessageslistItemWidget(
-    this.messageslistItemModelObj, {
+class ChannelItemWidget extends StatelessWidget {
+
+  UserChannel userChannel;
+  MessageScreenController controller;
+  ChannelItemWidget(
+    this.userChannel, this.controller, {
     Key? key,
   }) : super(
           key: key,
         );
 
-  MessageslistItemModel messageslistItemModelObj;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +32,7 @@ class MessageslistItemWidget extends StatelessWidget {
         children: [
           SizedBox(
             height: 54.v,
-          //  width: 52.h,
+            //  width: 52.h,
             child: Stack(
               alignment: Alignment.bottomRight,
               children: [
@@ -68,37 +74,56 @@ class MessageslistItemWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Obx(
-                  () => Text(
-                    messageslistItemModelObj.richardAlves!.value,
+                Text(
+                    userChannel.name,
                     style: CustomTextStyles.titleMediumBlack90001,
                   ),
-                ),
+
                 SizedBox(height: 8.v),
-                Obx(
-                  () => Text(
-                    messageslistItemModelObj.heyBroWhereAre!.value,
+                Text(
+                    userChannel.msg!.body,
                     style: theme.textTheme.bodyLarge,
                   ),
-                ),
+
               ],
             ),
           ),
           Spacer(),
+
           Padding(
             padding: EdgeInsets.only(
               top: 3.v,
               bottom: 30.v,
             ),
-            child: Obx(
-              () => Text(
-                messageslistItemModelObj.time!.value,
-                style: theme.textTheme.bodyLarge,
-              ),
-            ),
+            child:
+             badges.Badge(
+               onTap: (){
+                   onUnreadCountSelection(userChannel.chnlId, userChannel.unreadCount);
+
+               },
+               badgeContent: Text(userChannel.unreadCount.toString()),
+               ignorePointer: false,
+               position:  badges.BadgePosition.topEnd(top: -30, end: -5),
+
+
+               child: Text(
+                 DateFormat('yyyy-MM-dd HH:mm:ss').format(userChannel.msgDate!),
+                 style: theme.textTheme.bodyLarge,
+               ),
+             )
+
+
+
           ),
         ],
-      ),
+      )
     );
+  }
+
+  void onUnreadCountSelection(String channelID, int currentUnreadCount)
+  {
+
+    controller.incrementUnreadCount(channelID);
+    print("Unread Count Selected for Channel:"+channelID+" , Current Count:$currentUnreadCount");
   }
 }

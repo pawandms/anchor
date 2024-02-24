@@ -27,7 +27,7 @@ class LoginResponseModel {
       'refresh_token': this.refresh_token,
       'token_type': this.token_type,
       'expires_in': this.expires_in,
-      'user': this.user,
+      'user': this.user?.toMap(),
       'error': this.error,
       'error_description': this.error_description,
     };

@@ -1,4 +1,4 @@
-import 'package:anchor_getx/presentation/message_screen/binding/message_binding.dart';
+import 'package:anchor_getx/presentation/message_screen/binding/messageScreenBinding.dart';
 import 'package:anchor_getx/presentation/message_screen/message_screen.dart';
 import 'package:anchor_getx/presentation/splash_screen/splash_screen.dart';
 import 'package:anchor_getx/presentation/splash_screen/binding/splash_binding.dart';
@@ -280,7 +280,7 @@ class AppRoutes {
       name: messageScreen,
       page: () => MessageScreen(),
       bindings: [
-        MessageBinding(),
+        MessageScreenBinding(),
       ],
       // middlewares: [RouteGuard()],
     ),

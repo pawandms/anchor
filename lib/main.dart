@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:loggy/loggy.dart';
 
 import 'core/app_export.dart';
@@ -8,6 +9,8 @@ import 'core/authentication_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //Get.put<GetConnect>(GetConnect()); //initializing GetConnect
+  await GetStorage.init();
   await Get.putAsync(() => AuthenticationManager().init());
   Logger.init(kReleaseMode ? LogMode.live : LogMode.debug);
   Loggy.initLoggy(

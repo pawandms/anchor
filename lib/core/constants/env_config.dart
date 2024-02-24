@@ -1,4 +1,6 @@
 
+import '../../data/enums/ChannelType.dart';
+
 class EnvConfig{
   static const String baseUrl = 'http://192.168.0.195:8080';
   static const String authHeader = 'Basic R2VuZXJhbDpHZW5lcmFs';
@@ -7,4 +9,12 @@ class EnvConfig{
   static const String allUsers = '/users/all';
   static const String userEmail = '/users/email';
   static const String profile = '/users/profile';
+  static const String getChannel = '/api/channel/user';
+
+  static getMsgChnlUrl(String userID)
+  {
+    return getChannel+"/"+userID+"/"+ChannelType.Messaging.name+"/"+"list";
+  }
+
+  
 }
