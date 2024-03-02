@@ -20,6 +20,10 @@ dependencies:
   url_launcher:
   loggy: ^2.0.3
   badges: ^3.1.2
+  socket_io_client: ^2.0.3+1
+  dart_nats: ^0.6.2
+  audioplayers: ^5.2.1
+
 
 dev_dependencies: 
   flutter_test: 
@@ -29,6 +33,7 @@ flutter:
   assets: 
     - assets/
     - assets/images/
+    - assets/sound/
   fonts: 
     - family: Inter
       fonts: 

@@ -36,9 +36,9 @@ class Message{
       attachments: List.of(map["attachments"])
           .map((i) => Attachment.fromMap(i))
           .toList(),
-      createdBy: map['createdBy'] as String,
+      createdBy: map['createdBy'] == null? null : map['createdBy'] as String,
       createdOn: map['createdOn'] == null ? null : DateTime.parse(map['createdOn']),
-      modifiedBy: map['modifiedBy'] as String,
+      modifiedBy: map['modifiedBy'] == null ? null : map['modifiedBy'] as String,
       modifiedOn: map['modifiedOn'] == null ? null : DateTime.parse(map['modifiedOn']),
     );
   }

@@ -10,6 +10,8 @@ class EnvConfig{
   static const String userEmail = '/users/email';
   static const String profile = '/users/profile';
   static const String getChannel = '/api/channel/user';
+  static const String wsUrl = 'http://192.168.0.195:8878';
+  static const String natUrl = 'ws://192.168.0.195:8888';
 
   static getMsgChnlUrl(String userID)
   {

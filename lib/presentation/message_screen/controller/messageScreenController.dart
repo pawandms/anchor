@@ -1,4 +1,5 @@
 import 'package:anchor_getx/core/app_export.dart';
+import 'package:anchor_getx/core/service/EventService.dart';
 import 'package:anchor_getx/data/models/channel/UserChannel.dart';
 import 'package:anchor_getx/presentation/message_screen/models/message_model.dart';
 import 'package:loggy/loggy.dart';
@@ -14,16 +15,18 @@ import '../../messages_page/service/message_service.dart';
 /// current inviteFriendsModelObj
 class MessageScreenController extends  GetxController  {
   late final MessageService messageService;
+  //late final EventService eventService;
   late Rx<MessagesModel> messagesModelObj;
   late RxMap<String,UserChannel> userChnlMap =  <String, UserChannel>{}.obs;
 
- RxList<UserChannel> channel = <UserChannel>[].obs;
+ //RxList<UserChannel> channel = <UserChannel>[].obs;
   Rx<bool> isLoading = false.obs;
 
   @override
   void onInit() {
     //  isLoading(true);
-    messageService = Get.put(MessageService());
+    messageService = Get.find<MessageService>();
+   // eventService = Get.put(EventService());
     messagesModelObj = MessagesModel().obs;
     getUserChannel();
 
@@ -34,22 +37,19 @@ class MessageScreenController extends  GetxController  {
   async {
     try{
       // Successfully fetched products data
+      /*
       ChannelResp resp = await messageService.getUserChannels();
       userChnlMap.value = Map.fromIterable(resp.channels,
           key: (e) => e.chnlId,
           value: (e) => e
       );
-      /*
-      Map<String,UserChannel> ucMap = Map.fromIterable(resp.channels,
-        key: (e) => e.chnlId,
-        value: (e) => e
-      );
-      */
 
+       */
+
+      userChnlMap.value = await messageService.getUserChannels();
      // channel.assignAll(resp.channels);
       userChnlMap.refresh();
-      channel.refresh();
-
+     // eventService.addEventForChannels(userChnlMap.keys);
 
     }
     catch(e)
@@ -69,7 +69,7 @@ class MessageScreenController extends  GetxController  {
     }
 
     print("Updated UserChnl:$chnl");
+    messageService.printCurrentChannel(channelId);
   }
-
 
 }

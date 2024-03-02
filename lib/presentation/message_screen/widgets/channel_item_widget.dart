@@ -1,4 +1,5 @@
 import 'package:anchor_getx/core/app_export.dart';
+import 'package:anchor_getx/core/service/AudioService.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -122,8 +123,8 @@ class ChannelItemWidget extends StatelessWidget {
 
   void onUnreadCountSelection(String channelID, int currentUnreadCount)
   {
-
-    controller.incrementUnreadCount(channelID);
+    controller.messageService.incrementUnreadCount(channelID);
+    AudioService().playNotificationSound();
     print("Unread Count Selected for Channel:"+channelID+" , Current Count:$currentUnreadCount");
   }
 }

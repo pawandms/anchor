@@ -1,28 +1,31 @@
 
-import 'dart:collection';
 import 'dart:html';
 
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/core/constants/env_config.dart';
+import 'package:anchor_getx/core/service/AudioService.dart';
 import 'package:anchor_getx/data/enums/ChannelType.dart';
 import 'package:anchor_getx/data/models/channel/ChannelResp.dart';
-import 'package:anchor_getx/presentation/message_screen/models/StateModel.dart';
-import 'package:get/get_connect/connect.dart';
 import 'package:loggy/loggy.dart';
 
-import '../../../core/authentication_manager.dart';
 import '../../../core/errors/ApiException.dart';
+import '../../../core/service/EventService.dart';
 import '../../../data/apiClient/api_client.dart';
+import '../../../data/models/channel/UserChannel.dart';
+import '../../../data/models/message/Message.dart';
 
 class MessageService extends GetxService  {
 
   //final GetConnect connect = Get.find<GetConnect>();
   late final ApiClient apiClient;
+  late final EventService eventService;
+  bool dataLoaded = false;
+  late RxMap<String,UserChannel> userChnlMap =  <String, UserChannel>{}.obs;
 
   @override
   void onInit() {
     apiClient = Get.find<ApiClient>();
-    print("Api Client Init done");
+    eventService = Get.find<EventService>();
   }
 
 /*
@@ -46,31 +49,41 @@ class MessageService extends GetxService  {
 
  */
 
-  Future<ChannelResp> getUserChannels() async
+  Future<Map<String,UserChannel>> getUserChannels() async
   {
     ChannelResp resp;
     try{
-      print("MsgService:getUserChannel Called");
-      String? userID = apiClient.getLoggedInUserID();
-      if(null == userID)
+      if(!dataLoaded)
       {
-        throw new ApiException("Invalid logged in User");
+        print("MsgService:getUserChannel Called");
+        String? userID = apiClient.getLoggedInUserID();
+        if(null == userID)
+        {
+          throw new ApiException("Invalid logged in User");
+        }
+
+        // String chnlUrl = EnvConfig.getChannel;
+        Map<String, dynamic>? queryParam = {'userID': userID, 'chnlType': ChannelType.Messaging.name};
+        String getChnlUrl = EnvConfig.getMsgChnlUrl(userID);
+        final response = await apiClient.get(getChnlUrl,headers:{}, contentType : null, query: {});
+        print("getChannel Api Response:"+response.toString());
+        //  resp = new ChannelResp(userID: "abc", type: ChannelType.Messaging);
+
+        if (response.statusCode == HttpStatus.ok) {
+          resp =  ChannelResp.fromMap(response.body);
+          print("response:"+resp.toString());
+        } else {
+          resp =  ChannelResp.fromMap(response.body);
+        }
+
+        userChnlMap.value = Map.fromIterable(resp.channels,
+            key: (e) => e.chnlId,
+            value: (e) => e
+        );
+       // userChnlMap.refresh();
+        eventService.addEventForChannels(userChnlMap.keys);
+        dataLoaded = true;
       }
-
-     // String chnlUrl = EnvConfig.getChannel;
-      Map<String, dynamic>? queryParam = {'userID': userID, 'chnlType': ChannelType.Messaging.name};
-      String getChnlUrl = EnvConfig.getMsgChnlUrl(userID);
-      final response = await apiClient.get(getChnlUrl,headers:{}, contentType : null, query: {});
-      print("getChannel Api Response:"+response.toString());
-    //  resp = new ChannelResp(userID: "abc", type: ChannelType.Messaging);
-
-      if (response.statusCode == HttpStatus.ok) {
-        resp =  ChannelResp.fromMap(response.body);
-        print("response:"+resp.toString());
-      } else {
-        resp =  ChannelResp.fromMap(response.body);
-      }
-
 
     }
     catch(e)
@@ -78,8 +91,43 @@ class MessageService extends GetxService  {
       logError("getUserChannelError:$e");
       rethrow;
     }
-   return resp;
+   return userChnlMap.value;
 
+  }
+
+
+  void printCurrentChannel(String channelId)
+  {
+    UserChannel? chnl = userChnlMap[channelId];
+    print("............................Message Service Updated UserChnl:"+String.fromCharCode(chnl!.unreadCount));
+  }
+
+  void incrementUnreadCount(String channelId)
+  {
+    UserChannel? chnl = userChnlMap[channelId];
+    if( null != chnl)
+    {
+      chnl.unreadCount=  chnl.unreadCount+1;
+      userChnlMap.refresh();
+      print("............................Message Service Updated UserChnl:"+chnl.unreadCount.toString());
+    }
+
+  }
+
+  void addNewMsgToChnl(String channelId, Message? msg)
+  {
+    if( null != msg)
+    {
+      UserChannel? chnl = userChnlMap[channelId];
+      if( null != chnl)
+      {
+        chnl.unreadCount=  chnl.unreadCount+1;
+        chnl.msg = msg;
+        userChnlMap.refresh();
+        AudioService().playNotificationSound();
+
+      }
+    }
   }
 
 }

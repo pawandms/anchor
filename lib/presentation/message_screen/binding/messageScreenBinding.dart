@@ -1,3 +1,4 @@
+import 'package:anchor_getx/presentation/messages_page/service/message_service.dart';
 import 'package:get/get.dart';
 
 import '../controller/messageScreenController.dart';
@@ -10,5 +11,6 @@ class MessageScreenBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => MessageScreenController());
+
   }
 }

@@ -80,11 +80,11 @@ class MessageScreen extends GetView<MessageScreenController> {
                         color: theme.colorScheme.secondaryContainer)));
           },
           itemCount:
-          controller.userChnlMap.length,
+          controller.messageService.userChnlMap.length,
 
           itemBuilder: (context, int index) {
-            String key = controller.userChnlMap.keys.elementAt(index);
-            UserChannel model = controller.userChnlMap[key]!;
+            String key = controller.messageService.userChnlMap.keys.elementAt(index);
+            UserChannel model = controller.messageService.userChnlMap[key]!;
               //  .channel[index];
             return InkWell(
               onTap: () {

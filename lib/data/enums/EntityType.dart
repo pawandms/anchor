@@ -10,7 +10,7 @@ enum EntityType {
   Company,
 }
 
-extension ChannelTypeExtension on EntityType {
+extension EntityTypeExtension on EntityType {
   static final Map<String, EntityType> _map = {
     'Media': EntityType.Media,
     'Movie': EntityType.Movie,
