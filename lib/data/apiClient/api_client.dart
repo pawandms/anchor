@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/core/constants/env_config.dart';
 import 'package:anchor_getx/data/models/channel/ChannelResp.dart';
+import 'package:anchor_getx/data/models/user/User.dart';
 import 'package:loggy/loggy.dart';
 
 import '../../core/authentication_manager.dart';
@@ -54,11 +55,7 @@ class ApiClient extends GetConnect {
 
     // Add Access Token to in API Call
     httpClient.addRequestModifier<dynamic>((request) async {
-
-      printInfo(
-          info:
-          'Expired in: $request');
-      // log('call addRequestModifier , ${request.headers}');
+     // log('call addRequestModifier , ${request.headers}');
       LoginResponseModel? userCredentials = _authManager.getLoginResp();
 
       if(( null != userCredentials) || (null != userCredentials?.access_token))
@@ -85,6 +82,14 @@ class ApiClient extends GetConnect {
     }
     return userID;
   }
+
+  User? getLoggedInUser()
+  {
+    LoginResponseModel? userCredentials = _authManager.getLoginResp();
+    return userCredentials?.user;
+
+  }
+
 
 
 }

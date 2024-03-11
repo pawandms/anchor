@@ -38,10 +38,9 @@ class MessageScreen extends GetView<MessageScreenController> {
                       Padding(
                           padding: EdgeInsets.only(left: 16.h),
                           child: Text("lbl_messages".tr,
-                              style: theme.textTheme.headlineLarge)),
-                      SizedBox(height: 18.v),
+                              style: theme.textTheme.headlineSmall)),
                       //_buildStories(),
-                      SizedBox(height: 23.v),
+                      SizedBox(height: 10.v),
                       _buildMessagesList()
                     ]))));
   }
@@ -90,7 +89,7 @@ class MessageScreen extends GetView<MessageScreenController> {
               onTap: () {
                 onChannelSelection(model.chnlId);
               },
-                child: ChannelItemWidget(model, controller)
+                child: ChannelItemWidget(model, controller.messageService.incrementUnreadCount)
             );
           }),
     ));
@@ -103,8 +102,13 @@ class MessageScreen extends GetView<MessageScreenController> {
 
    onChannelSelection(String selectedChannelId)
   {
-    print("Channel Selected:"+selectedChannelId);
+    /*
+    Get.toNamed(AppRoutes.advChatScreen, arguments: {
+      'chnlID' : selectedChannelId
+    });
+    */
+    controller.messageService.setSelectedChannel(selectedChannelId);
+    //Get.toNamed(AppRoutes.chatScreen);
   }
-
 
 }

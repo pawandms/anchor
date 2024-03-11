@@ -1,3 +1,6 @@
+import 'package:anchor_getx/presentation/adv_chat_screen/AdvChatScreen.dart';
+import 'package:anchor_getx/presentation/adv_chat_screen/binding/AdvChatScreenBinding.dart';
+import 'package:anchor_getx/presentation/adv_chat_screen/controller/AdvChatController.dart';
 import 'package:anchor_getx/presentation/message_screen/binding/messageScreenBinding.dart';
 import 'package:anchor_getx/presentation/message_screen/message_screen.dart';
 import 'package:anchor_getx/presentation/splash_screen/splash_screen.dart';
@@ -108,6 +111,7 @@ class AppRoutes {
   static const String messagesPage = '/messages_page';
   static const String messageScreen = '/message_screen';
   static const String chatScreen = '/chat_screen';
+  static const String advChatScreen = '/advchat_screen';
 
   static const String friendsScreen = '/friends_screen';
 
@@ -285,11 +289,20 @@ class AppRoutes {
       // middlewares: [RouteGuard()],
     ),
     GetPage(
+      name: advChatScreen,
+      page: () => AdvChatScreen(),
+      bindings: [
+        AdvChatScreenBinding(),
+      ],
+      // middlewares: [RouteGuard()],
+    ),
+    GetPage(
       name: chatScreen,
       page: () => ChatScreen(),
       bindings: [
         ChatBinding(),
       ],
+
      // middlewares: [RouteGuard()],
     ),
     GetPage(

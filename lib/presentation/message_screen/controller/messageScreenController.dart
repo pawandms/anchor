@@ -64,7 +64,7 @@ class MessageScreenController extends  GetxController  {
     UserChannel? chnl = userChnlMap[channelId];
     if( null != chnl)
     {
-      chnl.unreadCount=  chnl.unreadCount+1;
+      chnl.unreadCount=  RxInt(chnl.unreadCount.value+1);
       userChnlMap.refresh();
     }
 

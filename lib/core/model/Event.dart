@@ -1,7 +1,7 @@
 
 import 'package:anchor_getx/data/enums/EntityType.dart';
 import 'package:anchor_getx/data/models/channel/UserChannel.dart';
-import 'package:anchor_getx/data/models/message/Message.dart';
+import 'package:anchor_getx/data/models/message/ApiMessage.dart';
 
 import '../enums/EventEntityType.dart';
 import '../enums/EventType.dart';
@@ -13,7 +13,7 @@ class Event{
   late String entityId;
   late String author;
   late UserChannel? channel;
-  late Message? message;
+  late ApiMessage? message;
   late DateTime actionDate;
 
   Event({
@@ -53,7 +53,7 @@ class Event{
       entityId: map["entityId"],
       author: map["author"],
       channel: map["channel"] == null ? null : UserChannel.fromMap(map["channel"]),
-      message: map["message"] == null ? null : Message.fromMap(map["message"]),
+      message: map["message"] == null ? null : ApiMessage.fromMap(map["message"]),
       actionDate: DateTime.parse(map["actionDate"]),
     );
   }

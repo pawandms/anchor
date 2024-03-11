@@ -10,6 +10,7 @@ class EnvConfig{
   static const String userEmail = '/users/email';
   static const String profile = '/users/profile';
   static const String getChannel = '/api/channel/user';
+  static const String getMessage = '/api/msg';
   static const String wsUrl = 'http://192.168.0.195:8878';
   static const String natUrl = 'ws://192.168.0.195:8888';
 
@@ -18,5 +19,15 @@ class EnvConfig{
     return getChannel+"/"+userID+"/"+ChannelType.Messaging.name+"/"+"list";
   }
 
-  
+  static getChnlMsgUrl(String userID, String chnlID)
+  {
+    return getMessage+"/"+"user"+"/"+userID+"/"+chnlID+"/"+"list";
+  }
+
+  static getChnlMsgUrlWithPage(String userID, String chnlID, int page, int itemPerPage)
+  {
+    return getMessage+"/"+"user"+"/"+userID+"/"+chnlID+"/"+"list"+"?page=$page&size=$itemPerPage";
+  }
+
+
 }

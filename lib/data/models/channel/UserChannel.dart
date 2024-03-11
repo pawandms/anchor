@@ -1,18 +1,27 @@
+import 'package:equatable/equatable.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 import '../../enums/UserRoleType.dart';
 import '../media/MediaImage.dart';
-import '../message/Message.dart';
+import '../message/ApiMessage.dart';
 
 class UserChannel  {
 
   late String chnlId;
   late String name;
-  late Message? msg;
+  late Rx<ApiMessage>? msg;
   late DateTime? msgDate;
   late List<UserRoleType> userRoles;
   late MediaImage? chnLogo;
-  late int unreadCount;
+  late Rx<int> unreadCount;
   late bool active;
 
+  int page = 0;
+  int itemPerPage = 10;
+  bool getFirstData = false;
+  bool lastPage = false;
+
+  late RxList<ApiMessage> messages = RxList<ApiMessage>();
 
 
   Map<String, dynamic> toMap() {
@@ -32,12 +41,12 @@ class UserChannel  {
     return UserChannel(
       chnlId: map['chnlId'] as String,
       name: map['name'] as String,
-      msg: map['msg'] == null ? null : Message.fromMap(map['msg']),
+      msg: map['msg'] == null ? null : Rx(ApiMessage.fromMap(map['msg'])),
       msgDate: map['msgDate'] == null ? null : DateTime.parse(map['msgDate']),
       userRoles: List.of(map["userRoles"])
           .map((i) => UserRoleTypeExtension.getType(i)).toList(),
       chnLogo: map['chnLogo'] == null ? null : MediaImage.fromMap(map['chnLogo']),
-      unreadCount: map['unreadCount'] as int,
+      unreadCount: RxInt(map['unreadCount'] as int),
       active: map['active'] as bool,
     );
   }
@@ -52,6 +61,7 @@ class UserChannel  {
     required this.unreadCount,
     required this.active,
   });
+
 
 
 }

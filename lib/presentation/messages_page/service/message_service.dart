@@ -2,7 +2,9 @@
 import 'dart:html';
 
 import 'package:anchor_getx/core/app_export.dart';
+import 'package:anchor_getx/core/constants/AppConfig.dart';
 import 'package:anchor_getx/core/constants/env_config.dart';
+import 'package:anchor_getx/core/repository/MessageRep.dart';
 import 'package:anchor_getx/core/service/AudioService.dart';
 import 'package:anchor_getx/data/enums/ChannelType.dart';
 import 'package:anchor_getx/data/models/channel/ChannelResp.dart';
@@ -12,42 +14,26 @@ import '../../../core/errors/ApiException.dart';
 import '../../../core/service/EventService.dart';
 import '../../../data/apiClient/api_client.dart';
 import '../../../data/models/channel/UserChannel.dart';
-import '../../../data/models/message/Message.dart';
+import '../../../data/models/message/ApiMessage.dart';
+import '../../../data/models/message/ChnlMsgResp.dart';
 
 class MessageService extends GetxService  {
 
   //final GetConnect connect = Get.find<GetConnect>();
   late final ApiClient apiClient;
   late final EventService eventService;
+  late final MessageRep msgRep;
   bool dataLoaded = false;
-  late RxMap<String,UserChannel> userChnlMap =  <String, UserChannel>{}.obs;
+  late RxMap<String,UserChannel> userChnlMap =  RxMap<String,UserChannel>(); //<String, UserChannel>{}.obs;
+  late RxMap<String,List<ApiMessage>> userChnlMsgMap =  RxMap<String, List<ApiMessage>>();
 
   @override
   void onInit() {
     apiClient = Get.find<ApiClient>();
     eventService = Get.find<EventService>();
+    msgRep =  Get.put(MessageRep());
+
   }
-
-/*
-  Future<List<StateModel>> getStateModel()
-  async {
-    late List<StateModel> modelList;
-    try{
-      const String url =
-          'https://servicodados.ibge.gov.br/api/v1/localidades/estados';
-
-      final response = await connect.get(url,headers:{}, contentType : null, query: {});
-      modelList = StateModel.listFromJson(response.body);
-    }
-    catch(e)
-    {
-
-    }
-
-    return modelList;
-}
-
- */
 
   Future<Map<String,UserChannel>> getUserChannels() async
   {
@@ -76,6 +62,7 @@ class MessageService extends GetxService  {
           resp =  ChannelResp.fromMap(response.body);
         }
 
+
         userChnlMap.value = Map.fromIterable(resp.channels,
             key: (e) => e.chnlId,
             value: (e) => e
@@ -95,11 +82,56 @@ class MessageService extends GetxService  {
 
   }
 
+  Future<UserChannel?> getChannelMsgDetails(String chnlID, int page, int itemPerPage)
+   async {
+         UserChannel? result = null;
+     List<ApiMessage> msgList = List.empty();
+    try{
+      if(userChnlMap.isEmpty)
+      {
+        // Intilize User Channel map
+       await  getUserChannels();
+      }
+
+      if(userChnlMap.value.containsKey(chnlID))
+      {
+        result = userChnlMap[chnlID]!;
+
+        String? userID = apiClient.getLoggedInUserID();
+        if(null == userID)
+        {
+          throw new ApiException("Invalid logged in User");
+        }
+        ChnlMsgResp  resp = await msgRep.getChnlMsgForUser(userID, chnlID, itemPerPage, page);
+
+        if(null != resp)
+        {
+          msgList =  resp.content.map((e) => e.message).obs.value.toList();
+          result.messages.value.addAll(msgList);
+        }
+
+      }
+      else {
+        // Wrong Channel Details Request for user
+
+      }
+
+
+    }
+    catch(e)
+    {
+      logError(e);
+    }
+
+    return result;
+
+  }
+
 
   void printCurrentChannel(String channelId)
   {
     UserChannel? chnl = userChnlMap[channelId];
-    print("............................Message Service Updated UserChnl:"+String.fromCharCode(chnl!.unreadCount));
+    //print("............................Message Service Updated UserChnl:"+String.fromCharCode(chnl!.unreadCount));
   }
 
   void incrementUnreadCount(String channelId)
@@ -107,27 +139,56 @@ class MessageService extends GetxService  {
     UserChannel? chnl = userChnlMap[channelId];
     if( null != chnl)
     {
-      chnl.unreadCount=  chnl.unreadCount+1;
-      userChnlMap.refresh();
-      print("............................Message Service Updated UserChnl:"+chnl.unreadCount.toString());
+      chnl.unreadCount.value=  chnl.unreadCount.value+1;
+     // userChnlMap.refresh();
+      print("............................Message Service Updated UserChnl:"+chnl.unreadCount.value.toString());
     }
 
   }
 
-  void addNewMsgToChnl(String channelId, Message? msg)
+  void addNewMsgToChnl(String channelId, ApiMessage? msg)
   {
     if( null != msg)
     {
       UserChannel? chnl = userChnlMap[channelId];
       if( null != chnl)
       {
-        chnl.unreadCount=  chnl.unreadCount+1;
-        chnl.msg = msg;
-        userChnlMap.refresh();
-        AudioService().playNotificationSound();
+        chnl.unreadCount=  RxInt(chnl.unreadCount.value+1);
+        chnl.msg = Rx(msg);
+       // userChnlMap.refresh();
+        if(AppConfig.instance.enableMsgSound)
+        {
+          AudioService().playNotificationSound();
+        }
 
       }
     }
   }
 
+
+  void setSelectedChannel(String chnlID)
+  {
+   // selectedChnl = Rx(userChnlMap[chnlID]!);
+    Get.toNamed(AppRoutes.chatScreen,
+        parameters: {"chnlID" : chnlID});
+  }
+
+
+
+  /*
+  Future<void> addMsgtoSelectedChannel()
+  async {
+    if(selectedChnl.value.page== 0)
+    {
+    List<ApiMessage> msgList = await getChannelMsg(selectedChnl.value.chnlId, selectedChnl.value.page, selectedChnl.value.itemPerPage);
+    if(msgList.isNotEmpty)
+    {
+      selectedChnl.value.messages.value.addAll(msgList);
+    }
+    }
+
+  }
+
+
+   */
 }

@@ -1,4 +1,4 @@
-import 'package:anchor_getx/presentation/log_in_screen/models/user.dart';
+import 'package:anchor_getx/data/models/user/User.dart';
 import 'package:loggy/loggy.dart';
 
 class LoginResponseModel {

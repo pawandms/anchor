@@ -11,9 +11,11 @@ import '../controller/messageScreenController.dart';
 class ChannelItemWidget extends StatelessWidget {
 
   UserChannel userChannel;
-  MessageScreenController controller;
+  //MessageScreenController controller;
+  Function(String) onChnlSelection;
+
   ChannelItemWidget(
-    this.userChannel, this.controller, {
+    this.userChannel, this.onChnlSelection, {
     Key? key,
   }) : super(
           key: key,
@@ -26,7 +28,7 @@ class ChannelItemWidget extends StatelessWidget {
       width: double.maxFinite,
       padding: EdgeInsets.symmetric(
         horizontal: 16.h,
-        vertical: 26.v,
+        vertical: 10.v,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -82,7 +84,7 @@ class ChannelItemWidget extends StatelessWidget {
 
                 SizedBox(height: 8.v),
                 Text(
-                    userChannel.msg!.body,
+                    userChannel.msg!.value.body,
                     style: theme.textTheme.bodyLarge,
                   ),
 
@@ -99,10 +101,11 @@ class ChannelItemWidget extends StatelessWidget {
             child:
              badges.Badge(
                onTap: (){
-                   onUnreadCountSelection(userChannel.chnlId, userChannel.unreadCount);
+                  // onUnreadCountSelection(userChannel.chnlId);
+                 onChnlSelection(userChannel.chnlId);
 
                },
-               badgeContent: Text(userChannel.unreadCount.toString()),
+               badgeContent: Obx(() => Text(userChannel.unreadCount.value.toString())),
                ignorePointer: false,
                position:  badges.BadgePosition.topEnd(top: -30, end: -5),
 
@@ -121,10 +124,13 @@ class ChannelItemWidget extends StatelessWidget {
     );
   }
 
-  void onUnreadCountSelection(String channelID, int currentUnreadCount)
+  /*
+  void onUnreadCountSelection(String channelID)
   {
     controller.messageService.incrementUnreadCount(channelID);
     AudioService().playNotificationSound();
-    print("Unread Count Selected for Channel:"+channelID+" , Current Count:$currentUnreadCount");
+   // print("Unread Count Selected for Channel:"+channelID+" , Current Count:$currentUnreadCount");
   }
+
+   */
 }

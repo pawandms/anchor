@@ -2,12 +2,12 @@
 import '../../enums/MsgType.dart';
 import 'Attachment.dart';
 
-class Message{
+class ApiMessage{
 
   late String id;
   late MsgType type;
   late String body;
-  late List<Attachment>? attachments;
+  late List<Attachment>? attachments = List.empty();
   late String? createdBy;
   late DateTime? createdOn;
   late String? modifiedBy;
@@ -28,8 +28,8 @@ class Message{
     };
   }
 
-  factory Message.fromMap(Map<String, dynamic> map) {
-    return Message(
+  factory ApiMessage.fromMap(Map<String, dynamic> map) {
+    return ApiMessage(
       id: map['id'] as String,
       type: MsgTypeExtension.getType(map['type']),
       body: map['body'] as String,
@@ -43,7 +43,7 @@ class Message{
     );
   }
 
-  Message({
+  ApiMessage({
     required this.id,
     required this.type,
     required this.body,

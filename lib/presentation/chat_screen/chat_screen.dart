@@ -1,3 +1,6 @@
+import 'package:anchor_getx/presentation/chat_screen/widgets/chat_item_widget.dart';
+
+import '../../data/models/message/ApiMessage.dart';
 import 'controller/chat_controller.dart';
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/widgets/app_bar/appbar_title.dart';
@@ -8,9 +11,42 @@ import 'package:anchor_getx/widgets/custom_elevated_button.dart';
 import 'package:anchor_getx/widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
 
-class ChatScreen extends GetWidget<ChatController> {
+class ChatScreen extends GetView<ChatController> {
   const ChatScreen({Key? key}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Obx(() {
+        if(controller.isLoading.isTrue)
+        {
+          return Center(child: CircularProgressIndicator());
+        }
+        else {
+         return Scaffold(
+              appBar: _buildAppBar(),
+              body:Container(
+                  width: double.maxFinite,
+                  padding: EdgeInsets.symmetric(vertical: 24.v),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                       // SizedBox(height: 10.v),
+                        _buildMessagesList(controller.myId, controller.chnl.value.messages.value)
+                      ])),
+
+             bottomNavigationBar:  _buildMessageBoxRow(),
+          );
+        }
+
+      }),
+
+    );
+  }
+
+
+
+    /*
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -106,6 +142,7 @@ class ChatScreen extends GetWidget<ChatController> {
                     ])),
             bottomNavigationBar: _buildMessageBoxRow()));
   }
+  */
 
   /// Section Widget
   PreferredSizeWidget _buildAppBar() {
@@ -118,14 +155,15 @@ class ChatScreen extends GetWidget<ChatController> {
               child: Row(children: [
                 AppbarTitleImage(
                     imagePath: ImageConstant.imgClose,
-                    margin: EdgeInsets.symmetric(vertical: 8.v),
+                    margin: EdgeInsets.symmetric(vertical: 15.v),
                     onTap: () {
                       onTapClose();
                     }),
                 AppbarTitle(
-                    text: "lbl_garry_willer".tr,
+                    //text: controller.messageService.selectedChnl.value.name,
+                    text: controller.chnl.value.name,
                     margin:
-                        EdgeInsets.only(left: 108.h, top: 8.v, bottom: 6.v)),
+                        EdgeInsets.only(left: 108.h, top: 10.v, bottom: 6.v)),
                 AppbarTitleCircleimage(
                     imagePath: ImageConstant.imgEllipse14,
                     margin: EdgeInsets.only(left: 95.h))
@@ -167,6 +205,40 @@ class ChatScreen extends GetWidget<ChatController> {
           width: 15.h,
           margin: EdgeInsets.only(left: 12.h, top: 2.v, bottom: 2.v))
     ]);
+  }
+
+  /// Section Widget
+  Widget _buildMessagesList(String myId, List<ApiMessage> messages) {
+    return Expanded(
+      child: ListView.separated(
+          physics: AlwaysScrollableScrollPhysics(),
+          shrinkWrap: true,
+          separatorBuilder: (context, index) {
+            return Padding(
+                padding: EdgeInsets.symmetric(vertical: 12.0.v),
+                child: SizedBox(
+                    width: double.maxFinite,
+                    child: Divider(
+                        height: 1.v,
+                        thickness: 1.v,
+                        color: theme.colorScheme.secondaryContainer)));
+          },
+          itemCount:
+          messages.length,
+
+          itemBuilder: (context, int index) {
+
+            ApiMessage model = messages.elementAt(index);
+            //  .channel[index];
+            return InkWell(
+                onTap: () {
+                  print("Chat Message Clicket");
+                },
+                child: ChatItemWidget(myId, model)
+            );
+
+          }),
+    );
   }
 
   /// Navigates to the previous screen.
