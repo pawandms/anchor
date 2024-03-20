@@ -1,9 +1,11 @@
 import 'package:anchor_getx/core/app_export.dart';
+import 'package:anchor_getx/data/models/message/ApiMessage.dart';
 import 'package:anchor_getx/presentation/chat_screen/models/chat_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/errors/ApiException.dart';
 import '../../../data/apiClient/api_client.dart';
+import '../../../data/enums/MsgType.dart';
 import '../../../data/models/channel/UserChannel.dart';
 import '../../messages_page/service/message_service.dart';
 
@@ -13,7 +15,7 @@ import '../../messages_page/service/message_service.dart';
 /// current chatModelObj
 class ChatController extends GetxController {
 
-  Rx<ChatModel> chatModelObj = ChatModel().obs;
+ // Rx<ChatModel> chatModelObj = ChatModel().obs;
   late String selectedChnlID;
   late Rx<UserChannel> chnl;
   late final ApiClient apiClient;
@@ -24,6 +26,10 @@ class ChatController extends GetxController {
   bool lastPage = false;
   Rx<bool> isLoading = false.obs;
   late String myId;
+  TextEditingController msgInputController = TextEditingController();
+  ScrollController msgController = ScrollController();
+  ScrollNotification? _lastNotification;
+
   @override
   onInit()  async {
 
@@ -31,6 +37,7 @@ class ChatController extends GetxController {
     apiClient = Get.find<ApiClient>();
     messageService = Get.find<MessageService>();
     prepareData();
+    addListnerToMsgController();
   }
 
   void prepareData()
@@ -51,6 +58,11 @@ class ChatController extends GetxController {
     isLoading.value = false;
   }
 
+  void addListnerToMsgController()
+  {
+    msgController.addListener(_scrollListener);
+  }
+
   @override
   Future<void> onEndScroll() async {
     print('onEndScroll');
@@ -69,4 +81,33 @@ class ChatController extends GetxController {
   Future<void> onTopScroll() async {
     print('onTopScroll');
   }
+
+  _scrollListener() {
+    if (msgController.offset >= msgController.position.maxScrollExtent &&
+        !msgController.position.outOfRange) {
+        print("Msg Controller Reach Bottom");
+
+    }
+    else if (msgController.offset <= msgController.position.minScrollExtent &&
+        !msgController.position.outOfRange) {
+      print("Msg Controller Reach Top");
+    }
+    else {
+      print("Msg Controller is somewhare  middle");
+    }
+  }
+
+  void addNewMessageToChat(String msgText)
+  {
+    try{
+      ApiMessage msg = new ApiMessage(id: "new", type: MsgType.Text, body: msgText, createdOn: DateTime.now(), createdBy: myId, modifiedBy: myId, modifiedOn: DateTime.now());
+      chnl.value.messages.add(msg);
+      print("Text Msg Added to MsgList");
+    }
+    catch(e)
+    {
+      
+    }
+  }
+
 }

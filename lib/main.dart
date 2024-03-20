@@ -37,7 +37,10 @@ class MyApp extends StatelessWidget {
     return Sizer(builder: (context, orientation, deviceType) {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: theme,
+       theme: ThemeData(
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      useMaterial3: true,
+      ),
         translations: AppLocalization(),
         locale: Get.deviceLocale, //for setting localization strings
         fallbackLocale: Locale('en', 'US'),

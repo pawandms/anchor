@@ -53,10 +53,10 @@ packages:
     dependency: transitive
     description:
       name: audio_waveforms
-      sha256: f2f81e256c5c03b64e2861e0323a77e1b6790c256c73393b671214c9846260fc
+      sha256: e1425956cfa07bf8cfa02826bb509db252553964484ac516ba6e2c65b64e018e
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.4"
+    version: "1.0.5"
   audioplayers:
     dependency: "direct main"
     description:
@@ -266,7 +266,7 @@ packages:
     source: hosted
     version: "0.3.1"
   emoji_picker_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: emoji_picker_flutter
       sha256: "8506341d62efd116d6fb1481450bffdbac659d3d90d46d9cc610bfae5f33cc54"
@@ -350,6 +350,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_advanced_avatar:
+    dependency: "direct main"
+    description:
+      name: flutter_advanced_avatar
+      sha256: "29f5d1586075a2ee5ce462fe25b9aa7179a157697260f542a05c5293a5bda8cc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.0"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -465,7 +473,7 @@ packages:
     source: hosted
     version: "0.10.2+1"
   grouped_list:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: grouped_list
       sha256: fef106470186081c32636aa055492eee7fc7fe8bf0921a48d31ded24821af19f
@@ -904,6 +912,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+  simple_grouped_listview:
+    dependency: "direct main"
+    description:
+      name: simple_grouped_listview
+      sha256: bf2dcb8d08e0ff488d65e4e048c0785f76f024ef3ddc39cbdb3494039be086c2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   sky_engine:
     dependency: transitive
     description: flutter

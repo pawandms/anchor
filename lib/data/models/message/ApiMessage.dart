@@ -9,7 +9,7 @@ class ApiMessage{
   late String body;
   late List<Attachment>? attachments = List.empty();
   late String? createdBy;
-  late DateTime? createdOn;
+  late DateTime createdOn;
   late String? modifiedBy;
   late DateTime? modifiedOn;
 
@@ -37,7 +37,7 @@ class ApiMessage{
           .map((i) => Attachment.fromMap(i))
           .toList(),
       createdBy: map['createdBy'] == null? null : map['createdBy'] as String,
-      createdOn: map['createdOn'] == null ? null : DateTime.parse(map['createdOn']),
+      createdOn: map['createdOn'] == null ? DateTime.now() : DateTime.parse(map['createdOn']),
       modifiedBy: map['modifiedBy'] == null ? null : map['modifiedBy'] as String,
       modifiedOn: map['modifiedOn'] == null ? null : DateTime.parse(map['modifiedOn']),
     );
@@ -49,7 +49,7 @@ class ApiMessage{
     required this.body,
     this.attachments,
     this.createdBy,
-    this.createdOn,
+    required this.createdOn,
     this.modifiedBy,
     this.modifiedOn,
   });

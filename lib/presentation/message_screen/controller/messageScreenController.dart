@@ -16,7 +16,6 @@ import '../../messages_page/service/message_service.dart';
 class MessageScreenController extends  GetxController  {
   late final MessageService messageService;
   //late final EventService eventService;
-  late Rx<MessagesModel> messagesModelObj;
   late RxMap<String,UserChannel> userChnlMap =  <String, UserChannel>{}.obs;
 
  //RxList<UserChannel> channel = <UserChannel>[].obs;
@@ -27,7 +26,6 @@ class MessageScreenController extends  GetxController  {
     //  isLoading(true);
     messageService = Get.find<MessageService>();
    // eventService = Get.put(EventService());
-    messagesModelObj = MessagesModel().obs;
     getUserChannel();
 
   }
@@ -36,21 +34,8 @@ class MessageScreenController extends  GetxController  {
   Future<void> getUserChannel()
   async {
     try{
-      // Successfully fetched products data
-      /*
-      ChannelResp resp = await messageService.getUserChannels();
-      userChnlMap.value = Map.fromIterable(resp.channels,
-          key: (e) => e.chnlId,
-          value: (e) => e
-      );
-
-       */
-
       userChnlMap.value = await messageService.getUserChannels();
-     // channel.assignAll(resp.channels);
       userChnlMap.refresh();
-     // eventService.addEventForChannels(userChnlMap.keys);
-
     }
     catch(e)
     {
@@ -67,8 +52,6 @@ class MessageScreenController extends  GetxController  {
       chnl.unreadCount=  RxInt(chnl.unreadCount.value+1);
       userChnlMap.refresh();
     }
-
-    print("Updated UserChnl:$chnl");
     messageService.printCurrentChannel(channelId);
   }
 

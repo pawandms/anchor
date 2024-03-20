@@ -2,21 +2,14 @@
 import 'package:anchor_getx/presentation/message_screen/controller/messageScreenController.dart';
 
 import 'package:anchor_getx/core/app_export.dart';
-import 'package:anchor_getx/presentation/message_screen/widgets/channel_item_widget.dart';
-import 'package:anchor_getx/presentation/messages_page/messages_page.dart';
+import 'package:anchor_getx/presentation/message_screen/widgets/ConversationList.dart';
 import 'package:flutter/material.dart';
 
+import '../../data/models/channel/ChnlParticipents.dart';
 import '../../data/models/channel/UserChannel.dart';
 import '../../widgets/app_bar/appbar_leading_image.dart';
 import '../../widgets/app_bar/appbar_trailing_image.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
-import '../messages_page/models/messageslist_item_model.dart';
-import '../messages_page/models/stories1_item_model.dart';
-import '../messages_page/widgets/messageslist_item_widget.dart';
-import '../messages_page/widgets/stories1_item_widget.dart';
-import 'Calls_Fragment.dart';
-import 'Chat_Fragment.dart';
-import 'Status_Fragment.dart';
 
 // ignore_for_file: must_be_immutable
 class MessageScreen extends GetView<MessageScreenController> {
@@ -84,12 +77,12 @@ class MessageScreen extends GetView<MessageScreenController> {
           itemBuilder: (context, int index) {
             String key = controller.messageService.userChnlMap.keys.elementAt(index);
             UserChannel model = controller.messageService.userChnlMap[key]!;
-              //  .channel[index];
+            //  .channel[index];
             return InkWell(
               onTap: () {
                 onChannelSelection(model.chnlId);
               },
-                child: ChannelItemWidget(model, controller.messageService.incrementUnreadCount)
+                child: ConversationList(model, onChannelSelection,context)
             );
           }),
     ));
@@ -102,13 +95,7 @@ class MessageScreen extends GetView<MessageScreenController> {
 
    onChannelSelection(String selectedChannelId)
   {
-    /*
-    Get.toNamed(AppRoutes.advChatScreen, arguments: {
-      'chnlID' : selectedChannelId
-    });
-    */
     controller.messageService.setSelectedChannel(selectedChannelId);
-    //Get.toNamed(AppRoutes.chatScreen);
   }
 
 }

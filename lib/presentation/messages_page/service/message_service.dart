@@ -48,20 +48,14 @@ class MessageService extends GetxService  {
           throw new ApiException("Invalid logged in User");
         }
 
-        // String chnlUrl = EnvConfig.getChannel;
         Map<String, dynamic>? queryParam = {'userID': userID, 'chnlType': ChannelType.Messaging.name};
         String getChnlUrl = EnvConfig.getMsgChnlUrl(userID);
         final response = await apiClient.get(getChnlUrl,headers:{}, contentType : null, query: {});
-        print("getChannel Api Response:"+response.toString());
-        //  resp = new ChannelResp(userID: "abc", type: ChannelType.Messaging);
-
         if (response.statusCode == HttpStatus.ok) {
           resp =  ChannelResp.fromMap(response.body);
-          print("response:"+resp.toString());
         } else {
           resp =  ChannelResp.fromMap(response.body);
         }
-
 
         userChnlMap.value = Map.fromIterable(resp.channels,
             key: (e) => e.chnlId,

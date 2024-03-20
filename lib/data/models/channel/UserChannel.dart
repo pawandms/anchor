@@ -4,6 +4,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import '../../enums/UserRoleType.dart';
 import '../media/MediaImage.dart';
 import '../message/ApiMessage.dart';
+import 'ChnlParticipents.dart';
 
 class UserChannel  {
 
@@ -15,7 +16,7 @@ class UserChannel  {
   late MediaImage? chnLogo;
   late Rx<int> unreadCount;
   late bool active;
-
+  late List<ChnlParticipent> users = [];
   int page = 0;
   int itemPerPage = 10;
   bool getFirstData = false;
@@ -48,6 +49,10 @@ class UserChannel  {
       chnLogo: map['chnLogo'] == null ? null : MediaImage.fromMap(map['chnLogo']),
       unreadCount: RxInt(map['unreadCount'] as int),
       active: map['active'] as bool,
+      users: List.of(map["chnlUsers"])
+          .map((i) => ChnlParticipent.fromMap(i))
+          .toList(),
+
     );
   }
 
@@ -60,6 +65,7 @@ class UserChannel  {
     this.chnLogo,
     required this.unreadCount,
     required this.active,
+    required this.users,
   });
 
 
