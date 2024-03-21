@@ -34,98 +34,116 @@ class MsgInputField extends StatelessWidget{
 
   @override
   Widget build(context) {
-    return Container(
-      padding: EdgeInsets.only(left: 16.h, right: 16.h, bottom: 10.v),
-        child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(35.0),
-                  boxShadow: [
-                    BoxShadow(
-                        offset: Offset(0, 3),
-                        blurRadius: 5,
-                        color: Colors.grey)
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    IconButton(
-                        icon: Icon(Icons.face , color: Colors.blueAccent,), onPressed: () {
-                          _isEmojiMenuEnabled.value = !_isEmojiMenuEnabled.value;
-                    }),
-                    Expanded(
-                      child: TextField(
-                       // focusNode: _focus,
-                        decoration: InputDecoration(
-                            hintText: "Type Something...",
-                            hintStyle: TextStyle( color:     Colors.blueAccent),
-                            border: InputBorder.none),
-                        controller: _controller,
-                        maxLines: 5,
-                        minLines: 1,
-                      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Container(
+          padding: EdgeInsets.only(left: 16.h, right: 16.h, bottom: 10.v),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(35.0),
+                      boxShadow: [
+                        BoxShadow(
+                            offset: Offset(0, 3),
+                            blurRadius: 5,
+                            color: Colors.grey)
+                      ],
                     ),
-                    IconButton(
-                      icon: Icon(Icons.photo_camera ,  color: Colors.blueAccent),
-                      onPressed: () {},
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.attach_file ,  color: Colors.blueAccent),
-                      onPressed: () {},
-                    )
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(width: 15),
-            Container(
-              padding: const EdgeInsets.all(15.0),
-              decoration: BoxDecoration(
-                  color: Colors.blueAccent, shape: BoxShape.circle),
-              child : Obx( () =>Row(
-                children: [
-                  Visibility(
-                    visible: _isTextadded.isFalse,
-                    child: InkWell(
-                      child: Icon(
-                        Icons.keyboard_voice,
-                        color: Colors.white,
-                      ),
-                      onLongPress: () {
-                      },
+                    child: Row(
+                      children: [
+                        IconButton(
+                            icon: Icon(Icons.face , color: Colors.blueAccent,), onPressed: () {
+                              _isEmojiMenuEnabled.value = !_isEmojiMenuEnabled.value;
+                        }),
+                        Expanded(
+                          child: TextField(
+                           // focusNode: _focus,
+                            decoration: InputDecoration(
+                                hintText: "Type Something...",
+                                border: InputBorder.none),
+                            controller: _controller,
+                            maxLines: 5,
+                            minLines: 1,
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.photo_camera ,  color: Colors.blueAccent),
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.attach_file ,  color: Colors.blueAccent),
+                          onPressed: () {},
+                        )
+                      ],
                     ),
                   ),
-                  Visibility(
-                    visible: _isTextadded.isTrue,
-                    child: InkWell(
-                     child: Icon(
-                        Icons.send,
-                        color: Colors.white,
+                ),
+                SizedBox(width: 10),
+                Container(
+                  padding: const EdgeInsets.all(15.0),
+                  decoration: BoxDecoration(
+                      color: Colors.blueAccent, shape: BoxShape.circle),
+                  child : Obx( () =>Row(
+                    children: [
+                      Visibility(
+                        visible: _isTextadded.isFalse,
+                        child: InkWell(
+                          child: Icon(
+                            Icons.keyboard_voice,
+                            color: Colors.white,
+                          ),
+                          onLongPress: () {
+                          },
+                        ),
                       ),
-                      onTap: () {
-                        _submitTextMsg();
-                      },
-                    ),
-                  ),
+                      Visibility(
+                        visible: _isTextadded.isTrue,
+                        child: InkWell(
+                         child: Icon(
+                            Icons.send,
+                            color: Colors.white,
+                          ),
+                          onTap: () {
+                            _submitTextMsg();
+                          },
+                        ),
+                      ),
+
+                  ],
+                 ))
+
+
+                ),
+
+               /*
+                Container(
+                  child: Obx(() => Expanded(child: _buildEmojiMenu()))
+                )
+                */
+
 
               ],
-             ))
-
-
             ),
-            Container(
-              child: Obx(() => Expanded(child: _buildEmojiMenu()))
-            )
 
-
-
+          ),
+        Row(
+          children: [
+            Expanded(
+             // flex: 10,
+                child: Obx(() =>  _buildEmojiMenu())
+            ),
           ],
-        ),
+        )
 
-      );
+
+      ],
+    );
 
 
   }
