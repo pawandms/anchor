@@ -1,4 +1,5 @@
 final Map<String, String> enUs = {
+
   // Splash Screen
   "lbl_social": "Social",
 
@@ -29,6 +30,9 @@ final Map<String, String> enUs = {
       "By clicking Register, you agree to our Data Policy and Cookie Policy. You will receive an SMS Notification from Facebook and can decline it at any time.",
   "msg_create_a_new_account": "Create a New Account",
   "msg_it_s_fast_and_easy": "It’s fast and easy",
+
+  // Chat Screen
+  "lbl_upload_media": "Upload media",
 
   // Notification Screen
   "msg_turn_on_notifications": "Turn on Notifications",
@@ -206,4 +210,6 @@ final Map<String, String> enUs = {
   "err_msg_please_enter_valid_text": "Please enter valid text",
   "err_msg_please_enter_valid_phone_number": "Please enter valid phone number",
   "err_msg_invalid_email_pass" : "Invalid email or password ",
+
+
 };

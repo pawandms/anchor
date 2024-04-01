@@ -14,7 +14,7 @@ class Helper{
         _formatter.format(date))   {
       return 'Yesterday';
     } else {
-      return '${DateFormat('d').format(date)} ${DateFormat('MMMM').format(date)} ${DateFormat('y').format(date)}';
+      return '${DateFormat.yMMMd().format(date)}';
     }
   }
 }

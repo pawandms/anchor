@@ -2,6 +2,7 @@ import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/data/models/message/ApiMessage.dart';
 import 'package:anchor_getx/presentation/chat_screen/models/chat_model.dart';
 import 'package:flutter/material.dart';
+import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 import '../../../core/errors/ApiException.dart';
 import '../../../data/apiClient/api_client.dart';
@@ -28,6 +29,7 @@ class ChatController extends GetxController {
   late String myId;
   TextEditingController msgInputController = TextEditingController();
   ScrollController msgController = ScrollController();
+  final itemScrollController = GroupedItemScrollController();
   ScrollNotification? _lastNotification;
 
   @override
@@ -100,14 +102,23 @@ class ChatController extends GetxController {
   void addNewMessageToChat(String msgText)
   {
     try{
-      ApiMessage msg = new ApiMessage(id: "new", type: MsgType.Text, body: msgText, createdOn: DateTime.now(), createdBy: myId, modifiedBy: myId, modifiedOn: DateTime.now());
+      String msgID = "new_"+DateTime.now().millisecond.toString();
+      ApiMessage msg = new ApiMessage(id: msgID, type: MsgType.Text, body: msgText, createdOn: DateTime.now(), createdBy: myId, modifiedBy: myId, modifiedOn: DateTime.now());
       chnl.value.messages.add(msg);
       print("Text Msg Added to MsgList");
+      setSelectedMessage(msgID);
     }
     catch(e)
     {
       
     }
   }
+
+  void setSelectedMessage(String msgID)
+  {
+    itemScrollController.scrollToElement(identifier: msgID, duration: Duration(seconds: 2));
+   // itemScrollController.jumpToElement(identifier: msgID);
+  }
+
 
 }
