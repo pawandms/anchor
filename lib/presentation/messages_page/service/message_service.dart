@@ -1,4 +1,5 @@
 
+import 'dart:convert';
 import 'dart:html';
 
 import 'package:anchor_getx/core/app_export.dart';
@@ -147,9 +148,9 @@ class MessageService extends GetxService  {
       UserChannel? chnl = userChnlMap[channelId];
       if( null != chnl)
       {
-        chnl.unreadCount=  RxInt(chnl.unreadCount.value+1);
+        chnl.unreadCount.value=  chnl.unreadCount.value+1;
         chnl.msg = Rx(msg);
-       // userChnlMap.refresh();
+        userChnlMap.refresh();
         if(AppConfig.instance.enableMsgSound)
         {
           AudioService().playNotificationSound();
@@ -157,6 +158,51 @@ class MessageService extends GetxService  {
 
       }
     }
+  }
+
+  /*
+  void addMessage(ApiMessage msg)
+  {
+    try{
+      Future<ApiMessage> response =  sendMessage(msg);
+    }
+    catch(e)
+    {
+      rethrow;
+    }
+
+  }
+
+   */
+
+  Future<ApiMessage> sendMessage(ApiMessage msg)
+  async {
+    try{
+
+      String? userID = apiClient.getLoggedInUserID();
+      if(null == userID)
+      {
+        throw new ApiException("Invalid logged in User");
+      }
+
+      String getAddMsgUrl = EnvConfig.getAddMsgUrl();
+      var msgJson = msg.toMap();
+      final String encodedData = json.encode(msgJson);
+      final response = await apiClient.post(getAddMsgUrl,encodedData, headers:{}, contentType : 'application/json');
+      print("Response:$response");
+      if (response.statusCode == HttpStatus.ok) {
+        ApiMessage resp =  ApiMessage.fromMap(response.body);
+      } else {
+        ApiMessage resp =  ApiMessage.fromMap(response.body);
+      }
+
+    }
+    catch(e)
+    {
+      logError(e);
+    }
+
+    return msg;
   }
 
 

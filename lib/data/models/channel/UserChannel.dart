@@ -24,7 +24,6 @@ class UserChannel  {
 
   late RxList<ApiMessage> messages = RxList<ApiMessage>();
 
-
   Map<String, dynamic> toMap() {
     return {
       'chnlId': this.chnlId,
@@ -43,7 +42,7 @@ class UserChannel  {
       chnlId: map['chnlId'] as String,
       name: map['name'] as String,
       msg: map['msg'] == null ? null : Rx(ApiMessage.fromMap(map['msg'])),
-      msgDate: map['msgDate'] == null ? null : DateTime.parse(map['msgDate']),
+      msgDate: map['msgDate'] == null ? null : DateTime.parse(map['msgDate']).toLocal(),
       userRoles: List.of(map["userRoles"])
           .map((i) => UserRoleTypeExtension.getType(i)).toList(),
       chnLogo: map['chnLogo'] == null ? null : MediaImage.fromMap(map['chnLogo']),
@@ -67,7 +66,5 @@ class UserChannel  {
     required this.active,
     required this.users,
   });
-
-
 
 }

@@ -1,4 +1,5 @@
 import 'package:anchor_getx/core/app_export.dart';
+import 'package:anchor_getx/data/enums/MsgActionType.dart';
 import 'package:anchor_getx/data/models/message/ApiMessage.dart';
 import 'package:anchor_getx/presentation/chat_screen/models/chat_model.dart';
 import 'package:flutter/material.dart';
@@ -103,15 +104,27 @@ class ChatController extends GetxController {
   {
     try{
       String msgID = "new_"+DateTime.now().millisecond.toString();
-      ApiMessage msg = new ApiMessage(id: msgID, type: MsgType.Text, body: msgText, createdOn: DateTime.now(), createdBy: myId, modifiedBy: myId, modifiedOn: DateTime.now());
-      chnl.value.messages.add(msg);
-      print("Text Msg Added to MsgList");
-      setSelectedMessage(msgID);
+      ApiMessage msg = new ApiMessage(id: msgID, type: MsgType.Text, body: msgText, createdOn: DateTime.now(),
+          createdBy: myId, modifiedBy: myId, modifiedOn: DateTime.now(), attachmentCount: 0, );
+        msg.actionType = MsgActionType.Add;
+        msg.chnlID = selectedChnlID;
+        msg.userID = myId;
+      updateChatScreen(msg);
+      messageService.sendMessage(msg);
+
     }
-    catch(e)
+    catch(e,stacktrace)
     {
-      
+      Logger.log(e.toString(),stackTrace: stacktrace);
     }
+  }
+
+  void updateChatScreen(ApiMessage msg)
+  {
+    chnl.value.messages.add(msg);
+    print("Text Msg Added to MsgList");
+    setSelectedMessage(msg.id);
+
   }
 
   void setSelectedMessage(String msgID)

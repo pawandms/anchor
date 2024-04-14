@@ -8,6 +8,7 @@ import 'package:anchor_getx/core/app_export.dart';
 
 
 import '../../data/apiClient/api_client.dart';
+import '../../presentation/message_screen/controller/messageScreenController.dart';
 import '../model/Event.dart';
 import '../network/NatsClientConfig.dart';
 
@@ -35,12 +36,10 @@ class EventService extends GetxService{
 
   void processEvent(String subjet, String data)
   {
-
     try{
       Map<String,dynamic> jsonMap = jsonDecode(data);
       Event event =  Event.fromMap(jsonMap);
-
-      if( null == messageService)
+    if( null == messageService)
       {
         messageService = Get.find<MessageService>();
       }
@@ -80,7 +79,14 @@ class EventService extends GetxService{
         && (null != logInUser)
       && (event.author.toUpperCase() != logInUser.toUpperCase()))
      {
-      messageService?.addNewMsgToChnl(event.entityId, event.message);
+       MessageScreenController _chnlController = Get.find<MessageScreenController>();
+       if( null != _chnlController)
+        {
+          _chnlController.addNewMsgToChnl(event.entityId, event.message);
+        }
+
+
+      //messageService?.addNewMsgToChnl(event.entityId, event.message);
      }
   }
 

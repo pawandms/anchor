@@ -29,5 +29,11 @@ class EnvConfig{
     return getMessage+"/"+"user"+"/"+userID+"/"+chnlID+"/"+"list"+"?page=$page&size=$itemPerPage";
   }
 
+  static getAddMsgUrl()
+  {
+    return getMessage+"/"+"add";
+  }
+
+
 
 }

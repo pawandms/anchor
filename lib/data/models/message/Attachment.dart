@@ -1,5 +1,7 @@
 import 'package:anchor_getx/data/enums/MsgType.dart';
 
+import '../media/MediaInput.dart';
+
 class Attachment {
   late String id;
   late MsgType type;
@@ -12,9 +14,7 @@ class Attachment {
   late DateTime? createdOn;
   late String? modifiedBy;
   late DateTime? modifiedOn;
-
-
-
+  late MediaInput localInput;
 
   Map<String, dynamic> toMap() {
     return {

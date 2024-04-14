@@ -39,6 +39,7 @@ class ChatListPage extends StatelessWidget{
         itemScrollController: itemScrollController,
         floatingHeader: true,
         groupSeparatorBuilder: _getGroupSeparator ,
+        itemComparator: (e1, e2) => e1.createdOn.compareTo(e2.createdOn),
         itemBuilder: _getItem,
 
       ),
@@ -78,4 +79,5 @@ class ChatListPage extends StatelessWidget{
       padding: const EdgeInsets.all(8),
     );
   }
+
 }

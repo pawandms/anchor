@@ -136,7 +136,7 @@ class UploadMediaPage extends StatelessWidget{
           SizedBox(height: 10,),
           SizedBox(
               //height: 20,
-               width: 150,
+              // width: 150,
               child: Text(media.file!.name,
                 style: TextStyle(color: Colors.grey.shade600, fontWeight: false ?FontWeight.bold:FontWeight.normal, overflow: TextOverflow.ellipsis),
 

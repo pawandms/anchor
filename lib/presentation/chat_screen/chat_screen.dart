@@ -1,6 +1,5 @@
 
 import 'package:anchor_getx/presentation/chat_screen/widgets/ChatListPage.dart';
-import 'package:anchor_getx/presentation/chat_screen/widgets/ListPage.dart';
 import 'package:anchor_getx/presentation/chat_screen/widgets/MsgInputField.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
@@ -12,7 +11,6 @@ import 'package:anchor_getx/widgets/app_bar/appbar_title.dart';
 import 'package:anchor_getx/widgets/app_bar/appbar_title_circleimage.dart';
 import 'package:anchor_getx/widgets/app_bar/appbar_title_image.dart';
 import 'package:anchor_getx/widgets/app_bar/custom_app_bar.dart';
-import 'package:anchor_getx/widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends GetView<ChatController> {

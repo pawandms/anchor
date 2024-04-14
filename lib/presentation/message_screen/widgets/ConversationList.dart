@@ -4,18 +4,20 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import '../../../data/models/channel/UserChannel.dart';
 import '../../../theme/custom_text_style.dart';
+import '../controller/messageScreenController.dart';
 
 class ConversationList extends StatelessWidget
 {
   UserChannel userChannel;
-  //MessageScreenController controller;
+  MessageScreenController controller;
    Function(String) onChnlSelection;
    final BuildContext context;
 
   ConversationList(
-      this.userChannel, this.onChnlSelection, this.context,
+      this.userChannel, this.onChnlSelection, this.context,this.controller,
   {
         Key? key,
       }) : super(
@@ -26,7 +28,7 @@ class ConversationList extends StatelessWidget
   Widget build(context) {
     return Container(
       padding: EdgeInsets.only(left: 16,right: 16,top: 10,bottom: 10),
-      child: Row(
+      child: Obx(() => Row(
         children: [
           Expanded(
               child: Row(
@@ -59,7 +61,8 @@ class ConversationList extends StatelessWidget
               )
           ),
           badges.Badge(
-            badgeStyle: BadgeStyle(badgeColor: Colors.blueAccent,),
+              badgeStyle: BadgeStyle
+            (badgeColor: Colors.blueAccent,),
             badgeContent: Text(userChannel.unreadCount.value.toString(),
             //style: theme.textTheme.titleMedium,
                ),
@@ -72,10 +75,11 @@ class ConversationList extends StatelessWidget
           )
 
         ],
-      ),
+      )),
     );
 
   }
+
 }
 
 

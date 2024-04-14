@@ -72,17 +72,17 @@ class MessageScreen extends GetView<MessageScreenController> {
                         color: theme.colorScheme.secondaryContainer)));
           },
           itemCount:
-          controller.messageService.userChnlMap.length,
+          controller.userChnlMap.length,
 
           itemBuilder: (context, int index) {
-            String key = controller.messageService.userChnlMap.keys.elementAt(index);
-            UserChannel model = controller.messageService.userChnlMap[key]!;
+            String key = controller.userChnlMap.keys.elementAt(index);
+            UserChannel model = controller.userChnlMap[key]!;
             //  .channel[index];
             return InkWell(
               onTap: () {
                 onChannelSelection(model.chnlId);
               },
-                child: ConversationList(model, onChannelSelection,context)
+                child: ConversationList(model, onChannelSelection,context, controller)
             );
           }),
     ));
@@ -95,7 +95,7 @@ class MessageScreen extends GetView<MessageScreenController> {
 
    onChannelSelection(String selectedChannelId)
   {
-    controller.messageService.setSelectedChannel(selectedChannelId);
+    controller.setSelectedChannel(selectedChannelId);
   }
 
 }
