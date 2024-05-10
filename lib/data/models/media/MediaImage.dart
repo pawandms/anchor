@@ -8,11 +8,6 @@ class MediaImage{
    late int? height;
    late EntityType entityType;
    late String entityId;
-   late ImageType imageType;
-
-
-   MediaImage(this.id, this.width, this.height, this.entityType, this.entityId,
-      this.imageType);
 
   Map<String, dynamic> toMap() {
     return {
@@ -21,17 +16,28 @@ class MediaImage{
       'height': this.height,
       'entityType': this.entityType,
       'entityId': this.entityId,
-      'imageType': this.imageType,
+
     };
   }
 
   factory MediaImage.fromMap(Map<String, dynamic> map) {
-    final id =  map['id'];
-    final width =  map['width'];
-    final height =  map['height'];
-    final entityType =   EntityType.values.byName(map['entityType']);
-    final entityId =  map['entityId'];
-    final imageType =  map['imageType'];
-    return MediaImage(id, width, height, entityType, entityId, imageType);
+    return MediaImage(
+      id: map['id'],
+      entityId: map['entityId'],
+      entityType:  EntityTypeExtension.getType(map['entityType']),
+      width: map['width'],
+      height: map['height'],
+
+    );
+
   }
+
+   MediaImage({
+    required this.id,
+    this.width,
+    this.height,
+    required this.entityType,
+    required this.entityId,
+
+  });
 }

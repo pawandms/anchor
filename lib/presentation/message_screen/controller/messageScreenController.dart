@@ -35,9 +35,9 @@ class MessageScreenController extends  GetxController  {
       userChnlMap.value = await messageService.getUserChannels();
       //userChnlMap.refresh();
     }
-    catch(e)
+    catch(e, stacktrace )
     {
-      logError(e);
+      logError(e, stacktrace);
     }
 
   }

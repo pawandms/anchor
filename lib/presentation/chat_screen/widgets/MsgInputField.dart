@@ -443,7 +443,8 @@ class MsgInputField extends StatelessWidget{
             imagePath: ImageConstant.imgClose,
             margin: EdgeInsets.only(left: 16.h, top: 13.v, bottom: 13.v),
             onTap: () {
-              Get.back(closeOverlays: true);
+            //  Get.back(closeOverlays: true);
+              Navigator.pop(context);
             }),
         );
   }

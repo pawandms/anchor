@@ -100,15 +100,31 @@ class ChatController extends GetxController {
     }
   }
 
-  void addNewMessageToChat(String msgText)
+  void addNewMessageToChat(ApiMessage msg)
+  {
+    try{
+        msg.actionType = MsgActionType.Add;
+        msg.chnlID = selectedChnlID;
+        msg.userID = myId;
+      updateChatScreen(msg);
+      messageService.sendMessage(msg);
+
+    }
+    catch(e,stacktrace)
+    {
+      Logger.log(e.toString(),stackTrace: stacktrace);
+    }
+  }
+
+  void addNewMessageTextToChat(String msgText)
   {
     try{
       String msgID = "new_"+DateTime.now().millisecond.toString();
       ApiMessage msg = new ApiMessage(id: msgID, type: MsgType.Text, body: msgText, createdOn: DateTime.now(),
-          createdBy: myId, modifiedBy: myId, modifiedOn: DateTime.now(), attachmentCount: 0, );
-        msg.actionType = MsgActionType.Add;
-        msg.chnlID = selectedChnlID;
-        msg.userID = myId;
+        createdBy: myId, modifiedBy: myId, modifiedOn: DateTime.now());
+      msg.actionType = MsgActionType.Add;
+      msg.chnlID = selectedChnlID;
+      msg.userID = myId;
       updateChatScreen(msg);
       messageService.sendMessage(msg);
 
@@ -132,6 +148,7 @@ class ChatController extends GetxController {
     itemScrollController.scrollToElement(identifier: msgID, duration: Duration(seconds: 2));
    // itemScrollController.jumpToElement(identifier: msgID);
   }
+
 
 
 }

@@ -68,7 +68,8 @@ class ChatScreen extends GetView<ChatController> {
                         EdgeInsets.only(left: 108.h, top: 10.v, bottom: 6.v)),
                 AppbarTitleCircleimage(
                     imagePath: ImageConstant.imgEllipse14,
-                    margin: EdgeInsets.only(left: 95.h))
+                    margin: EdgeInsets.only(left: 95.h)),
+
               ])),
           SizedBox(height: 29.v),
           SizedBox(width: double.maxFinite, child: Divider())
@@ -79,7 +80,7 @@ class ChatScreen extends GetView<ChatController> {
   /// Section Widget
   Widget _buildInputRow(context) {
     return MsgInputField(context: context,
-        submitMsgText: controller.addNewMessageToChat,
+        submitMsgText: controller.addNewMessageTextToChat,
 
     );
   }

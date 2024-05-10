@@ -2,6 +2,7 @@
 import '../../enums/ChannelType.dart';
 import '../../enums/GenderType.dart';
 import '../../enums/UserRoleType.dart';
+import '../media/MediaImage.dart';
 
 class ChnlParticipent{
   late String channelID;
@@ -10,7 +11,7 @@ class ChnlParticipent{
   late String firstName;
   late String lastName;
   late GenderType gender;
-  late String faceUrl;
+  late MediaImage? profileImage;
   late bool active;
   late List<UserRoleType> userRoles = [];
   late DateTime validFrom;
@@ -23,7 +24,7 @@ class ChnlParticipent{
     required this.firstName,
     required this.lastName,
     required this.gender,
-    required this.faceUrl,
+    this.profileImage,
     required this.active,
     required this.userRoles,
     required this.validFrom,
@@ -38,7 +39,7 @@ class ChnlParticipent{
       'firstName': this.firstName,
       'lastName': this.lastName,
       'gender': this.gender,
-      'faceUrl': this.faceUrl,
+      'profileImage': this.profileImage,
       'active': this.active,
       'userRoles': this.userRoles,
       'validFrom': this.validFrom,
@@ -54,7 +55,7 @@ class ChnlParticipent{
       firstName: map['firstName'] as String,
       lastName: map['lastName'] as String,
       gender: GenderTypeExtension.getType(map['gender']),
-      faceUrl: map['faceUrl'] == null ? '' : map['faceUrl'] as String,
+      profileImage: map['profileImage'] == null ? null : MediaImage.fromMap(map['profileImage']),
       active: map['active'] as bool,
       userRoles:  List.of(map["userRoles"])
           .map((i) => UserRoleTypeExtension.getType(i)).toList(),

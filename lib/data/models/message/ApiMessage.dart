@@ -9,7 +9,6 @@ class ApiMessage{
   late String id;
   late MsgType type;
   late String body;
-  late int attachmentCount;
   late AttachmentType attachmentType;
   late List<Attachment> attachments;
   late String? createdBy;
@@ -27,7 +26,6 @@ class ApiMessage{
       'id': this.id,
       'type': this.type.name,
       'body': this.body,
-      'attachmentCount' : this.attachmentCount,
       'attachments': this.attachments,
       'createdBy': this.createdBy,
      // 'createdOn': this.createdOn,
@@ -44,10 +42,12 @@ class ApiMessage{
       id: map['id'] as String,
       type: MsgTypeExtension.getType(map['type']),
       body: map['body'] as String,
-      attachmentCount : map['attachmentCount'] == null ? 0 : map['attachmentCount'] as int,
+
       attachments: List.of(map["attachments"])
           .map((i) => Attachment.fromMap(i))
           .toList(),
+
+
       createdBy: map['createdBy'] == null? null : map['createdBy'] as String,
       createdOn: map['createdOn'] == null ? DateTime.now() : DateTime.parse(map['createdOn']).toLocal(),
       modifiedBy: map['modifiedBy'] == null ? null : map['modifiedBy'] as String,
@@ -59,7 +59,6 @@ class ApiMessage{
     required this.id,
     required this.type,
     required this.body,
-    required this.attachmentCount,
     List<Attachment>? attachments ,
     this.createdBy,
     required this.createdOn,

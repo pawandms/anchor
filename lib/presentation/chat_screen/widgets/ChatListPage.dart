@@ -7,6 +7,7 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 import '../../../data/models/channel/ChnlParticipents.dart';
 import '../../../data/models/message/ApiMessage.dart';
+import 'AttachmentBox.dart';
 
 class ChatListPage extends StatelessWidget{
 
@@ -73,11 +74,37 @@ class ChatListPage extends StatelessWidget{
   }
 
   Widget _getItem(BuildContext ctx, ApiMessage item) {
+
+
    return Container(
       child:
       MessageBox( context: context,myId: myId, msg: item, userMap: userMap),
       padding: const EdgeInsets.all(8),
     );
+
+
+    /*
+    return InkWell(
+        onTap: () {},
+        child: SingleChildScrollView(
+            padding: EdgeInsets.all(10),
+            child: Container(
+                child:
+                Column(
+                  children: [
+                     // if(item.attachments.isNotEmpty)
+                     // AttachmentBox(ctx: ctx, myId: myId, msg: item ),
+                      MessageBox( context: ctx,myId: myId, msg: item, userMap: userMap),
+
+                  ],
+                )
+
+            )
+
+        )
+    );
+
+     */
   }
 
 }

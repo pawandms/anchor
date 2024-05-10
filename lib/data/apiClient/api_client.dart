@@ -2,12 +2,14 @@ import 'dart:developer';
 
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/core/constants/env_config.dart';
+import 'package:anchor_getx/data/enums/EntityType.dart';
 import 'package:anchor_getx/data/models/channel/ChannelResp.dart';
 import 'package:anchor_getx/data/models/user/User.dart';
 import 'package:loggy/loggy.dart';
 
 import '../../core/authentication_manager.dart';
 import '../../presentation/log_in_screen/models/login_response_model.dart';
+import '../enums/MediaInputType.dart';
 
 class ApiClient extends GetConnect {
 
@@ -90,6 +92,50 @@ class ApiClient extends GetConnect {
 
   }
 
+  String? getAccessToken()
+  {
+    String? token = null;
+    LoginResponseModel? userCredentials = _authManager.getLoginResp();
 
+    if(( null != userCredentials) || (null != userCredentials?.access_token))
+    {
+      String? accessTkn = userCredentials!.access_token;
+      if(null != accessTkn)
+      {
+        token = accessTkn;
+      }
+
+      }
+
+    return token;
+  }
+
+  String getContentUrl(String contentId, EntityType type)
+  {
+    String result = 'images/image_not_found.png';
+    String? token = getAccessToken();
+    if( null != token)
+    {
+      if(type == EntityType.UserProfile)
+      {
+
+        result= EnvConfig.baseUrl+EnvConfig.getProfileImageUrl(contentId, token);
+      }
+    }
+
+    return result;
+  }
+
+  String getAttachmentUrl(String contentId, MediaInputType type)
+  {
+    String result = 'images/image_not_found.png';
+    String? token = getAccessToken();
+    if( null != token)
+    {
+        result= EnvConfig.baseUrl+EnvConfig.getAttachmentUrl(contentId,type, token);
+    }
+
+    return result;
+  }
 
 }

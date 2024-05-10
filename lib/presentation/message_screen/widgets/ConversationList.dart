@@ -1,13 +1,15 @@
 
+import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/core/utils/Helper.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_avatar/flutter_advanced_avatar.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import '../../../data/models/channel/UserChannel.dart';
 import '../../../theme/custom_text_style.dart';
+import '../../../widgets/app_bar/appbar_title_circleimage.dart';
 import '../controller/messageScreenController.dart';
+import 'package:shadow/shadow.dart';
 
 class ConversationList extends StatelessWidget
 {
@@ -33,12 +35,45 @@ class ConversationList extends StatelessWidget
           Expanded(
               child: Row(
                 children: [
-                  AdvancedAvatar(
-                    image: AssetImage('images/User3.jpg'),
-                    size: 60,
-
-                    //statusColor: Colors.green,
+                  ( null != userChannel.chnLogo) ?
+                  Shadow(child: CustomImageView(
+                    imagePath: controller.messageService.getContentUrl(userChannel.chnLogo!),
+                    height: 50.adaptSize,
+                    width: 50.adaptSize,
+                    fit: BoxFit.contain,
+                    //border: Border.all(color: Colors.black),
+                    margin: EdgeInsets.only(left: 05.h),
+                    radius: BorderRadius.circular(
+                      20.h,
+                    ),
                   ),
+                      options: ShadowOptions(
+                        offset: Offset(5, 5),
+                        scale: 1,
+                        blur: 4,
+                      )
+                  )
+                  :
+                  Shadow(
+                    child: CustomImageView(
+                      imagePath: '/images/group-chat-icon.svg',
+                      height: 50.adaptSize,
+                      width: 50.adaptSize,
+                      fit: BoxFit.contain,
+                      border: Border.all(color: Colors.green),
+                      margin: EdgeInsets.only(left: 05.h),
+                      color: Colors.green,
+                      radius: BorderRadius.circular(
+                        20.h,
+                      ),
+                    ),
+                      options: ShadowOptions(
+                        offset: Offset(5, 5),
+                        scale: 1,
+                        blur: 4,
+                      )
+                  )
+                  ,
 
                   SizedBox(width: 16,),
                   Expanded(
@@ -49,6 +84,7 @@ class ConversationList extends StatelessWidget
                           children: [
                             Text(userChannel.name, style: CustomTextStyles.titleMediumBlack90001,),
                             const SizedBox(height: 6,),
+                            if(null != userChannel.msg)
                             Text(userChannel.msg!.value.body,
                               style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: false ?FontWeight.bold:FontWeight.normal),
                               overflow: TextOverflow.ellipsis,
@@ -68,10 +104,15 @@ class ConversationList extends StatelessWidget
                ),
             ignorePointer: false,
             position:  badges.BadgePosition.topEnd(top: -30, end: -5),
-            child: Text(
+            child:
+    (null != userChannel.msgDate) ?
+            Text(
               Helper.getText(userChannel.msgDate!),
-              //style: theme.dataTableTheme.dataTextStyle,
-            ),
+            ) :
+    Text(
+      ""
+    )
+            ,
           )
 
         ],

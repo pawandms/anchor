@@ -1,5 +1,6 @@
 
 import '../../data/enums/ChannelType.dart';
+import '../../data/enums/MediaInputType.dart';
 
 class EnvConfig{
   static const String baseUrl = 'http://192.168.0.195:8080';
@@ -13,7 +14,7 @@ class EnvConfig{
   static const String getMessage = '/api/msg';
   static const String wsUrl = 'http://192.168.0.195:8878';
   static const String natUrl = 'ws://192.168.0.195:8888';
-
+  static const String contentUrl = '/content';
   static getMsgChnlUrl(String userID)
   {
     return getChannel+"/"+userID+"/"+ChannelType.Messaging.name+"/"+"list";
@@ -33,7 +34,15 @@ class EnvConfig{
   {
     return getMessage+"/"+"add";
   }
+  static getProfileImageUrl(String id, String token)
+  {
+    return contentUrl+"/"+"profile/"+id+"?token="+token;
+  }
 
+  static getAttachmentUrl(String id, MediaInputType type, String token)
+  {
+    return contentUrl+"/"+"attachment/"+type.name+"/"+id+"?token="+token;
+  }
 
 
 }

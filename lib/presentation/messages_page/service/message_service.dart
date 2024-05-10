@@ -9,12 +9,15 @@ import 'package:anchor_getx/core/repository/MessageRep.dart';
 import 'package:anchor_getx/core/service/AudioService.dart';
 import 'package:anchor_getx/data/enums/ChannelType.dart';
 import 'package:anchor_getx/data/models/channel/ChannelResp.dart';
+import 'package:anchor_getx/data/models/message/Attachment.dart';
 import 'package:loggy/loggy.dart';
 
 import '../../../core/errors/ApiException.dart';
 import '../../../core/service/EventService.dart';
 import '../../../data/apiClient/api_client.dart';
+import '../../../data/enums/EntityType.dart';
 import '../../../data/models/channel/UserChannel.dart';
+import '../../../data/models/media/MediaImage.dart';
 import '../../../data/models/message/ApiMessage.dart';
 import '../../../data/models/message/ChnlMsgResp.dart';
 
@@ -51,7 +54,7 @@ class MessageService extends GetxService  {
 
         Map<String, dynamic>? queryParam = {'userID': userID, 'chnlType': ChannelType.Messaging.name};
         String getChnlUrl = EnvConfig.getMsgChnlUrl(userID);
-        final response = await apiClient.get(getChnlUrl,headers:{}, contentType : null, query: {});
+        final response = await apiClient.get(getChnlUrl,headers:{}, contentType : 'application/json', query: {}, decoder: null);
         if (response.statusCode == HttpStatus.ok) {
           resp =  ChannelResp.fromMap(response.body);
         } else {
@@ -214,7 +217,6 @@ class MessageService extends GetxService  {
   }
 
 
-
   /*
   Future<void> addMsgtoSelectedChannel()
   async {
@@ -231,4 +233,28 @@ class MessageService extends GetxService  {
 
 
    */
+
+
+  String getContentUrl(MediaImage img)
+  {
+    String result = 'images/image_not_found.png';
+    if(null != img)
+     {
+      result = apiClient.getContentUrl(img.entityId, img.entityType);
+     }
+    return result;
+  }
+
+  String getAttachmentUrl(Attachment attachment)
+  {
+    String result = 'images/image_not_found.png';
+    if( null != attachment)
+    {
+      result = apiClient.getAttachmentUrl(attachment.contentID,attachment.type);
+    }
+
+    return result;
+  }
+
+
 }

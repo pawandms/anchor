@@ -1,24 +1,32 @@
 
+import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/data/models/message/ApiMessage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import 'package:shadow/shadow.dart';
 import '../../../data/models/channel/ChnlParticipents.dart';
+import '../../../data/models/media/MediaImage.dart';
+import '../../../widgets/custom_image_view.dart';
+import '../../messages_page/service/message_service.dart';
+import 'AttachmentBox.dart';
 
 class MessageBox extends StatelessWidget {
   final BuildContext context;
   final ApiMessage msg;
   final String myId;
   final Map<String,ChnlParticipent>userMap;
+  MessageService  messageService;
 
-
-  const MessageBox({
+   MessageBox({
     super.key,
     required this.context,
     required this.myId,
     required this.msg,
-    required this.userMap
-  });
+    required this.userMap,
+    messageService
+
+  }):messageService = Get.find<MessageService>()
+  ;
 
 
   @override
@@ -55,7 +63,9 @@ class MessageBox extends StatelessWidget {
         if (displayAvatar)
           Padding(
             padding: const EdgeInsets.only(top: 12.0, left: 8.0),
-            child: CircleAvatar(
+            child: getUserProfileImage(msg.createdBy!)
+            /*
+            CircleAvatar(
               radius: 16,
               backgroundColor: Colors.blueAccent,
               child: const Icon(
@@ -63,6 +73,7 @@ class MessageBox extends StatelessWidget {
                   color: Colors.white
               ),
             ),
+            */
           ),
         if (!displayAvatar)
           const SizedBox(width: 40),
@@ -81,6 +92,8 @@ class MessageBox extends StatelessWidget {
                   ),
                 ),
               ),
+            if(msg.attachments.isNotEmpty)
+              AttachmentBox(ctx: context, myId: myId, msg: msg ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.76,
               child: Align(
@@ -144,4 +157,63 @@ class MessageBox extends StatelessWidget {
 
     return result;
   }
+
+  Widget getUserProfileImage(String userID)
+  {
+    if(userMap.containsKey(userID))
+     {
+       ChnlParticipent cp = userMap[userID]!;
+       if(null != cp.profileImage)
+        {
+         return  prepareProfileLogo(cp.profileImage!);
+        }
+       else {
+         return getDummyProfileLogo();
+       }
+     }
+    else {
+      return getDummyProfileLogo();
+    }
+  }
+
+  Widget prepareProfileLogo(MediaImage img)
+  {
+
+    return Shadow(child: CustomImageView(
+    imagePath: messageService.getContentUrl(img),
+    height: 50.adaptSize,
+  width: 50.adaptSize,
+  fit: BoxFit.contain,
+  //border: Border.all(color: Colors.black),
+  margin: EdgeInsets.only(left: 05.h),
+  radius: BorderRadius.circular(
+  20.h,
+  ),
+  ));
+
+  }
+
+  Widget getDummyProfileLogo()
+  {
+    return Shadow(
+        child: CustomImageView(
+          imagePath: '/images/group-chat-icon.svg',
+          height: 50.adaptSize,
+          width: 50.adaptSize,
+          fit: BoxFit.contain,
+          border: Border.all(color: Colors.green),
+          margin: EdgeInsets.only(left: 05.h),
+          color: Colors.green,
+          radius: BorderRadius.circular(
+            20.h,
+          ),
+        ),
+        options: ShadowOptions(
+          offset: Offset(5, 5),
+          scale: 1,
+          blur: 4,
+        )
+    );
+  }
+
 }

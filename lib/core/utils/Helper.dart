@@ -1,6 +1,9 @@
 
 import 'package:intl/intl.dart';
 
+import '../../data/models/media/MediaInput.dart';
+import '../../data/models/message/Attachment.dart';
+
 class Helper{
 
   static  DateFormat _formatter = DateFormat('yyyy-MM-dd');
@@ -16,5 +19,24 @@ class Helper{
     } else {
       return '${DateFormat.yMMMd().format(date)}';
     }
+  }
+
+  static List<Attachment> convertMediaInputToAttachment(List<MediaInput> mediaList)
+  {
+    List<Attachment> attachments = [];
+    int atchId = 1;
+    if(mediaList.isNotEmpty)
+     {
+       mediaList.forEach((element) {
+
+         Attachment attachment = new Attachment(id: atchId.toString(), type: element.type, name: element.file!.name, extension: 'na',
+             bucketName: 'NA', contentID: 'NA', sizeInBytes: 0, createdBy: 'System', createdOn: DateTime.now(), modifiedBy: 'System', modifiedOn: DateTime.now());
+         attachment.localInput = element;
+         attachments.add(attachment);
+         atchId++;
+       });
+     }
+
+    return attachments;
   }
 }

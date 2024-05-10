@@ -8,46 +8,38 @@ enum EntityType {
   MusicVideo,
   Collection,
   Company,
+  Channel,
+  UserProfile,
+  Unknown,
 }
 
 extension EntityTypeExtension on EntityType {
-  static final Map<String, EntityType> _map = {
-    'Media': EntityType.Media,
-    'Movie': EntityType.Movie,
-    'Person': EntityType.Person,
-    'Tv_Show': EntityType.Tv_Show,
-    'MusicVideo': EntityType.MusicVideo,
-    'Collection': EntityType.Collection,
-    'Company': EntityType.Company,
-  };
 
-  String? get value {
-    switch (this) {
-      case EntityType.Media:
-        return 'Media';
-      case EntityType.Movie:
-        return 'Movie';
-      case EntityType.Person:
-        return 'Person';
-      case EntityType.Tv_Show:
-        return 'Tv_Show';
-      case EntityType.MusicVideo:
-        return 'MusicVideo';
-      case EntityType.Collection:
-        return 'Collection';
-      case EntityType.Company:
-        return 'Company';
+  static EntityType getType(String type) {
+    switch (type) {
+      case "Media":
+        return EntityType.Media;
+      case "Movie":
+        return EntityType.Movie;
+      case "Person":
+        return EntityType.Person;
+      case "Tv_Show":
+        return EntityType.Tv_Show;
+      case "MusicVideo":
+        return EntityType.MusicVideo;
+      case "Collection":
+        return EntityType.Collection;
+      case "Company":
+        return EntityType.Company;
+      case "Channel":
+        return EntityType.Channel;
+      case "UserProfile":
+        return EntityType.UserProfile;
       default:
-        return null;
+        return EntityType.Unknown;
     }
   }
 
-  static EntityType? getType(String type) {
-    return _map[type];
-  }
-
-  String toJson() => name;
-  static EntityType? fromJson(String json) => getType(json);
 
 }
 

@@ -12,20 +12,35 @@ extension MediaInputTypeExtension on MediaInputType {
 
   static MediaInputType getType(String type) {
     MediaInputType result = MediaInputType.Unknown;
-    try{
-      if(type.isNotEmpty && type.startsWith('image'))
+    switch (type) {
+      case "Video":
+        result = MediaInputType.Video;
+        break;
+      case "Audio":
+        result = MediaInputType.Audio;
+        break;
+      case "Image":
+        result = MediaInputType.Image;
+        break;
+      case "Document":
+        result = MediaInputType.Document;
+        break;
+
+      default:
+        result = MediaInputType.Unknown;
+    }
+
+    if(result == MediaInputType.Unknown)
+     {
+       if(type.startsWith('video', 0))
+       {
+         result = MediaInputType.Video;
+       }
+       else if(type.startsWith('image', 0))
        {
          result = MediaInputType.Image;
        }
-      else if (type.isNotEmpty && type.startsWith('video'))
-       {
-        result = MediaInputType.Video;
-       }
-    }
-    catch(e)
-    {
-
-    }
+     }
 
     return result;
   }
