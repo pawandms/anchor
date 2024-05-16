@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -51,18 +52,20 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
   void initState() {
     super.initState();
     initChewiePlayer();
+    print("Video Player Initilization Completed.....with Key:"+widget.key.toString());
   }
 
   Future<void> initChewiePlayer()
   async {
     if( (null != widget.input.url) && (widget.input.url != 'NA'))
     {
-      _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(widget.input.url));
+      _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(widget.input.url) );
     }
     else if ( null != widget.input.file)
     {
       if(GetPlatform.isWeb)
       {
+
         _videoPlayerController = VideoPlayerController.asset(widget.input.file!.path);
         //_videoPlayerController = VideoPlayerController.file(File(widget.input.file!.path));
       }
@@ -70,6 +73,7 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
         _videoPlayerController = VideoPlayerController.file(File(widget.input.file!.path));
       }
     }
+
    // _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse('https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4'));
     await _videoPlayerController.initialize();
 
@@ -86,7 +90,6 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
     );
     setState(() {});
 
-    print("Video Player Initilization Completed.....");
   }
 
   @override
@@ -98,7 +101,9 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
   }
 
   @override
-  Widget build(context) {
+  Widget build(BuildContext context)
+  {
+    print("Building Video Player Component.....");
      WidgetsFlutterBinding.ensureInitialized();
     /*
     return  AspectRatio(

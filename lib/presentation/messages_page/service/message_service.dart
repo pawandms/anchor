@@ -1,7 +1,8 @@
 
 import 'dart:convert';
-import 'dart:html';
-
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:html' as html;
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/core/constants/AppConfig.dart';
 import 'package:anchor_getx/core/constants/env_config.dart';
@@ -10,6 +11,7 @@ import 'package:anchor_getx/core/service/AudioService.dart';
 import 'package:anchor_getx/data/enums/ChannelType.dart';
 import 'package:anchor_getx/data/models/channel/ChannelResp.dart';
 import 'package:anchor_getx/data/models/message/Attachment.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:loggy/loggy.dart';
 
 import '../../../core/errors/ApiException.dart';
@@ -60,7 +62,6 @@ class MessageService extends GetxService  {
         } else {
           resp =  ChannelResp.fromMap(response.body);
         }
-
         userChnlMap.value = Map.fromIterable(resp.channels,
             key: (e) => e.chnlId,
             value: (e) => e
@@ -178,8 +179,9 @@ class MessageService extends GetxService  {
 
    */
 
-  Future<ApiMessage> sendMessage(ApiMessage msg)
+  Future<ApiMessage?> sendMessage(ApiMessage msg)
   async {
+    ApiMessage? resp;
     try{
 
       String? userID = apiClient.getLoggedInUserID();
@@ -189,25 +191,81 @@ class MessageService extends GetxService  {
       }
 
       String getAddMsgUrl = EnvConfig.getAddMsgUrl();
+      List<MultipartFile> newList = [];
+      if(msg.attachments.isNotEmpty)
+      {
+        for (Attachment atch in msg.attachments)
+        {
+          if( null != atch.localInput.file)
+          {
+              MultipartFile? mfile = await getmfileFromXFile(atch.localInput.file!);
+
+           if( null != mfile)
+           {
+             newList.add(mfile);
+           }
+
+          }
+        }
+      }
+      // Clear Attachment List
+      msg.attachments.clear();
       var msgJson = msg.toMap();
       final String encodedData = json.encode(msgJson);
-      final response = await apiClient.post(getAddMsgUrl,encodedData, headers:{}, contentType : 'application/json');
-      print("Response:$response");
-      if (response.statusCode == HttpStatus.ok) {
-        ApiMessage resp =  ApiMessage.fromMap(response.body);
-      } else {
-        ApiMessage resp =  ApiMessage.fromMap(response.body);
-      }
 
+      final _body = {
+        "request": encodedData,
+        "attachment": newList,
+      };
+
+      FormData formData = FormData(_body);
+        if(newList.isNotEmpty)
+        {
+          var uri = Uri.parse(getAddMsgUrl);
+          http.MultipartRequest request = new http.MultipartRequest('POST', uri);
+
+          final response = await apiClient.post(getAddMsgUrl,formData, headers:{});
+          print("Response:$response");
+          if (response.statusCode == HttpStatus.ok) {
+             resp =  ApiMessage.fromMap(response.body);
+          } else {
+            resp =  ApiMessage.fromMap(response.body);
+          }
+        }
     }
     catch(e)
     {
       logError(e);
     }
 
-    return msg;
+    return resp;
   }
 
+  Future<MultipartFile?> getmfileFromXFile(XFile xfile)
+   async {
+     MultipartFile? mfile;
+    // http.MultipartFile? mpartFile;
+
+     try{
+       if(GetPlatform.isWeb)
+       {
+         var bytes = xfile.readAsBytes();
+         mfile = MultipartFile(await bytes, filename: xfile.name );
+
+         //mpartFile = await  http.MultipartFile.fromBytes(xfile.name,await bytes);
+       }
+       else {
+      //   mpartFile = await  http.MultipartFile.fromPath(xfile.name, xfile.path);
+       }
+
+     }
+     catch(e, stacktrace)
+    {
+      logError(e, stacktrace);
+    }
+    return mfile;
+    //return mpartFile;
+  }
 
   void setSelectedChannel(String chnlID)
   {
@@ -250,7 +308,7 @@ class MessageService extends GetxService  {
     String result = 'images/image_not_found.png';
     if( null != attachment)
     {
-      result = apiClient.getAttachmentUrl(attachment.contentID,attachment.type);
+      result = apiClient.getAttachmentUrl(attachment.contentID, attachment.extension, attachment.sizeInBytes, attachment.type);
     }
 
     return result;

@@ -126,13 +126,13 @@ class ApiClient extends GetConnect {
     return result;
   }
 
-  String getAttachmentUrl(String contentId, MediaInputType type)
+  String getAttachmentUrl(String contentId, String extension, int cntLength, MediaInputType type)
   {
     String result = 'images/image_not_found.png';
     String? token = getAccessToken();
     if( null != token)
     {
-        result= EnvConfig.baseUrl+EnvConfig.getAttachmentUrl(contentId,type, token);
+        result= EnvConfig.baseUrl+EnvConfig.getAttachmentUrl(contentId,extension, cntLength, type, token);
     }
 
     return result;

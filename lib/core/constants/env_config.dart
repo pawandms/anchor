@@ -3,7 +3,7 @@ import '../../data/enums/ChannelType.dart';
 import '../../data/enums/MediaInputType.dart';
 
 class EnvConfig{
-  static const String baseUrl = 'http://192.168.0.195:8080';
+  static const String baseUrl = 'http://192.168.0.194:8080';
   static const String authHeader = 'Basic R2VuZXJhbDpHZW5lcmFs';
   static const String register = '/public/signup';
   static const String login = '/oauth/token';
@@ -12,8 +12,8 @@ class EnvConfig{
   static const String profile = '/users/profile';
   static const String getChannel = '/api/channel/user';
   static const String getMessage = '/api/msg';
-  static const String wsUrl = 'http://192.168.0.195:8878';
-  static const String natUrl = 'ws://192.168.0.195:8888';
+  static const String wsUrl = 'http://192.168.0.194:8878';
+  static const String natUrl = 'ws://192.168.0.194:8888';
   static const String contentUrl = '/content';
   static getMsgChnlUrl(String userID)
   {
@@ -39,9 +39,9 @@ class EnvConfig{
     return contentUrl+"/"+"profile/"+id+"?token="+token;
   }
 
-  static getAttachmentUrl(String id, MediaInputType type, String token)
+  static getAttachmentUrl(String id, String extension, int cntLength, MediaInputType type, String token)
   {
-    return contentUrl+"/"+"attachment/"+type.name+"/"+id+"?token="+token;
+    return contentUrl+"/"+"attachment/"+type.name+"/"+id+"?cntLength=$cntLength&extension=$extension&token=$token";
   }
 
 

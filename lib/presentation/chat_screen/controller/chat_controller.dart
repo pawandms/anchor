@@ -100,14 +100,14 @@ class ChatController extends GetxController {
     }
   }
 
-  void addNewMessageToChat(ApiMessage msg)
-  {
+  Future<void> addNewMessageToChat(ApiMessage msg)
+  async {
     try{
         msg.actionType = MsgActionType.Add;
         msg.chnlID = selectedChnlID;
         msg.userID = myId;
-      updateChatScreen(msg);
-      messageService.sendMessage(msg);
+        ApiMessage? uploadMsg = await messageService.sendMessage(msg);
+        updateChatScreen(uploadMsg!);
 
     }
     catch(e,stacktrace)

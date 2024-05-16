@@ -17,6 +17,7 @@ dependencies:
   intl: ^0.18.0
   permission_handler:
   images_picker: ^1.2.11
+  image_picker_web:
   url_launcher:
   loggy: ^2.0.3
   badges: ^3.1.2

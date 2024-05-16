@@ -11,7 +11,7 @@ class Attachment {
   late String extension;
   late String bucketName;
   late String contentID;
-  late num sizeInBytes = 0 ;
+  late int sizeInBytes = 0 ;
   late String? createdBy;
   late DateTime? createdOn;
   late String? modifiedBy;

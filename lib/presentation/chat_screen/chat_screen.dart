@@ -54,7 +54,9 @@ class ChatScreen extends GetView<ChatController> {
             children: [
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(children: [
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                  children: [
                 AppbarTitleImage(
                     imagePath: ImageConstant.imgClose,
                     margin: EdgeInsets.symmetric(vertical: 15.v),

@@ -21,7 +21,7 @@ class Helper{
     }
   }
 
-  static List<Attachment> convertMediaInputToAttachment(List<MediaInput> mediaList)
+  static List<Attachment> convertMediaInputToAttachment(List<MediaInput> mediaList, String createdBy)
   {
     List<Attachment> attachments = [];
     int atchId = 1;
@@ -30,7 +30,7 @@ class Helper{
        mediaList.forEach((element) {
 
          Attachment attachment = new Attachment(id: atchId.toString(), type: element.type, name: element.file!.name, extension: 'na',
-             bucketName: 'NA', contentID: 'NA', sizeInBytes: 0, createdBy: 'System', createdOn: DateTime.now(), modifiedBy: 'System', modifiedOn: DateTime.now());
+             bucketName: 'NA', contentID: 'NA', sizeInBytes: 0, createdBy: createdBy, createdOn: DateTime.now(), modifiedBy: createdBy, modifiedOn: DateTime.now());
          attachment.localInput = element;
          attachments.add(attachment);
          atchId++;

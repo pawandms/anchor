@@ -75,7 +75,7 @@ class ChatListPage extends StatelessWidget{
 
   Widget _getItem(BuildContext ctx, ApiMessage item) {
 
-
+  print("Building Msg for :"+item.id);
    return Container(
       child:
       MessageBox( context: context,myId: myId, msg: item, userMap: userMap),

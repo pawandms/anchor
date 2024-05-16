@@ -227,7 +227,7 @@ class UploadMediaPage extends StatelessWidget{
   onMediaSelection(MediaInput selectedMedia)
   {
     _selectedMedia.value = selectedMedia;
-   // mediaList.refresh();
+    mediaList.refresh();
 
   }
 
@@ -243,19 +243,20 @@ class UploadMediaPage extends StatelessWidget{
 
   void submitMultiMediaMsg(String msgTxt)
   {
+    String myId = chatController.myId;
     String msgID = "new_"+DateTime.now().millisecond.toString();
     MsgType type = MsgType.Text;
 
-    ApiMessage msg = new ApiMessage(id: msgID, type: type, body: msgTxt, createdOn: DateTime.now());
+    ApiMessage msg = new ApiMessage(id: msgID,  type: type, body: msgTxt,createdBy:myId , createdOn: DateTime.now(), modifiedBy: myId, modifiedOn: DateTime.now());
     if(mediaList.isNotEmpty)
     {
-      List<Attachment> attachments =  Helper.convertMediaInputToAttachment(mediaList);
+      List<Attachment> attachments =  Helper.convertMediaInputToAttachment(mediaList, myId);
       msg.attachments = attachments;
       msg.attachmentType = AttachmentType.Local;
 
     }
-    print('Upload media Submitted with Text:$msgTxt');
     chatController.addNewMessageToChat(msg);
-    Get.back(closeOverlays: true);
+    print('Upload media Function called on controller........');
+   // Get.back(closeOverlays: true);
   }
 }

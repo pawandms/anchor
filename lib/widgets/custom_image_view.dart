@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get_utils/src/platform/platform.dart';
 
 class CustomImageView extends StatelessWidget {
   ///[imagePath] is required parameter for showing image
@@ -101,13 +102,17 @@ class CustomImageView extends StatelessWidget {
             ),
           );
         case ImageType.file:
-          return Image.file(
+         return GetPlatform.isWeb ? Image.network(imagePath!,
+      height: height, width: width,
+      fit: fit ?? BoxFit.cover,
+      color: color,) : Image.file(
             File(imagePath!),
             height: height,
             width: width,
             fit: fit ?? BoxFit.cover,
             color: color,
-          );
+          )
+          ;
         case ImageType.network:
           return CachedNetworkImage(
             height: height,
@@ -150,7 +155,8 @@ extension ImageTypeExtension on String {
       return ImageType.network;
     } else if (this.endsWith('.svg')) {
       return ImageType.svg;
-    } else if (this.startsWith('file://')) {
+    } else if ((this.startsWith('file://')) || (this.startsWith('blob:')))
+    {
       return ImageType.file;
     } else {
       return ImageType.png;
