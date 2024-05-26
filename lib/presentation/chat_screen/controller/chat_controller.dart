@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/data/enums/MsgActionType.dart';
+import 'package:anchor_getx/data/enums/MsgEventType.dart';
 import 'package:anchor_getx/data/models/message/ApiMessage.dart';
 import 'package:anchor_getx/presentation/chat_screen/models/chat_model.dart';
 import 'package:flutter/material.dart';
@@ -103,12 +106,50 @@ class ChatController extends GetxController {
   Future<void> addNewMessageToChat(ApiMessage msg)
   async {
     try{
-        msg.actionType = MsgActionType.Add;
+        msg.actionType= MsgActionType.Add;
         msg.chnlID = selectedChnlID;
         msg.userID = myId;
-        ApiMessage? uploadMsg = await messageService.sendMessage(msg);
-        updateChatScreen(uploadMsg!);
+        msg.msgEvent.value = MsgEventType.Sending;
+        // Insert Chat Message to Chnl Msg
+        insertChatMsg(msg);
+        print("Sending Msg Inserted to Chat with ID:"+msg.id);
+        sendMsgToServer(msg);
 
+    }
+    catch(e,stacktrace)
+    {
+      Logger.log(e.toString(),stackTrace: stacktrace);
+    }
+  }
+
+  Future<void> sendMsgToServer(ApiMessage msg)
+  async {
+    log('Sending msg to Server with ID:$msg.id');
+    //ApiMessage? uploadMsg = await messageService.sendMessage(msg);
+    messageService.sendMessage(msg).then((value) =>  updateSentMsgToChnl(msg.id, value!));
+
+    /*
+    print("Upload Message to Server done for ID:"+msg.id);
+    if( null != uploadMsg)
+    {
+      updateSentMsgToChnl(msg.id, uploadMsg);
+    }
+
+     */
+  }
+
+  void updateSentMsgToChnl(String msgId, ApiMessage uploadMsg)
+  {
+    print("Msg Uploading completed Updating Channel");
+    try{
+      int index  =
+      chnl.value.messages.indexWhere((element) =>
+      element.id == msgId);
+      if( index > 0)
+       {
+         uploadMsg.msgEvent.value = MsgEventType.Sent;
+        chnl.value.messages[index] = uploadMsg;
+       }
     }
     catch(e,stacktrace)
     {
@@ -120,14 +161,13 @@ class ChatController extends GetxController {
   {
     try{
       String msgID = "new_"+DateTime.now().millisecond.toString();
-      ApiMessage msg = new ApiMessage(id: msgID, type: MsgType.Text, body: msgText, createdOn: DateTime.now(),
+      ApiMessage msg = new ApiMessage(id: msgID, type: MsgType.Text, body: msgText.trim(), createdOn: DateTime.now(),
         createdBy: myId, modifiedBy: myId, modifiedOn: DateTime.now());
       msg.actionType = MsgActionType.Add;
       msg.chnlID = selectedChnlID;
       msg.userID = myId;
-      updateChatScreen(msg);
-      messageService.sendMessage(msg);
 
+     addNewMessageToChat(msg);
     }
     catch(e,stacktrace)
     {
@@ -135,8 +175,8 @@ class ChatController extends GetxController {
     }
   }
 
-  void updateChatScreen(ApiMessage msg)
-  {
+  Future<void> insertChatMsg(ApiMessage msg)
+  async {
     chnl.value.messages.add(msg);
     print("Text Msg Added to MsgList");
     setSelectedMessage(msg.id);
@@ -146,6 +186,7 @@ class ChatController extends GetxController {
   void setSelectedMessage(String msgID)
   {
     itemScrollController.scrollToElement(identifier: msgID, duration: Duration(seconds: 2));
+
    // itemScrollController.jumpToElement(identifier: msgID);
   }
 

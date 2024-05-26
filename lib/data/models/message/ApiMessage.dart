@@ -1,6 +1,9 @@
 
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 import '../../enums/AttachmentType.dart';
 import '../../enums/MsgActionType.dart';
+import '../../enums/MsgEventType.dart';
 import '../../enums/MsgType.dart';
 import 'Attachment.dart';
 
@@ -19,7 +22,8 @@ class ApiMessage{
   // Optional Paramaters
   late String? chnlID;
   late String? userID;
-  late MsgActionType? actionType;
+  late MsgActionType actionType = MsgActionType.None;
+  late Rx<MsgEventType> msgEvent = MsgEventType.None.obs;
 
   Map<String, dynamic> toMap() {
     return {

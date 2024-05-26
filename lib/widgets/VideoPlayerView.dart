@@ -114,11 +114,10 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
     */
 
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(1.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Divider(),
           Expanded(
             child: AspectRatio(
                 aspectRatio: 16 / 9,

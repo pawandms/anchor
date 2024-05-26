@@ -27,6 +27,7 @@ class ChatListPage extends StatelessWidget{
 
   @override
   Widget build(context) {
+    print("Building chatList Page ..");
     return Scaffold(
       body: StickyGroupedListView<ApiMessage, DateTime>(
         elements: msgs,
@@ -48,24 +49,27 @@ class ChatListPage extends StatelessWidget{
   }
 
   Widget _getGroupSeparator(ApiMessage element) {
-    return SizedBox(
-      height: 40,
-      child: Align(
-        alignment: Alignment.center,
-        child: Container(
-          width: 120,
-          decoration: BoxDecoration(
-            color: Colors.blue[300],
-            border: Border.all(
-              color: Colors.blue[300]!,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: SizedBox(
+        height: 40,
+        child: Align(
+          alignment: Alignment.center,
+          child: Container(
+            width: 120,
+            decoration: BoxDecoration(
+              color: Colors.blue[300],
+              border: Border.all(
+                color: Colors.blue[300]!,
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(20.0)),
             ),
-            borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Text(
-              Helper.getText(element.createdOn),
-              textAlign: TextAlign.center,
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Text(
+                Helper.getText(element.createdOn),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ),
@@ -74,37 +78,11 @@ class ChatListPage extends StatelessWidget{
   }
 
   Widget _getItem(BuildContext ctx, ApiMessage item) {
-
-  print("Building Msg for :"+item.id);
-   return Container(
+  return Container(
       child:
       MessageBox( context: context,myId: myId, msg: item, userMap: userMap),
       padding: const EdgeInsets.all(8),
     );
-
-
-    /*
-    return InkWell(
-        onTap: () {},
-        child: SingleChildScrollView(
-            padding: EdgeInsets.all(10),
-            child: Container(
-                child:
-                Column(
-                  children: [
-                     // if(item.attachments.isNotEmpty)
-                     // AttachmentBox(ctx: ctx, myId: myId, msg: item ),
-                      MessageBox( context: ctx,myId: myId, msg: item, userMap: userMap),
-
-                  ],
-                )
-
-            )
-
-        )
-    );
-
-     */
   }
 
 }

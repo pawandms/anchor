@@ -1,8 +1,9 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:http/http.dart' as http;
-import 'dart:html' as html;
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/core/constants/AppConfig.dart';
 import 'package:anchor_getx/core/constants/env_config.dart';
@@ -96,19 +97,22 @@ class MessageService extends GetxService  {
       {
         result = userChnlMap[chnlID]!;
 
-        String? userID = apiClient.getLoggedInUserID();
-        if(null == userID)
+        if(!result.msgLoadedFlag)
         {
-          throw new ApiException("Invalid logged in User");
-        }
-        ChnlMsgResp  resp = await msgRep.getChnlMsgForUser(userID, chnlID, itemPerPage, page);
+          String? userID = apiClient.getLoggedInUserID();
+          if(null == userID)
+          {
+            throw new ApiException("Invalid logged in User");
+          }
+          ChnlMsgResp  resp = await msgRep.getChnlMsgForUser(userID, chnlID, itemPerPage, page);
 
-        if(null != resp)
-        {
-          msgList =  resp.content.map((e) => e.message).obs.value.toList();
-          result.messages.value.addAll(msgList);
+          if(null != resp)
+          {
+            msgList =  resp.content.map((e) => e.message).obs.value.toList();
+            result.messages.value.addAll(msgList);
+          }
+          result.msgLoadedFlag = true;
         }
-
       }
       else {
         // Wrong Channel Details Request for user
@@ -224,13 +228,17 @@ class MessageService extends GetxService  {
           var uri = Uri.parse(getAddMsgUrl);
           http.MultipartRequest request = new http.MultipartRequest('POST', uri);
 
-          final response = await apiClient.post(getAddMsgUrl,formData, headers:{});
+          Stream<Response> response = await apiClient.post(getAddMsgUrl,formData, headers:{}).asStream();
+        //  final response = await apiClient.post(getAddMsgUrl,formData, headers:{});
           print("Response:$response");
+          /*
           if (response.statusCode == HttpStatus.ok) {
              resp =  ApiMessage.fromMap(response.body);
           } else {
             resp =  ApiMessage.fromMap(response.body);
           }
+
+           */
         }
     }
     catch(e)
@@ -249,13 +257,11 @@ class MessageService extends GetxService  {
      try{
        if(GetPlatform.isWeb)
        {
-         var bytes = xfile.readAsBytes();
+           var bytes = xfile.readAsBytes();
          mfile = MultipartFile(await bytes, filename: xfile.name );
-
-         //mpartFile = await  http.MultipartFile.fromBytes(xfile.name,await bytes);
        }
        else {
-      //   mpartFile = await  http.MultipartFile.fromPath(xfile.name, xfile.path);
+         mfile = await  MultipartFile(xfile.path, filename: xfile.name, );
        }
 
      }

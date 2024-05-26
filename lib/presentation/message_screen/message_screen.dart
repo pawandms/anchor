@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../../data/models/channel/ChnlParticipents.dart';
 import '../../data/models/channel/UserChannel.dart';
 import '../../widgets/app_bar/appbar_leading_image.dart';
+import '../../widgets/app_bar/appbar_title.dart';
 import '../../widgets/app_bar/appbar_trailing_image.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 
@@ -48,11 +49,26 @@ class MessageScreen extends GetView<MessageScreenController> {
             onTap: () {
               onTapArrowBack();
             }),
+      title: AppbarTitle(
+        onTap: (){
+          Get.toNamed(
+            AppRoutes.appNavigationScreen,
+          );
+        },
+          text: 'channel list',
+          margin:
+          EdgeInsets.only(left: 108.h, top: 10.v, bottom: 6.v))
+        //text: controller.messageService.selectedChnl.value.name,
+
+        /*
         actions: [
           AppbarTrailingImage(
               imagePath: ImageConstant.imgAddDeepPurpleA200,
               margin: EdgeInsets.symmetric(horizontal: 16.h, vertical: 13.v))
-        ]);
+        ]
+
+         */
+    );
   }
 
   /// Section Widget

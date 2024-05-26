@@ -9,6 +9,8 @@ enum MsgActionType {
   Like,
   DisLike,
   Heart,
+  Sending,
+  Sent,
   None,
 
 

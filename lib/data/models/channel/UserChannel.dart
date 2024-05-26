@@ -21,9 +21,8 @@ class UserChannel  {
   int itemPerPage = 10;
   bool getFirstData = false;
   bool lastPage = false;
-
   late RxList<ApiMessage> messages = RxList<ApiMessage>();
-
+  bool msgLoadedFlag = false;
   Map<String, dynamic> toMap() {
     return {
       'chnlId': this.chnlId,

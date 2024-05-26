@@ -6,10 +6,8 @@ import 'package:anchor_getx/data/enums/AttachmentType.dart';
 import 'package:anchor_getx/data/enums/MediaInputType.dart';
 import 'package:anchor_getx/data/models/message/ApiMessage.dart';
 import 'package:anchor_getx/widgets/VideoPlayerView.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../data/enums/MsgType.dart';
 import '../../../data/models/media/MediaInput.dart';
 import '../../../data/models/message/Attachment.dart';
@@ -173,7 +171,7 @@ class UploadMediaPage extends StatelessWidget{
         borderRadius: BorderRadius.circular(24),
         child: SizedBox.fromSize(
           // size: const Size.fromRadius(144),
-            child: GetPlatform.isWeb ?Image.asset('/images/image_not_found.png', fit: BoxFit.cover, alignment: Alignment.center,)
+            child: GetPlatform.isWeb ?Image.asset('assets/images/image_not_found.png', fit: BoxFit.cover, alignment: Alignment.center,)
                 : Image.file(File(media.file!.path), fit: BoxFit.cover, alignment: Alignment.center,)
         ),
       ),
@@ -183,14 +181,34 @@ class UploadMediaPage extends StatelessWidget{
     }
     else if(media.type == MediaInputType.Image)
     {
+      print("file path:"+File(media.file!.path).uri.toString());
+
       return Center(child:
       ClipRRect(
         borderRadius: BorderRadius.circular(24),
-        child: SizedBox.fromSize(
-         // size: const Size.fromRadius(144),
-          child: GetPlatform.isWeb ?Image.network(media.file!.path, fit: BoxFit.cover, alignment: Alignment.center,)
-              : Image.file(File(media.file!.path), fit: BoxFit.cover, alignment: Alignment.center,)
+        child: GetPlatform.isWeb ?
+        //Image.network(media.file!.path, fit: BoxFit.scaleDown, alignment: Alignment.center,)
+        CustomImageView(
+          imagePath: media.file!.path,
+          imgType: ImageType.network,
+          fit: BoxFit.contain,
+          // height: 161.v,
+          // width: 117.h,
+          radius: BorderRadius.circular(
+            10.h,
           ),
+        )
+            :
+        CustomImageView(
+          imagePath: media.file!.path,
+          imgType: ImageType.file,
+         // height: 161.v,
+         // width: 117.h,
+          radius: BorderRadius.circular(
+            10.h,
+          ),
+        )
+        //Image.file(File(media.file!.path), fit: BoxFit.fill, alignment: Alignment.center,),
         ),
       );
 
@@ -255,8 +273,9 @@ class UploadMediaPage extends StatelessWidget{
       msg.attachmentType = AttachmentType.Local;
 
     }
-    chatController.addNewMessageToChat(msg);
-    print('Upload media Function called on controller........');
+    Navigator.pop(Get.overlayContext!, true);
    // Get.back(closeOverlays: true);
+    chatController.addNewMessageToChat(msg);
+
   }
 }

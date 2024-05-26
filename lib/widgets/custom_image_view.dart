@@ -10,7 +10,7 @@ import 'package:get/get_utils/src/platform/platform.dart';
 class CustomImageView extends StatelessWidget {
   ///[imagePath] is required parameter for showing image
   String? imagePath;
-
+  ImageType? imgType;
   double? height;
   double? width;
   Color? color;
@@ -26,6 +26,7 @@ class CustomImageView extends StatelessWidget {
   /// it will shows the placeholder image if image is not found on network image
   CustomImageView({
     this.imagePath,
+    this.imgType,
     this.height,
     this.width,
     this.color,
@@ -87,7 +88,9 @@ class CustomImageView extends StatelessWidget {
 
   Widget _buildImageView() {
     if (imagePath != null) {
-      switch (imagePath!.imageType) {
+      //switch (imagePath!.imageType)
+      switch (getImageType(imagePath!))
+      {
         case ImageType.svg:
           return Container(
             height: height,
@@ -147,9 +150,25 @@ class CustomImageView extends StatelessWidget {
     }
     return SizedBox();
   }
+
+  ImageType getImageType(String imgPath)
+  {
+    ImageType result = ImageType.unknown;
+    if( null != this.imgType)
+    {
+      result = this.imgType!;
+    }
+    else {
+      result = imagePath!.imageType;
+    }
+    
+    return result;
+  }
+
 }
 
 extension ImageTypeExtension on String {
+
   ImageType get imageType {
     if (this.startsWith('http') || this.startsWith('https')) {
       return ImageType.network;

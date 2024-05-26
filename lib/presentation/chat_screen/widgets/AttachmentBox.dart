@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/widgets/VideoPlayerView.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 import 'package:widget_zoom/widget_zoom.dart';
 
 import '../../../data/enums/MediaInputType.dart';
+import '../../../data/enums/MsgEventType.dart';
 import '../../../data/models/media/MediaInput.dart';
 import '../../../data/models/message/ApiMessage.dart';
 import '../../../data/models/message/Attachment.dart';
@@ -31,10 +34,8 @@ class AttachmentBox extends StatelessWidget {
      messageService
   }):messageService = Get.find<MessageService>();
 
-
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(ctx) {
     const BoxDecoration chatBackgroundDecoration = BoxDecoration(
         gradient: LinearGradient(
             colors: [
@@ -72,7 +73,7 @@ class AttachmentBox extends StatelessWidget {
               : CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.80,
+              width: (MediaQuery.of(ctx).size.width < 600) ? MediaQuery.of(ctx).size.width * 0.50 : MediaQuery.of(ctx).size.width * 0.30,
               child: Align(
                 alignment: msg.createdBy == myId
                     ? Alignment.centerRight
@@ -94,7 +95,7 @@ class AttachmentBox extends StatelessWidget {
 
                    */
                   margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
-                  child: _attachmentComponent(msg, MediaQuery.of(ctx).size.width * 0.50, context  ),
+                  child: Obx(()=> _attachmentComponent(msg, MediaQuery.of(ctx).size.width * 0.50, ctx  )),
                 ),
               ),
             ),
@@ -117,7 +118,7 @@ class AttachmentBox extends StatelessWidget {
     return userID;
   }
 
-  Widget _attachmentComponent(ApiMessage msg, double _width, BuildContext ctx)
+  Widget _attachmentComponent(ApiMessage msg, double _width, BuildContext wcontext)
   {
     int _crossAxisCount = 2;
    // double _width = MediaQuery.of(context).size.width * 0.50;
@@ -127,12 +128,12 @@ class AttachmentBox extends StatelessWidget {
     if (contentSize == 1) {
       _crossAxisCount = 1;
      // _width = 200;
-      items.add(_attachmentMedia( msg.attachments[0], 0));
+      items.add(_attachmentMedia( msg.attachments[0], 0,wcontext, msg.msgEvent.value));
     }
     else if(contentSize > 1 && contentSize <= 4)
     {
       for (int i = 0; i <= contentSize-1; i++) {
-        items.add(_attachmentMedia(msg.attachments[i], 0));
+        items.add(_attachmentMedia(msg.attachments[i], 0, wcontext, msg.msgEvent.value));
       }
     }
     else if ((contentSize > 1 && contentSize > 4))
@@ -141,16 +142,16 @@ class AttachmentBox extends StatelessWidget {
       for (int i = 0; i <= 3; i++) {
         if( i == 3 )
         {
-          items.add(_attachmentMedia( msg.attachments[i], remaining_item));
+          items.add(_attachmentMedia( msg.attachments[i], remaining_item, wcontext, msg.msgEvent.value));
         }
         else {
-          items.add(_attachmentMedia(msg.attachments[i], 0));
+          items.add(_attachmentMedia(msg.attachments[i], 0, wcontext, msg.msgEvent.value));
         }
 
       }
 
     }
-
+    print ("Preparing attachment Box Items Completed.....with Item Size:"+items.length.toString());
     return SizedBox(
       width: _width,
       child:
@@ -167,32 +168,90 @@ class AttachmentBox extends StatelessWidget {
 
     );
   }
-  Widget _attachmentMedia( Attachment attachment, int remaining)
+  Widget _attachmentMedia( Attachment attachment, int remaining, BuildContext wcontext, MsgEventType msgEvent )
   {
-    print("_attachmentMedia called for Attachment"+attachment.contentID+" , With Remaining:$remaining");
-    if (remaining > 0)
+    Widget result = SizedBox.shrink();
+    try{
+      if(msgEvent == MsgEventType.Sending)
+      {
+        result = LinearProgressIndicator(
+          color: Colors.primaries[Random().nextInt(Colors.primaries.length)],
+
+        );
+      }
+      else {
+        Widget media = _getMsgAttachmentItem(wcontext, attachment);
+        if(remaining > 0)
+        {
+          result = _prepareMoreMediaWidget(media, remaining, attachment);
+        }
+        else {
+          result =  _prepareMediaWidget(media, attachment);
+        }
+
+      }
+
+    }
+    catch(e,stacktrace)
     {
-      return InkWell(
+      Logger.log(e.toString(),stackTrace: stacktrace);
+    }
+
+    return result;
+
+  }
+
+
+  Widget _prepareMediaWidget(Widget media, Attachment attachment)
+  {
+    Widget result = SizedBox.shrink();
+    try{
+     result =  InkWell(
         onTap: (){
           print("click on Attachmet with ID:"+attachment.contentID+" , for Msg:"+msg.id);
+          openUploadPreviewDialog(msg, attachment);
+        },
+        child: SizedBox(
+          child: Shadow(
+            options: ShadowOptions(
+              offset: Offset(5, 5),
+              scale: 1,
+              blur: 4,
+            ),
+            child:media
+            ,
+          ),
+        ),
+      );
+    }
+    catch(e,stacktrace)
+    {
+      Logger.log(e.toString(),stackTrace: stacktrace);
+    }
+
+    return result;
+  }
+
+  Widget _prepareMoreMediaWidget(Widget media, int remaining, Attachment attachment)
+  {
+    Widget result = SizedBox.shrink();
+    try{
+    result =   InkWell(
+        onTap: (){
           openUploadPreviewDialog(msg, attachment);
         },
         child: Stack(
           alignment: AlignmentDirectional.center,
           //fit: StackFit.expand,
           children: <Widget>[
-         //   if(attachment.type == MediaInputType.Image)
             Shadow(
-                options: ShadowOptions(
-                  offset: Offset(5, 5),
-                  scale: 1,
-                  blur: 4,
-                ),
-              child: _getMsgAttachmentItem(ctx, attachment),
+              options: ShadowOptions(
+                offset: Offset(5, 5),
+                scale: 1,
+                blur: 4,
+              ),
+              child: media,
             ),
-           // if(attachment.type == MediaInputType.Video)
-
-             // VideoPlayerView(input: getAttachmentUrl(attachment),context:  this.ctx, key: Key(attachment.contentID)),
             ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(8)),
               child: ColoredBox(
@@ -210,28 +269,13 @@ class AttachmentBox extends StatelessWidget {
         ),
       );
     }
-    else {
-      return InkWell(
-        onTap: (){
-          print("click on Attachmet with ID:"+attachment.contentID+" , for Msg:"+msg.id);
-          openUploadPreviewDialog(msg, attachment);
-        },
-        child: SizedBox(
-          child: Shadow(
-              options: ShadowOptions(
-                offset: Offset(5, 5),
-                scale: 1,
-                blur: 4,
-              ),
-            child:_getMsgAttachmentItem(ctx, attachment)
-            ,
-          ),
-        ),
-      );
+    catch(e,stacktrace)
+    {
+      Logger.log(e.toString(),stackTrace: stacktrace);
     }
 
+    return result;
   }
-
   MediaInput getAttachmentUrl(Attachment attachment)
   {
     String url =  messageService.getAttachmentUrl(attachment);
@@ -248,18 +292,16 @@ class AttachmentBox extends StatelessWidget {
         appBar: AppBar(
         //  title: Text(selectedAttachment.contentID),
         ),
-        body: getAttachmentList(msg.attachments),
+        body: getAttachmentPreviewWidget(msg.attachments),
 
       ),
     );
-
-     */
+    */
     print("OpenUpload Preview Dialog for Atch:"+selectedAttachment.contentID);
   }
 
-
-
-  Widget getAttachmentList(List<Attachment> attachments)
+/*
+  Widget getAttachmentPreviewWidget(List<Attachment> attachments)
   {
     final itemPositionsListener = ItemPositionsListener.create();
     final itemScrollController = GroupedItemScrollController();
@@ -273,20 +315,20 @@ class AttachmentBox extends StatelessWidget {
         itemScrollController: itemScrollController,
         floatingHeader: true,
         itemComparator: (e1, e2) => e1.contentID.compareTo(e2.contentID),
-        itemBuilder: _getAttachmentItem,
+        itemBuilder: _getMsgAttachmentItem,
 
       ),
     );
   }
 
+
   Widget _attachmentGroupSeparator(Attachment attachment)
   {
     return SizedBox.shrink();
   }
+*/
 
-
-  Widget _getMsgAttachmentItem(BuildContext ctx, Attachment item) {
-    print("Getting Msg Attachment Item for :"+item.contentID);
+  Widget _getMsgAttachmentItem(BuildContext wcontext, Attachment item) {
     Widget result = SizedBox.shrink();
     if(item.type == MediaInputType.Image)
       result = CustomImageView(
@@ -297,27 +339,12 @@ class AttachmentBox extends StatelessWidget {
           )
       );
     if(item.type == MediaInputType.Video)
-      result =  VideoPlayerView(input: getAttachmentUrl(item), context: this.ctx, key: Key(item.contentID+"_MsgCard"),);
+      result =  VideoPlayerView(input: getAttachmentUrl(item), context: wcontext, key: Key(item.contentID+"_MsgCard"),);
 
     return result;
 
   }
 
-  Widget _getAttachmentItem(BuildContext ctx, Attachment item) {
-    Widget result = SizedBox.shrink();
-    if(item.type == MediaInputType.Image)
-      result = CustomImageView(
-          imagePath: getAttachmentUrl(item).url,
-          // fit: BoxFit.cover,
-          radius: BorderRadius.circular(
-            10,
-          )
-      );
-    if(item.type == MediaInputType.Video)
-   result =   VideoPlayerView(input: getAttachmentUrl(item), context: this.ctx, key: Key(item.contentID),);
-    return result;
-
-  }
   Widget ZoomWidget(Widget widget, String id)
   {
     return WidgetZoom(

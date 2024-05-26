@@ -56,7 +56,7 @@ class ConversationList extends StatelessWidget
                   :
                   Shadow(
                     child: CustomImageView(
-                      imagePath: '/images/group-chat-icon.svg',
+                      imagePath: 'assets/images/group-chat-icon.svg',
                       height: 50.adaptSize,
                       width: 50.adaptSize,
                       fit: BoxFit.contain,

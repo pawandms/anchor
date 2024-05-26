@@ -114,11 +114,14 @@ final Map<String, String> enUs = {
       "Introduce my name is lewandhosky i am a bodybuilder i have been for 10 years i am a trainer and also the owner of the gym in my place i have more than 50 students and from one of them have won the national championship of bodybuilder.",
 
   // Messages Screen
+
   "lbl_10_00_am": "10:00 AM", "lbl_richard_alves": "Richard Alves",
   "msg_hey_bro_where_are": "Hey bro, where are you?",
 
   // Chat Screen
   "lbl_delivered": "Delivered",
+  "lbl_msg_sending" : "Sending...",
+  "lbl_msg_sent" : "Sent",
   "lbl_garry_willer": "Garry Willer",
   "lbl_wow_awesome": "Wow, Awesome !",
   "msg_hello_gerry_i_m":

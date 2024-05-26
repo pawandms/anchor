@@ -70,7 +70,7 @@ class ChatScreen extends GetView<ChatController> {
                         EdgeInsets.only(left: 108.h, top: 10.v, bottom: 6.v)),
                 AppbarTitleCircleimage(
                     imagePath: ImageConstant.imgEllipse14,
-                    margin: EdgeInsets.only(left: 95.h)),
+                    margin: EdgeInsets.only(left: 10.h)),
 
               ])),
           SizedBox(height: 29.v),
@@ -106,7 +106,7 @@ class ChatScreen extends GetView<ChatController> {
         key: (e) => e.userID,
         value: (e) => e);
     return Expanded(
-     // child: ListPage(myId,messages,userMap, scrollControl, context),
+      flex: 6,
       child: ChatListPage(myId,messages,userMap, itemScrollController, context),
     );
   }
