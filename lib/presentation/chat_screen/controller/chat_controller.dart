@@ -112,7 +112,7 @@ class ChatController extends GetxController {
         msg.msgEvent.value = MsgEventType.Sending;
         // Insert Chat Message to Chnl Msg
         insertChatMsg(msg);
-        print("Sending Msg Inserted to Chat with ID:"+msg.id);
+       // print("Sending Msg Inserted to Chat with ID:"+msg.id);
         sendMsgToServer(msg);
 
     }
@@ -125,17 +125,13 @@ class ChatController extends GetxController {
   Future<void> sendMsgToServer(ApiMessage msg)
   async {
     log('Sending msg to Server with ID:$msg.id');
-    //ApiMessage? uploadMsg = await messageService.sendMessage(msg);
-    messageService.sendMessage(msg).then((value) =>  updateSentMsgToChnl(msg.id, value!));
-
-    /*
+    ApiMessage? uploadMsg = await messageService.sendMessage(msg);
     print("Upload Message to Server done for ID:"+msg.id);
     if( null != uploadMsg)
     {
       updateSentMsgToChnl(msg.id, uploadMsg);
     }
 
-     */
   }
 
   void updateSentMsgToChnl(String msgId, ApiMessage uploadMsg)

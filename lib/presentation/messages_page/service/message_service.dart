@@ -58,6 +58,7 @@ class MessageService extends GetxService  {
         Map<String, dynamic>? queryParam = {'userID': userID, 'chnlType': ChannelType.Messaging.name};
         String getChnlUrl = EnvConfig.getMsgChnlUrl(userID);
         final response = await apiClient.get(getChnlUrl,headers:{}, contentType : 'application/json', query: {}, decoder: null);
+
         if (response.statusCode == HttpStatus.ok) {
           resp =  ChannelResp.fromMap(response.body);
         } else {
@@ -227,18 +228,13 @@ class MessageService extends GetxService  {
         {
           var uri = Uri.parse(getAddMsgUrl);
           http.MultipartRequest request = new http.MultipartRequest('POST', uri);
-
-          Stream<Response> response = await apiClient.post(getAddMsgUrl,formData, headers:{}).asStream();
-        //  final response = await apiClient.post(getAddMsgUrl,formData, headers:{});
-          print("Response:$response");
-          /*
+          final response = await apiClient.post(getAddMsgUrl,formData, headers:{});
           if (response.statusCode == HttpStatus.ok) {
              resp =  ApiMessage.fromMap(response.body);
           } else {
             resp =  ApiMessage.fromMap(response.body);
           }
 
-           */
         }
     }
     catch(e)

@@ -57,7 +57,7 @@ class MessageBox extends StatelessWidget {
     displayAvatar = displayUserName;
     //displayUserName = false;
 
-    return Row(
+    return Obx(() => Row(
       mainAxisAlignment: msg.createdBy == myId
           ? MainAxisAlignment.end
           : MainAxisAlignment.start,
@@ -88,27 +88,33 @@ class MessageBox extends StatelessWidget {
               ),
             if(msg.attachments.isNotEmpty)
               SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.76,
+                  width: SizeUtils.width * 0.76,
 
                   child: AttachmentBox(ctx: context, myId: myId, msg: msg )),
             Row(
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.76,
+                  width: SizeUtils.width * 0.76,
                   child: Align(
                     alignment: msg.createdBy == myId
                         ? Alignment.centerRight
                         : Alignment.centerLeft,
                     child: InkWell(
                       onTap: (){
-                        print("click on Msg Box with ID:"+msg.id);
                         if(msg.msgEvent.value == MsgEventType.Sending)
                         {
                           msg.msgEvent.value = MsgEventType.Sent;
+                          print("click on Msg Box with ID:"+msg.id+" , with MsgType:"+msg.msgEvent.value.name);
+
                         }
                         else if (msg.msgEvent.value == MsgEventType.Sent)
                         {
                           msg.msgEvent.value = MsgEventType.Sending;
+                          print("click on Msg Box with ID:"+msg.id+" , with MsgType:"+msg.msgEvent.value.name);
+                        }
+                        else {
+                          msg.msgEvent.value = MsgEventType.Sending;
+                          print("click on Msg Box with ID:"+msg.id+" , with MsgType:"+msg.msgEvent.value.name);
                         }
                       },
                       child: Card(
@@ -159,8 +165,8 @@ class MessageBox extends StatelessWidget {
                     alignment: AlignmentDirectional.bottomStart,
                     child:
                     //  msg.actionType == MsgActionType.Sending ?
-                    Obx(()  => _getMsgStatus(msg.msgEvent.value)
-                    )
+                    _getMsgStatus(msg.msgEvent.value)
+
                 )
               ],
             ),
@@ -171,7 +177,7 @@ class MessageBox extends StatelessWidget {
 
 
       ],
-    );
+    ));
   }
 
   Widget _getMsgStatus(MsgEventType type)

@@ -94,7 +94,7 @@ class AttachmentBox extends StatelessWidget {
                   ),
 
                    */
-                  margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
                   child: Obx(()=> _attachmentComponent(msg, MediaQuery.of(ctx).size.width * 0.50, ctx  )),
                 ),
               ),
@@ -157,12 +157,20 @@ class AttachmentBox extends StatelessWidget {
       child:
       GridView.count(
         shrinkWrap: true,
-        primary: false,
         padding: const EdgeInsets.all(05),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
+        crossAxisSpacing: 05,
+        mainAxisSpacing: 05,
         crossAxisCount: _crossAxisCount,
         children: items,
+       /*
+        children: List.generate(items.length, (index) =>
+            Container(
+              color: Colors.green,
+              alignment: Alignment.topLeft,
+              child: items[index]
+            )
+        ),
+        */
 
       ),
 
@@ -190,6 +198,8 @@ class AttachmentBox extends StatelessWidget {
         }
 
       }
+
+
 
     }
     catch(e,stacktrace)
@@ -286,7 +296,7 @@ class AttachmentBox extends StatelessWidget {
 
   void openUploadPreviewDialog(ApiMessage msg, Attachment selectedAttachment)
   {
-    /*
+
     Get.dialog(
       Scaffold(
         appBar: AppBar(
@@ -296,11 +306,11 @@ class AttachmentBox extends StatelessWidget {
 
       ),
     );
-    */
+
     print("OpenUpload Preview Dialog for Atch:"+selectedAttachment.contentID);
   }
 
-/*
+
   Widget getAttachmentPreviewWidget(List<Attachment> attachments)
   {
     final itemPositionsListener = ItemPositionsListener.create();
@@ -326,17 +336,26 @@ class AttachmentBox extends StatelessWidget {
   {
     return SizedBox.shrink();
   }
-*/
 
-  Widget _getMsgAttachmentItem(BuildContext wcontext, Attachment item) {
+
+  Widget _getMsgAttachmentItem(BuildContext wcontext,  Attachment item) {
     Widget result = SizedBox.shrink();
     if(item.type == MediaInputType.Image)
-      result = CustomImageView(
-          imagePath: getAttachmentUrl(item).url,
-          // fit: BoxFit.cover,
-          radius: BorderRadius.circular(
-            10,
-          )
+      result = Container(
+          constraints: BoxConstraints(
+            minHeight: 200,
+            minWidth: 200
+          ),
+        //constraints: BoxConstraints.expand(width: 300),
+       // width: 200,
+       // color: Colors.blue,
+        child: CustomImageView(
+            imagePath: getAttachmentUrl(item).url,
+             fit: BoxFit.cover,
+            radius: BorderRadius.circular(
+              05,
+            )
+        ),
       );
     if(item.type == MediaInputType.Video)
       result =  VideoPlayerView(input: getAttachmentUrl(item), context: wcontext, key: Key(item.contentID+"_MsgCard"),);

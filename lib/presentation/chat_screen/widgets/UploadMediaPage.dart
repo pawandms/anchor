@@ -47,7 +47,6 @@ class UploadMediaPage extends StatelessWidget{
   void deleteMediaInput(int itemKey)
   {
     mediaList.value.removeWhere((element) => element.key == itemKey);
-     mediaList.refresh();
     if(itemKey == _selectedMedia.value.key)
     {
       if(mediaList.isNotEmpty)
@@ -59,41 +58,39 @@ class UploadMediaPage extends StatelessWidget{
       }
 
     }
+    //mediaList.refresh();
 
   }
 
 
   @override
   Widget build(BuildContext context) {
-     return Obx(() => Column(
+     return Obx (()=>  Column(
         mainAxisAlignment: MainAxisAlignment.start,
+       crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 20,),
           Flexible(
               flex: 3,
-              child: Container(
-                alignment: Alignment.topCenter,
-                child: _selectedMedia != null ? showWidget(_selectedMedia.value, context, 1): Text('No Preview Available'),
-                //GetPlatform.isWeb ?Image.memory(_selectedMedia.value.file.bytes!, fit: BoxFit.cover)
-                 //   : Image.file(File(_selectedMedia.value.file.path!), fit: BoxFit.cover),
+              child:
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width*0.95,
+                    child:  _selectedMedia != null ? showWidget(_selectedMedia.value, BoxFit.cover, context, 1): Text('No Preview Available'),
+                  )
               ),
 
-              ),
-          SizedBox(height: 10,),
-          Container(
-            child: _buildInputRow(context),
-          ),
           Flexible(
             flex: 2,
             child: Container(
-              alignment: Alignment.topCenter,
               child: Scrollbar(
                 controller: _controller,
                 scrollbarOrientation: ScrollbarOrientation.bottom,
                 child:ReorderableListView(
+                  primary: false,
                 scrollController: _controller,
                    padding: EdgeInsets.only(left: 10,bottom: 5, right: 5, top: 10),
                   scrollDirection: Axis.horizontal,
+
                   children: [
                     for (final item in mediaList)
                       Container(
@@ -117,6 +114,9 @@ class UploadMediaPage extends StatelessWidget{
             ),
 
           ),
+          Container(
+            child: _buildInputRow(context),
+          ),
         ],
       ));
 
@@ -132,38 +132,48 @@ class UploadMediaPage extends StatelessWidget{
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            flex: 2,
+            flex: 4,
             key: key,
-            child: showWidget(media, context, 0),
-          ),
-          SizedBox(height: 10,),
-          SizedBox(
-              //height: 20,
-              // width: 150,
-              child: Text(media.file!.name,
-                style: TextStyle(color: Colors.grey.shade600, fontWeight: false ?FontWeight.bold:FontWeight.normal, overflow: TextOverflow.ellipsis),
-
-              )
+            child: Container(
+              width: 200,
+              child: showWidget(media, BoxFit.fill, context, 0),
+            )
 
           ),
           SizedBox(height: 10,),
-          Align(alignment: Alignment.bottomRight,
-            widthFactor: 05,
-            child:  IconButton(
-              icon: const Icon(Icons.delete, color: Colors.blue),
-              tooltip: 'Delete media',
-              onPressed: () {
-                deleteMediaInput(media.key);
-              },
-            ),)
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                 // width: 150,
+                  //height: 20,
+                  // width: 150,
+                    child: Text(media.file!.name,
+                      style: TextStyle(color: Colors.grey.shade600, fontWeight: false ?FontWeight.bold:FontWeight.normal, overflow: TextOverflow.ellipsis),
 
+                    )
+
+                ),
+                Align(alignment: Alignment.topRight,
+                  //widthFactor: 09,
+                  child:  IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.blue),
+                    tooltip: 'Delete media',
+                    onPressed: () {
+                      deleteMediaInput(media.key);
+                    },
+                  ),)
+              ],
+            ),
+          )
 
         ],
       ),
     );
   }
 
-  showWidget(MediaInput media, BuildContext context, int type){
+  showWidget(MediaInput media, BoxFit boxFit, BuildContext context, int type){
     if(media.type == MediaInputType.Unknown)
     {
       return Center(child:
@@ -171,8 +181,8 @@ class UploadMediaPage extends StatelessWidget{
         borderRadius: BorderRadius.circular(24),
         child: SizedBox.fromSize(
           // size: const Size.fromRadius(144),
-            child: GetPlatform.isWeb ?Image.asset('assets/images/image_not_found.png', fit: BoxFit.cover, alignment: Alignment.center,)
-                : Image.file(File(media.file!.path), fit: BoxFit.cover, alignment: Alignment.center,)
+            child: GetPlatform.isWeb ?Image.asset('assets/images/image_not_found.png', fit: boxFit, alignment: Alignment.center,)
+                : Image.file(File(media.file!.path), fit: boxFit, alignment: Alignment.center,)
         ),
       ),
       );
@@ -183,15 +193,14 @@ class UploadMediaPage extends StatelessWidget{
     {
       print("file path:"+File(media.file!.path).uri.toString());
 
-      return Center(child:
-      ClipRRect(
+      return ClipRRect(
         borderRadius: BorderRadius.circular(24),
         child: GetPlatform.isWeb ?
         //Image.network(media.file!.path, fit: BoxFit.scaleDown, alignment: Alignment.center,)
         CustomImageView(
           imagePath: media.file!.path,
           imgType: ImageType.network,
-          fit: BoxFit.contain,
+          fit: boxFit,
           // height: 161.v,
           // width: 117.h,
           radius: BorderRadius.circular(
@@ -202,6 +211,7 @@ class UploadMediaPage extends StatelessWidget{
         CustomImageView(
           imagePath: media.file!.path,
           imgType: ImageType.file,
+         fit: boxFit,
          // height: 161.v,
          // width: 117.h,
           radius: BorderRadius.circular(
@@ -209,8 +219,7 @@ class UploadMediaPage extends StatelessWidget{
           ),
         )
         //Image.file(File(media.file!.path), fit: BoxFit.fill, alignment: Alignment.center,),
-        ),
-      );
+        );
 
     } else if (media.type == MediaInputType.Video)
     {

@@ -26,6 +26,12 @@ mixin CacheManager {
     return true;
   }
 
+  Future<void> removeLoginResp() async {
+    final box = GetStorage();
+    await box.remove(CacheManagerKey.login_response.name);
+  }
+
+
   LoginResponseModel? getLoginResp() {
     final box = GetStorage();
    if( box.hasData(CacheManagerKey.login_response.name))
@@ -43,10 +49,6 @@ mixin CacheManager {
 
   }
 
-  Future<void> removeLoginResp() async {
-    final box = GetStorage();
-    await box.remove(CacheManagerKey.login_response.toString());
-  }
 }
 
 enum CacheManagerKey { access_token, refresh_token, login_response  }

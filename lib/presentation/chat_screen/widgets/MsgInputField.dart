@@ -166,13 +166,6 @@ class MsgInputField extends StatelessWidget{
 
                 ),
 
-               /*
-                Container(
-                  child: Obx(() => Expanded(child: _buildEmojiMenu()))
-                )
-                */
-
-
               ],
             ),
 

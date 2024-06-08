@@ -22,12 +22,18 @@ Future<void> main() async {
       stackTraceLevel: LogLevel.off,
     ),
   );
+  runApp(MyApp());
+  /*
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
+    //DeviceOrientation.portraitUp,
+    DeviceOrientation.landscapeLeft,
+    //DeviceOrientation.landscapeRight,
   ]).then((value) {
 
     runApp(MyApp());
   });
+
+   */
 }
 
 class MyApp extends StatelessWidget {

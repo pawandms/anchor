@@ -1,14 +1,17 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/core/constants/env_config.dart';
 import 'package:anchor_getx/data/enums/EntityType.dart';
 import 'package:anchor_getx/data/models/channel/ChannelResp.dart';
 import 'package:anchor_getx/data/models/user/User.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:loggy/loggy.dart';
 
 import '../../core/authentication_manager.dart';
 import '../../presentation/log_in_screen/models/login_response_model.dart';
+import '../../presentation/log_in_screen/service/login_service.dart';
 import '../enums/MediaInputType.dart';
 
 class ApiClient extends GetConnect {
@@ -23,26 +26,30 @@ class ApiClient extends GetConnect {
     httpClient.maxAuthRetries =  3;
     httpClient.followRedirects = true;
 
+
     //addAuthenticator only is called after
 //a request (get/post/put/delete) that returns HTTP status code 401
+
     httpClient.addAuthenticator<dynamic>((request) async {
       try{
         retry--;
         log('addAuthenticator ${request.url.toString()}');
 
+        //LoginResponseModel? userCredentials = _authManager.getLoginResp();
+        LoginService _loginService = Get.find();
+       await  _loginService.updateTokenDetails();
         LoginResponseModel? userCredentials = _authManager.getLoginResp();
+        String? accessToken =  userCredentials?.access_token;
+
         // Login Credentials are present into Memory
-        if(( null != userCredentials) || (null != userCredentials?.access_token))
+        if(( null != accessToken))
         {
-          String? accessTkn = userCredentials!.access_token;
-          if(null != accessTkn)
-          {
             request.headers['Authorization'] =
-            'Bearer $accessTkn';
-          }
+            'Bearer $accessToken';
+
         }
         else {
-
+          log('addAuthenticator Login Credentails not present in memory');
           // Login credentials not present into Memory
         }
       }
@@ -57,6 +64,7 @@ class ApiClient extends GetConnect {
 
     // Add Access Token to in API Call
     httpClient.addRequestModifier<dynamic>((request) async {
+      log('call addRequestModifier ${request.url.toString()} With Header:${request.headers}');
      // log('call addRequestModifier , ${request.headers}');
       LoginResponseModel? userCredentials = _authManager.getLoginResp();
 
@@ -73,6 +81,7 @@ class ApiClient extends GetConnect {
     });
 
   }
+
 
   String? getLoggedInUserID()
   {

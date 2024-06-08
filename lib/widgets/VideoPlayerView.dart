@@ -82,10 +82,9 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
       zoomAndPan: widget.zoomAndPan,
       showOptions: widget.showOptions,
       controlsSafeAreaMinimum: EdgeInsets.all(10),
-      showControls: widget.showControls,
+      showControls: false,
       allowFullScreen: widget.allowFullScreen,
       allowedScreenSleep: widget.allowedScreenSleep,
-
 
     );
     setState(() {});
@@ -121,7 +120,7 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
           Expanded(
             child: AspectRatio(
                 aspectRatio: 16 / 9,
-                child: _chewieController != null ?    Chewie(controller: _chewieController!)
+                child: _chewieController != null ?  Chewie(controller: _chewieController!)
                     :  const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

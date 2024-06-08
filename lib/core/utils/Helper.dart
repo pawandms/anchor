@@ -31,7 +31,7 @@ class Helper{
 
          Attachment attachment = new Attachment(id: atchId.toString(), type: element.type, name: element.file!.name, extension: 'na',
              bucketName: 'NA', contentID: 'NA', sizeInBytes: 0, createdBy: createdBy, createdOn: DateTime.now(), modifiedBy: createdBy, modifiedOn: DateTime.now());
-         attachment.localInput = element;
+        // attachment.localInput = element;
          attachments.add(attachment);
          atchId++;
        });

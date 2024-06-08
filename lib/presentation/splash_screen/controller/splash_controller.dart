@@ -2,6 +2,7 @@ import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/presentation/splash_screen/models/splash_model.dart';
 
 import '../../../core/authentication_manager.dart';
+import '../../log_in_screen/service/login_service.dart';
 
 /// A controller class for the SplashScreen.
 ///
@@ -10,12 +11,13 @@ import '../../../core/authentication_manager.dart';
 class SplashController extends GetxController {
   Rx<SplashModel> splashModelObj = SplashModel().obs;
   final AuthenticationManager _authmanager = Get.find();
+  final LoginService  _loginService = Get.put(LoginService());
+
 
 /*
-
   @override
   void onInit() {
-    _authmanager.checkLoginStatus();
+    LoginService  _loginService = Get.put(LoginService());
   }
 */
 

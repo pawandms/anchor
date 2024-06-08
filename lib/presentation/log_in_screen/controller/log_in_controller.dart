@@ -29,6 +29,7 @@ class LogInController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     _loginService = Get.put(LoginService());
+  //  _loginService = Get.find();
     emailController.text = 'user1@anchor.com';
     passwordController.text = 'Mumbai@123';
     _authManager = Get.find();
