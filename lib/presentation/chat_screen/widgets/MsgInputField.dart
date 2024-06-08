@@ -448,5 +448,4 @@ class MsgInputField extends StatelessWidget{
 
   }
 
-
 }

@@ -36,7 +36,6 @@ mixin CacheManager {
     final box = GetStorage();
    if( box.hasData(CacheManagerKey.login_response.name))
     {
-
       String type = box.read(CacheManagerKey.login_response.name).runtimeType.toString();
          Map<String,dynamic> cacheMap = box.read(CacheManagerKey.login_response.name);
          LoginResponseModel model = LoginResponseModel.fromMap(cacheMap);

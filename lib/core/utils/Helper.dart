@@ -3,11 +3,29 @@ import 'package:intl/intl.dart';
 
 import '../../data/models/media/MediaInput.dart';
 import '../../data/models/message/Attachment.dart';
+import 'logger.dart';
 
 class Helper{
 
   static  DateFormat _formatter = DateFormat('yyyy-MM-dd');
 
+  static DateTime getLocalDateFromUtcDateString(String utcDateString )
+  {
+    DateTime result = new DateTime.now();
+    try{
+      if( null != utcDateString)
+      {
+        result = DateTime.parse(utcDateString).toLocal();
+        print("String Date:$utcDateString, LocalDate:$result");
+      }
+
+    }
+    catch(e, stacktrace)
+    {
+      Logger.log('Error in Refresh Token'+e.toString(),stackTrace: stacktrace);
+    }
+    return result;
+  }
   static String getText(DateTime date) {
     final now = new DateTime.now();
     if (_formatter.format(now) == _formatter.format(date)) {
@@ -31,7 +49,7 @@ class Helper{
 
          Attachment attachment = new Attachment(id: atchId.toString(), type: element.type, name: element.file!.name, extension: 'na',
              bucketName: 'NA', contentID: 'NA', sizeInBytes: 0, createdBy: createdBy, createdOn: DateTime.now(), modifiedBy: createdBy, modifiedOn: DateTime.now());
-        // attachment.localInput = element;
+         attachment.localInput = element;
          attachments.add(attachment);
          atchId++;
        });

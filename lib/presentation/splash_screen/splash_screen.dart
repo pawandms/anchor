@@ -18,6 +18,7 @@ class SplashScreen extends GetWidget<SplashController> {
                     children: [
                       CustomImageView(
                           imagePath: ImageConstant.imgSocialMedia1,
+                          color: Colors.white,
                           height: 120.adaptSize,
                           width: 120.adaptSize),
                       SizedBox(height: 20.v),

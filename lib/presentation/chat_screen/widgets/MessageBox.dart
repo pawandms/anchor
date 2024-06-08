@@ -88,13 +88,13 @@ class MessageBox extends StatelessWidget {
               ),
             if(msg.attachments.isNotEmpty)
               SizedBox(
-                  width: SizeUtils.width * 0.76,
+                 // width: SizeUtils.width * 0.70,
 
                   child: AttachmentBox(ctx: context, myId: myId, msg: msg )),
             Row(
               children: [
                 SizedBox(
-                  width: SizeUtils.width * 0.76,
+                 // width: SizeUtils.width * 0.76,
                   child: Align(
                     alignment: msg.createdBy == myId
                         ? Alignment.centerRight
@@ -204,6 +204,18 @@ class MessageBox extends StatelessWidget {
         ),
       );
     }
+    else  if(type == MsgEventType.Error)
+    {
+      result =  Tooltip(
+        message: "lbl_msg_error".tr,
+        child: Icon(
+          Icons.error,
+          size: 20,
+          color: Colors.redAccent,
+        ),
+      );
+    }
+
     /*
     else  if(type == MsgEventType.View)
     {

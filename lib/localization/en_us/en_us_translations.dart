@@ -122,6 +122,7 @@ final Map<String, String> enUs = {
   "lbl_delivered": "Delivered",
   "lbl_msg_sending" : "Sending...",
   "lbl_msg_sent" : "Sent",
+  "lbl_msg_error" : "Error sending message",
   "lbl_garry_willer": "Garry Willer",
   "lbl_wow_awesome": "Wow, Awesome !",
   "msg_hello_gerry_i_m":

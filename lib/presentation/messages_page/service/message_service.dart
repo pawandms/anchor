@@ -224,8 +224,6 @@ class MessageService extends GetxService  {
       };
 
       FormData formData = FormData(_body);
-        if(newList.isNotEmpty)
-        {
           var uri = Uri.parse(getAddMsgUrl);
           http.MultipartRequest request = new http.MultipartRequest('POST', uri);
           final response = await apiClient.post(getAddMsgUrl,formData, headers:{});
@@ -235,7 +233,6 @@ class MessageService extends GetxService  {
             resp =  ApiMessage.fromMap(response.body);
           }
 
-        }
     }
     catch(e)
     {

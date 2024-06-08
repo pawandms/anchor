@@ -153,13 +153,14 @@ class AttachmentBox extends StatelessWidget {
     }
     print ("Preparing attachment Box Items Completed.....with Item Size:"+items.length.toString());
     return SizedBox(
-      width: _width,
+     // width: _width,
       child:
       GridView.count(
         shrinkWrap: true,
-        padding: const EdgeInsets.all(05),
+        primary: true,
+       // padding: const EdgeInsets.all(01),
         crossAxisSpacing: 05,
-        mainAxisSpacing: 05,
+        mainAxisSpacing: 01,
         crossAxisCount: _crossAxisCount,
         children: items,
        /*
@@ -184,7 +185,6 @@ class AttachmentBox extends StatelessWidget {
       {
         result = LinearProgressIndicator(
           color: Colors.primaries[Random().nextInt(Colors.primaries.length)],
-
         );
       }
       else {
@@ -198,8 +198,6 @@ class AttachmentBox extends StatelessWidget {
         }
 
       }
-
-
 
     }
     catch(e,stacktrace)
@@ -325,12 +323,17 @@ class AttachmentBox extends StatelessWidget {
         itemScrollController: itemScrollController,
         floatingHeader: true,
         itemComparator: (e1, e2) => e1.contentID.compareTo(e2.contentID),
-        itemBuilder: _getMsgAttachmentItem,
+        itemBuilder: _getZoomAttachmentItem,
 
       ),
     );
   }
 
+  Widget _getZoomAttachmentItem(BuildContext wcontext,  Attachment item)
+  {
+    Widget itemWg = _getMsgAttachmentItem(wcontext, item);
+    return ZoomWidget(itemWg, item.id);
+  }
 
   Widget _attachmentGroupSeparator(Attachment attachment)
   {
@@ -342,15 +345,19 @@ class AttachmentBox extends StatelessWidget {
     Widget result = SizedBox.shrink();
     if(item.type == MediaInputType.Image)
       result = Container(
+        padding: EdgeInsets.all(5),
           constraints: BoxConstraints(
             minHeight: 200,
-            minWidth: 200
+            minWidth: 200,
+
           ),
         //constraints: BoxConstraints.expand(width: 300),
        // width: 200,
        // color: Colors.blue,
         child: CustomImageView(
             imagePath: getAttachmentUrl(item).url,
+            // height: 400.adaptSize,
+            // width: 400.adaptSize,
              fit: BoxFit.cover,
             radius: BorderRadius.circular(
               05,
@@ -361,6 +368,7 @@ class AttachmentBox extends StatelessWidget {
       result =  VideoPlayerView(input: getAttachmentUrl(item), context: wcontext, key: Key(item.contentID+"_MsgCard"),);
 
     return result;
+   // return ZoomWidget(result, item.id);
 
   }
 

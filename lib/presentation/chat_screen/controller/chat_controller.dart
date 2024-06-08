@@ -129,7 +129,12 @@ class ChatController extends GetxController {
     print("Upload Message to Server done for ID:"+msg.id);
     if( null != uploadMsg)
     {
+      uploadMsg.msgEvent.value = MsgEventType.Sent;
       updateSentMsgToChnl(msg.id, uploadMsg);
+    }
+    else {
+      msg.msgEvent.value = MsgEventType.Error;
+      updateSentMsgToChnl(msg.id, msg);
     }
 
   }
@@ -143,7 +148,7 @@ class ChatController extends GetxController {
       element.id == msgId);
       if( index > 0)
        {
-         uploadMsg.msgEvent.value = MsgEventType.Sent;
+
         chnl.value.messages[index] = uploadMsg;
        }
     }

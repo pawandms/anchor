@@ -1,4 +1,6 @@
 
+import '../../../core/utils/Helper.dart';
+
 class User {
   String? id;
   String? uid;
@@ -21,7 +23,7 @@ class User {
   String? createdBy;
   String? createdDate;
   String? modifiedBy;
-  DateTime? modifiedDate;
+  String? modifiedDate;
   int? type;
 
 

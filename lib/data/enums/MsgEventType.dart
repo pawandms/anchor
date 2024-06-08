@@ -5,6 +5,7 @@ enum MsgEventType {
   Heart,
   Sending,
   Sent,
+  Error,
   None,
 
 
