@@ -111,7 +111,7 @@ class ChatController extends GetxController {
         msg.userID = myId;
         msg.msgEvent.value = MsgEventType.Sending;
         // Insert Chat Message to Chnl Msg
-        insertChatMsg(msg);
+        insertChatMsg(this.selectedChnlID, msg);
        // print("Sending Msg Inserted to Chat with ID:"+msg.id);
         sendMsgToServer(msg);
 
@@ -176,11 +176,19 @@ class ChatController extends GetxController {
     }
   }
 
-  Future<void> insertChatMsg(ApiMessage msg)
+  Future<void> insertChatMsg(String chnlId, ApiMessage? msg)
   async {
-    chnl.value.messages.add(msg);
-    print("Text Msg Added to MsgList");
-    setSelectedMessage(msg.id);
+    if( this.selectedChnlID == chnlId)
+   {
+     if( null != msg)
+   {
+   chnl.value.messages.add(msg);
+   print("Text Msg Added to MsgList");
+   setSelectedMessage(msg.id);
+   }
+
+
+   }
 
   }
 

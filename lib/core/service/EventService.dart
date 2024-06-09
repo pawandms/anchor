@@ -8,6 +8,7 @@ import 'package:anchor_getx/core/app_export.dart';
 
 
 import '../../data/apiClient/api_client.dart';
+import '../../presentation/chat_screen/controller/chat_controller.dart';
 import '../../presentation/message_screen/controller/messageScreenController.dart';
 import '../model/Event.dart';
 import '../network/NatsClientConfig.dart';
@@ -37,6 +38,7 @@ class EventService extends GetxService{
   void processEvent(String subjet, String data)
   {
     try{
+      print("Revent Event Details are :"+data);
       Map<String,dynamic> jsonMap = jsonDecode(data);
       Event event =  Event.fromMap(jsonMap);
     if( null == messageService)
@@ -79,15 +81,57 @@ class EventService extends GetxService{
         && (null != logInUser)
       && (event.author.toUpperCase() != logInUser.toUpperCase()))
      {
-       MessageScreenController _chnlController = Get.find<MessageScreenController>();
-       if( null != _chnlController)
-        {
-          _chnlController.addNewMsgToChnl(event.entityId, event.message);
-        }
+     // Set Msg  Notification on Chat Listing Screen
+       setMsgNotificationOnMsgScreen(event);
 
+       //Set Msg Notification on Chat Screen if Chat is open for Same Channel
+       setMsgNotificationOnChatScreen(event);
 
       //messageService?.addNewMsgToChnl(event.entityId, event.message);
      }
+  }
+
+  Future<void> setMsgNotificationOnMsgScreen(Event event)
+  async {
+    try{
+
+      bool isChatListControllerPresent = Get.isRegistered<MessageScreenController>();
+      if(isChatListControllerPresent)
+     {
+       MessageScreenController _chatListController = Get.find<MessageScreenController>();
+       if( null != _chatListController)
+       {
+         _chatListController.addNewMsgToChnl(event.entityId, event.message);
+       }
+
+     }
+
+    }
+    catch(e,stacktrace)
+    {
+      Logger.log(e.toString(),stackTrace: stacktrace);
+    }
+  }
+
+  Future<void> setMsgNotificationOnChatScreen(Event event)
+  async {
+    try{
+      bool isChatControllerPresent = Get.isRegistered<ChatController>();
+      if(isChatControllerPresent)
+      {
+        ChatController _chatController = Get.find<ChatController>();
+        if( null != _chatController)
+        {
+          _chatController.insertChatMsg(event.entityId, event.message!);
+        }
+
+      }
+
+    }
+    catch(e,stacktrace)
+    {
+      Logger.log(e.toString(),stackTrace: stacktrace);
+    }
   }
 
   void addEventForChannels(Iterable<String> chnlIds)
