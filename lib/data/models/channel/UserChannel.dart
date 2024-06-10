@@ -42,7 +42,7 @@ class UserChannel  {
       chnlId: map['chnlId'] as String,
       name: map['name'] as String,
       msg: map['msg'] == null ? null : Rx(ApiMessage.fromMap(map['msg'])),
-      msgDate: map['msgDate'] == null ? null : Helper.getLocalDateFromUtcDateString(map['msgDate']) ,
+      msgDate: map['msgDate'] == null ? null : DateTime.parse(map['msgDate']) ,
       userRoles: List.of(map["userRoles"])
           .map((i) => UserRoleTypeExtension.getType(i)).toList(),
       chnLogo: map['chnLogo'] == null ? null : MediaImage.fromMap(map['chnLogo']),

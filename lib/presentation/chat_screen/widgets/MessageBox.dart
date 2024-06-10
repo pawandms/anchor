@@ -149,7 +149,7 @@ class MessageBox extends StatelessWidget {
                                 bottom: 4,
                                 right: 8,
                                 child: Text(
-                                  DateFormat.jm().format(msg.createdOn),
+                                   DateFormat.jm().format(msg.createdOn),
                                   style: TextStyle(color: msg.createdBy == myId ? Colors.white : Colors.black),
                                 )
                             )

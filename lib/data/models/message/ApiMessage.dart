@@ -1,6 +1,7 @@
 
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
+import '../../../core/utils/Helper.dart';
 import '../../enums/AttachmentType.dart';
 import '../../enums/MsgActionType.dart';
 import '../../enums/MsgEventType.dart';
@@ -53,9 +54,10 @@ class ApiMessage{
 
 
       createdBy: map['createdBy'] == null? null : map['createdBy'] as String,
-      createdOn: map['createdOn'] == null ? DateTime.now() : DateTime.parse(map['createdOn']).toLocal(),
+     // createdOn: map['createdOn'] == null ? DateTime.now() : DateTime.parse(map['createdOn']),
+      createdOn: map['createdOn'] == null ? DateTime.now() : Helper.getLocalDateFromUtcDateString(map['createdOn']),
       modifiedBy: map['modifiedBy'] == null ? null : map['modifiedBy'] as String,
-      modifiedOn: map['modifiedOn'] == null ? null : DateTime.parse(map['modifiedOn']).toLocal(),
+      modifiedOn: map['modifiedOn'] == null ? null : DateTime.parse(map['modifiedOn']),
     );
   }
 

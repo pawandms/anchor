@@ -1,12 +1,14 @@
 
 import 'package:anchor_getx/data/models/message/ApiMessage.dart';
 
+import '../../../core/utils/Helper.dart';
+
 class ChannelMsg{
   late String id;
   late String userID;
   late String chnlID;
   late String msgID;
-  late DateTime createdOn;
+  late DateTime? createdOn;
   late ApiMessage message;
 
   Map<String, dynamic> toMap() {
@@ -26,7 +28,7 @@ class ChannelMsg{
       userID: map['userID'] as String,
       chnlID: map['chnlID'] as String,
       msgID: map['msgID'] as String,
-      createdOn: DateTime.parse(map['createdOn']),
+      createdOn: map['createdOn'] == null ? null : DateTime.parse(map['createdOn']),
       message: ApiMessage.fromMap(map['message']),
     );
   }

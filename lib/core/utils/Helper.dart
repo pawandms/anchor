@@ -1,6 +1,5 @@
 
 import 'package:intl/intl.dart';
-
 import '../../data/models/media/MediaInput.dart';
 import '../../data/models/message/Attachment.dart';
 import 'logger.dart';
@@ -15,10 +14,9 @@ class Helper{
     try{
       if( null != utcDateString)
       {
-        result = DateTime.parse(utcDateString).toLocal();
-        print("String Date:$utcDateString, LocalDate:$result");
+        DateTime dt = DateTime.parse(utcDateString).toUtc();
+        result = dt.toLocal();
       }
-
     }
     catch(e, stacktrace)
     {
