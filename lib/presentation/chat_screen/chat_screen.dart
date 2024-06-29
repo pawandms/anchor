@@ -2,6 +2,7 @@
 import 'package:anchor_getx/presentation/chat_screen/widgets/ChatListPage.dart';
 import 'package:anchor_getx/presentation/chat_screen/widgets/MsgInputField.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../data/models/channel/ChnlParticipents.dart';
 import '../../data/models/message/ApiMessage.dart';
@@ -34,7 +35,7 @@ class ChatScreen extends GetView<ChatController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 10.v),
-                        _buildMsgList(controller.myId, controller.chnl.value.messages.value, controller.itemScrollController, context)
+                        _buildMsgList(controller.myId, controller.chnl.value.messages.value, controller.itemScrollController, controller.chatItemVisibilityChangeListener, context, controller.initialScrollIndex)
                       ])),
              bottomNavigationBar: _buildInputRow(context) ,
           );
@@ -101,13 +102,14 @@ class ChatScreen extends GetView<ChatController> {
     ]);
   }
 
-  Widget _buildMsgList(String myId, List<ApiMessage> messages, GroupedItemScrollController itemScrollController, BuildContext context) {
+  Widget _buildMsgList(String myId, List<ApiMessage> messages, GroupedItemScrollController itemScrollController,Function(VisibilityInfo) chatItemVisibilityChangeListener, BuildContext context, int initialScrollIndex) {
     Map<String,ChnlParticipent>userMap = Map.fromIterable(controller.chnl.value.users,
         key: (e) => e.userID,
         value: (e) => e);
     return Expanded(
       flex: 6,
-      child: ChatListPage(myId,messages,userMap, itemScrollController, context),
+      child: ChatListPage(myId,messages,userMap, itemScrollController, chatItemVisibilityChangeListener, context, initialScrollIndex),
+    //  child: ChatItemPage(myId: myId, msgs: messages, userMap: userMap), -- Item detection not working
     );
   }
 

@@ -20,12 +20,12 @@ class MessageRep extends GetxService
 
   }
 
-  Future<ChnlMsgResp> getChnlMsgForUser(String userID, String chnlID, int itemsPerPage, int page)
+  Future<ChnlMsgResp> getChnlMsgForUser(String userID, String chnlID, int itemsPerPage, int page, String sort)
    async {
      ChnlMsgResp resp = new ChnlMsgResp(content: [], totalPages: 0, number: 0, first: false, last: false, empty: true, size: 0, totalElements: 0, numberOfElements: 0);
     try{
       String chnlUrl = EnvConfig.getChnlMsgUrl(userID,chnlID);
-      Map<String, String> queryParam = {"page": page.toString(), "size": itemsPerPage.toString()};
+      Map<String, String> queryParam = {"page": page.toString(), "size": itemsPerPage.toString(),"sort" : sort};
       final response = await apiClient.get(chnlUrl,headers:{}, contentType : null, query: queryParam);
       if (response.statusCode == HttpStatus.ok) {
         resp =  ChnlMsgResp.fromMap(response.body);

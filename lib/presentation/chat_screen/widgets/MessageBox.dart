@@ -94,7 +94,7 @@ class MessageBox extends StatelessWidget {
             Row(
               children: [
                 SizedBox(
-                 // width: SizeUtils.width * 0.76,
+                  width: SizeUtils.width * 0.76,
                   child: Align(
                     alignment: msg.createdBy == myId
                         ? Alignment.centerRight

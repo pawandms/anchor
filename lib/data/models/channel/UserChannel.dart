@@ -16,12 +16,21 @@ class UserChannel  {
   late List<UserRoleType> userRoles;
   late MediaImage? chnLogo;
   late Rx<int> unreadCount;
+  late String? unReadMsgID;
+  late int unReadMsgIndex=0;
+  late DateTime? unReadDate;
   late bool active;
   late List<ChnlParticipent> users = [];
-  int page = 0;
-  int itemPerPage = 10;
-  bool getFirstData = false;
-  bool lastPage = false;
+
+  late int totalPages = 0;
+  late int totalElements = 0;
+  late int pageNumber = 0;
+  late bool first = false;
+  late bool last = false;
+  late bool empty = false ;
+  late int size = 0;
+  late int numberOfElements = 0;
+  // Element Details
   late RxList<ApiMessage> messages = RxList<ApiMessage>();
   bool msgLoadedFlag = false;
   Map<String, dynamic> toMap() {
@@ -47,6 +56,8 @@ class UserChannel  {
           .map((i) => UserRoleTypeExtension.getType(i)).toList(),
       chnLogo: map['chnLogo'] == null ? null : MediaImage.fromMap(map['chnLogo']),
       unreadCount: RxInt(map['unreadCount'] as int),
+      unReadMsgID :map['unReadMsgID'] == null ? null : map['unReadMsgID'] as String,
+      unReadDate: map['unReadDate'] == null ? null : DateTime.parse(map['unReadDate']) ,
       active: map['active'] as bool,
       users: List.of(map["chnlUsers"])
           .map((i) => ChnlParticipent.fromMap(i))
@@ -63,6 +74,8 @@ class UserChannel  {
     required this.userRoles,
     this.chnLogo,
     required this.unreadCount,
+    this.unReadMsgID,
+    this.unReadDate,
     required this.active,
     required this.users,
   });

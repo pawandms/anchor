@@ -1,7 +1,7 @@
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:http/http.dart' as http;
 import 'package:anchor_getx/core/app_export.dart';
@@ -64,6 +64,7 @@ class MessageService extends GetxService  {
         } else {
           resp =  ChannelResp.fromMap(response.body);
         }
+
         userChnlMap.value = Map.fromIterable(resp.channels,
             key: (e) => e.chnlId,
             value: (e) => e
@@ -105,15 +106,63 @@ class MessageService extends GetxService  {
           {
             throw new ApiException("Invalid logged in User");
           }
-          ChnlMsgResp  resp = await msgRep.getChnlMsgForUser(userID, chnlID, itemPerPage, page);
-
-          if(null != resp)
+          String sort = 'createdOn.desc';
+          late ChnlMsgResp  resp;
+          if(null != result.unReadMsgID)
           {
-            msgList =  resp.content.map((e) => e.message).obs.value.toList();
-            result.messages.value.addAll(msgList);
+            String unReadMsgID = result.unReadMsgID!;
+            ApiMessage? unReadMsg;
+            do{
+              print('Getting ChnlMsg with Page:${page}');
+              resp = await msgRep.getChnlMsgForUser(userID, chnlID, itemPerPage, page, sort);
+              if(null != resp)
+              {
+                msgList =  resp.content.map((e) => e.message).obs.value.toList();
+                result.messages.value.addAll(msgList);
+                unReadMsg = msgList.firstWhereOrNull((element) => element.id == unReadMsgID);
+                if( null != unReadMsg)
+                {
+                  result.messages.sort((a,b) => a.createdOn.compareTo(b.createdOn));
+                  // Get Index No of Item
+                 int unReadMsgIndex =  result.messages.indexOf(unReadMsg);
+                 result.unReadMsgIndex = unReadMsgIndex;
+                }
+
+                result.totalPages = resp.totalPages;
+                result.pageNumber = resp.number;
+                result.totalElements = resp.totalElements;
+                result.size = resp.size;
+                result.numberOfElements = resp.numberOfElements;
+                result.first = resp.first;
+                result.last = resp.last;
+                page++;
+
+              }
+
+              }
+            while(null == unReadMsg);
+
+          }
+          else {
+            resp = await msgRep.getChnlMsgForUser(userID, chnlID, itemPerPage, page, sort);
+            if(null != resp)
+            {
+              msgList =  resp.content.map((e) => e.message).obs.value.toList();
+            //  result.messages.value.addAll(msgList);
+              result.messages.value.insertAll(0, msgList);
+              result.unReadMsgIndex = msgList.length -1 ;
+              result.totalPages = resp.totalPages;
+              result.pageNumber = resp.number;
+              result.totalElements = resp.totalElements;
+              result.size = resp.size;
+              result.numberOfElements = resp.numberOfElements;
+              result.first = resp.first;
+              result.last = resp.last;
+            }
           }
           result.msgLoadedFlag = true;
         }
+
       }
       else {
         // Wrong Channel Details Request for user
@@ -131,6 +180,54 @@ class MessageService extends GetxService  {
 
   }
 
+
+  Future<void> getMoreMsgForChnl(Rx<UserChannel> chnl, String chnlID, int page, int itemPerPage)
+  async {
+    List<ApiMessage> msgList = List.empty();
+    try{
+
+          String? userID = apiClient.getLoggedInUserID();
+          if(null == userID)
+          {
+            throw new ApiException("Invalid logged in User");
+          }
+          String sort = 'createdOn.desc';
+          ChnlMsgResp  resp = await msgRep.getChnlMsgForUser(userID, chnlID, itemPerPage, page, sort);
+
+          if(null != resp)
+          {
+            msgList =  resp.content.map((e) => e.message).obs.value.toList();
+            if(msgList.isNotEmpty)
+            {
+              
+              msgList.forEach((element) {
+               chnl.value.messages.add(element);
+
+              });
+
+               
+              //chnl.value.messages.addAll(msgList);
+            }
+           // chnl.messages.insertAll(0, msgList);
+           // chnl.messages.value.addAll(msgList);
+            chnl.value.totalPages = resp.totalPages;
+            chnl.value.pageNumber = resp.number;
+            chnl.value.totalElements = resp.totalElements;
+            chnl.value.size = resp.size;
+            chnl.value.numberOfElements = resp.numberOfElements;
+            chnl.value.first = resp.first;
+            chnl.value.last = resp.last;
+
+          }
+
+    }
+    catch(e)
+    {
+      logError(e);
+
+    }
+
+  }
 
   void printCurrentChannel(String channelId)
   {

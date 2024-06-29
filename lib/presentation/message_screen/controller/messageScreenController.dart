@@ -33,6 +33,11 @@ class MessageScreenController extends  GetxController  {
   async {
     try{
       userChnlMap.value = await messageService.getUserChannels();
+      userChnlMap.value.forEach((key, value) {
+        String unreadDate = null != value.unReadDate ? value.unReadDate.toString() : 'Null';
+        String unreadMsgID = null != value.unReadMsgID ? value.unReadMsgID.toString() : 'Null';
+        print("Name:"+value.name+", UnReadCount:"+value.unreadCount.toString()+", UnReadDate:$unreadDate , UnreadMsgID:$unreadMsgID");
+      });
       //userChnlMap.refresh();
     }
     catch(e, stacktrace )
