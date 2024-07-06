@@ -7,6 +7,7 @@ import '../../enums/MsgActionType.dart';
 import '../../enums/MsgEventType.dart';
 import '../../enums/MsgType.dart';
 import 'Attachment.dart';
+import 'MsgAttribute.dart';
 
 class ApiMessage{
 
@@ -19,6 +20,7 @@ class ApiMessage{
   late DateTime createdOn;
   late String? modifiedBy;
   late DateTime? modifiedOn;
+  late MsgAttribute msgAttribute;
 
   // Optional Paramaters
   late String? chnlID;
@@ -72,5 +74,7 @@ class ApiMessage{
     this.modifiedOn,
   }) : attachments = attachments ?? [],
   attachmentType = AttachmentType.Network
-  ;
+  // msgAttribute = MsgAttribute(recipientCount: 0, readUserCount: 0)
+ ;
+
 }

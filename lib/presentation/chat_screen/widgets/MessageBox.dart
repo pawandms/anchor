@@ -1,9 +1,15 @@
 
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/data/enums/MsgEventType.dart';
+import 'package:anchor_getx/data/enums/MsgReactionType.dart';
 import 'package:anchor_getx/data/models/message/ApiMessage.dart';
+import 'package:animated_emoji/emoji.dart';
+import 'package:animated_emoji/emojis.g.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:intl/intl.dart';
+import 'package:like_button/like_button.dart';
 import 'package:shadow/shadow.dart';
 import '../../../data/enums/MsgActionType.dart';
 import '../../../data/models/channel/ChnlParticipents.dart';
@@ -11,12 +17,16 @@ import '../../../data/models/media/MediaImage.dart';
 import '../../../widgets/custom_image_view.dart';
 import '../../messages_page/service/message_service.dart';
 import 'AttachmentBox.dart';
+import 'package:badges/badges.dart' as badges;
+
+import 'HoverEmoji.dart';
 
 class MessageBox extends StatelessWidget {
   final BuildContext context;
   final ApiMessage msg;
   final String myId;
   final Map<String,ChnlParticipent>userMap;
+  Function emojiCallbackFunction;
   MessageService  messageService;
 
    MessageBox({
@@ -25,6 +35,7 @@ class MessageBox extends StatelessWidget {
     required this.myId,
     required this.msg,
     required this.userMap,
+    required this.emojiCallbackFunction,
     messageService
 
   }):messageService = Get.find<MessageService>()
@@ -89,7 +100,6 @@ class MessageBox extends StatelessWidget {
             if(msg.attachments.isNotEmpty)
               SizedBox(
                  // width: SizeUtils.width * 0.70,
-
                   child: AttachmentBox(ctx: context, myId: myId, msg: msg )),
             Row(
               children: [
@@ -152,10 +162,12 @@ class MessageBox extends StatelessWidget {
                                    DateFormat.jm().format(msg.createdOn),
                                   style: TextStyle(color: msg.createdBy == myId ? Colors.white : Colors.black),
                                 )
-                            )
+                            ),
+
                           ],
                         ),
                       ),
+
                     ),
                   ),
                 ),
@@ -167,10 +179,13 @@ class MessageBox extends StatelessWidget {
                     //  msg.actionType == MsgActionType.Sending ?
                     _getMsgStatus(msg.msgEvent.value)
 
-                )
+                ),
+
               ],
             ),
-
+            Padding(padding: EdgeInsets.only(top: 5, right: 20),
+              child: _getReactionWidget(msg.id, msg.msgAttribute.userReaction),
+            )
 
           ],
         ),
@@ -299,5 +314,54 @@ class MessageBox extends StatelessWidget {
         )
     );
   }
+
+  Widget _getReactionWidget(String msgId, Map<String, String> reactionTypeMap)
+  {
+    Widget result = SizedBox.shrink();
+    Map<String, int> emojiValueCounts = {};
+    if(reactionTypeMap.isNotEmpty)
+    {
+      // Step 1: Get unique values using a set
+      Set<String> uniqueValues = reactionTypeMap.values.toSet();
+      // Step 2: Count occurrences of each unique value
+      uniqueValues.forEach((value) {
+
+        int count = reactionTypeMap.values.where((v) => v == value).length;
+        emojiValueCounts[value] = count;
+      });
+      /*
+      for (var value in uniqueValues) {
+        int count = reactionTypeMap.values.where((v) => v == value).length;
+        emojiValueCounts[value] = count;
+        // Output the results
+        emojiValueCounts.forEach((value, count) {
+          print('Value "$value" occurs $count times for MsgID: ${myId}');
+        });
+
+      }
+      */
+      List<Widget> reactionWidgetList = [];
+      emojiValueCounts.forEach((key, value) {
+        MsgReactionType emojiType = MsgReactionTypeExtension.getType(key);
+        Widget reactionWidget = HoverEmoji(msgId: msgId, emojiType: emojiType, size: 25, itemCount: value, callbackFunction: _emojiCallbackFunction, );
+        reactionWidgetList.add(reactionWidget);
+      });
+      result =  Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //crossAxisAlignment: CrossAxisAlignment.start,
+          children: reactionWidgetList
+      );
+
+
+    }
+    return result;
+
+  }
+
+  void _emojiCallbackFunction(String msgId, MsgReactionType emojiType)
+  {
+    emojiCallbackFunction(this.myId, msgId, emojiType);
+  }
+
 
 }

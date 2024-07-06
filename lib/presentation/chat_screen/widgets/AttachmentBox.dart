@@ -36,6 +36,7 @@ class AttachmentBox extends StatelessWidget {
 
   @override
   Widget build(ctx) {
+    /*
     const BoxDecoration chatBackgroundDecoration = BoxDecoration(
         gradient: LinearGradient(
             colors: [
@@ -44,7 +45,7 @@ class AttachmentBox extends StatelessWidget {
             ]
         )
     );
-
+    */
     bool
     displayUserName = true,
         displayAvatar = true;
@@ -73,17 +74,19 @@ class AttachmentBox extends StatelessWidget {
               : CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: (MediaQuery.of(ctx).size.width < 600) ? MediaQuery.of(ctx).size.width * 0.50 : MediaQuery.of(ctx).size.width * 0.30,
+              width: (MediaQuery.of(ctx).size.width < 600) ? MediaQuery.of(ctx).size.width * 0.50 : MediaQuery.of(ctx).size.width * 0.40,
               child: Align(
                 alignment: msg.createdBy == myId
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
-                child: Card(
-                  color: Colors.white,
+                child:  //Obx(()=> _attachmentComponent(msg, ctx  )),
+
+                Card(
+                 // color: Colors.white,
                   borderOnForeground: true,
                   elevation: 10.0,
-                  surfaceTintColor: Colors.white,
-                  shadowColor: Colors.black,
+                  surfaceTintColor: Colors.white70,
+                  shadowColor: Colors.white,
                   /*
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
@@ -95,8 +98,9 @@ class AttachmentBox extends StatelessWidget {
 
                    */
                   margin: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
-                  child: Obx(()=> _attachmentComponent(msg, MediaQuery.of(ctx).size.width * 0.50, ctx  )),
+                  child: Obx(()=> _attachmentComponent(msg, ctx  )),
                 ),
+
               ),
             ),
           ],
@@ -118,11 +122,10 @@ class AttachmentBox extends StatelessWidget {
     return userID;
   }
 
-  Widget _attachmentComponent(ApiMessage msg, double _width, BuildContext wcontext)
+  Widget _attachmentComponent(ApiMessage msg, BuildContext wcontext)
   {
     int _crossAxisCount = 2;
    // double _width = MediaQuery.of(context).size.width * 0.50;
-
     int contentSize = msg.attachments.length ;
     List<Widget> items = [];
     if (contentSize == 1) {
@@ -153,13 +156,13 @@ class AttachmentBox extends StatelessWidget {
     }
     print ("Preparing attachment Box Items Completed.....with Item Size:"+items.length.toString());
     return SizedBox(
-     // width: _width,
+      //width: _width,
       child:
       GridView.count(
         shrinkWrap: true,
-        primary: true,
+       // primary: true,
        // padding: const EdgeInsets.all(01),
-        crossAxisSpacing: 05,
+        crossAxisSpacing: 01,
         mainAxisSpacing: 01,
         crossAxisCount: _crossAxisCount,
         children: items,
@@ -219,7 +222,26 @@ class AttachmentBox extends StatelessWidget {
           print("click on Attachmet with ID:"+attachment.contentID+" , for Msg:"+msg.id);
           openUploadPreviewDialog(msg, attachment);
         },
-        child: SizedBox(
+        child:
+        Card(
+          color: Colors.white,
+          borderOnForeground: true,
+          elevation: 10.0,
+          surfaceTintColor: Colors.white,
+          shadowColor: Colors.black,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: const Radius.circular(10.0),
+                topRight: const Radius.circular(10.0),
+                topLeft: Radius.circular(18.0),
+                bottomRight: Radius.circular(18.0),
+              )
+          ),
+         // margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+          child: media,
+        )
+       /*
+        SizedBox(
           child: Shadow(
             options: ShadowOptions(
               offset: Offset(5, 5),
@@ -230,6 +252,7 @@ class AttachmentBox extends StatelessWidget {
             ,
           ),
         ),
+       */
       );
     }
     catch(e,stacktrace)
@@ -250,7 +273,8 @@ class AttachmentBox extends StatelessWidget {
         },
         child: Stack(
           alignment: AlignmentDirectional.center,
-          //fit: StackFit.expand,
+         //clipBehavior: Clip.antiAliasWithSaveLayer,
+         // fit: StackFit.expand,
           children: <Widget>[
             Shadow(
               options: ShadowOptions(
@@ -260,6 +284,7 @@ class AttachmentBox extends StatelessWidget {
               ),
               child: media,
             ),
+
             ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(8)),
               child: ColoredBox(
@@ -273,6 +298,7 @@ class AttachmentBox extends StatelessWidget {
                 ),
               ),
             ),
+
           ],
         ),
       );
@@ -294,13 +320,14 @@ class AttachmentBox extends StatelessWidget {
 
   void openUploadPreviewDialog(ApiMessage msg, Attachment selectedAttachment)
   {
+    int selectedIndex = msg.attachments.indexOf(selectedAttachment);
 
     Get.dialog(
       Scaffold(
         appBar: AppBar(
         //  title: Text(selectedAttachment.contentID),
         ),
-        body: getAttachmentPreviewWidget(msg.attachments),
+        body: getAttachmentPreviewWidget(msg.attachments, selectedIndex),
 
       ),
     );
@@ -309,7 +336,7 @@ class AttachmentBox extends StatelessWidget {
   }
 
 
-  Widget getAttachmentPreviewWidget(List<Attachment> attachments)
+  Widget getAttachmentPreviewWidget(List<Attachment> attachments, int selectedIndex)
   {
     final itemPositionsListener = ItemPositionsListener.create();
     final itemScrollController = GroupedItemScrollController();
@@ -322,6 +349,7 @@ class AttachmentBox extends StatelessWidget {
         itemPositionsListener: itemPositionsListener,
         itemScrollController: itemScrollController,
         floatingHeader: true,
+        initialScrollIndex: selectedIndex,
         itemComparator: (e1, e2) => e1.contentID.compareTo(e2.contentID),
         itemBuilder: _getZoomAttachmentItem,
 
@@ -347,8 +375,8 @@ class AttachmentBox extends StatelessWidget {
       result = Container(
         padding: EdgeInsets.all(5),
           constraints: BoxConstraints(
-            minHeight: 200,
-            minWidth: 200,
+            //minHeight: 200,
+           // minWidth: 200,
 
           ),
         //constraints: BoxConstraints.expand(width: 300),

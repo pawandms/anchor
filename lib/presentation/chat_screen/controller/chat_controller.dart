@@ -10,6 +10,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../core/errors/ApiException.dart';
 import '../../../data/apiClient/api_client.dart';
+import '../../../data/enums/MsgReactionType.dart';
 import '../../../data/enums/MsgType.dart';
 import '../../../data/models/channel/UserChannel.dart';
 import '../../messages_page/service/message_service.dart';
@@ -41,7 +42,6 @@ class ChatController extends GetxController {
   late int initialScrollIndex = 0;
   // Chat Message Item Position Listener
   final itemPositionsListener = ItemPositionsListener.create();
-  ScrollNotification? _lastNotification;
   late ChatScrollPosition chatScrollPosition = new ChatScrollPosition(initFlag: false);
   @override
   onInit()  async {
@@ -356,5 +356,22 @@ class ChatController extends GetxController {
   print("new Msg Received count:${chnl.value.messages.length}");
 
 }
+
+  void emojiCallbackFunctionForUser(String userID, String msgId, MsgReactionType emojiType)
+  {
+    print("ChatController Callback Received for Emoji for User:${userID}, msgID: ${msgId} , chnlID : ${selectedChnlID}, type:${emojiType.name}");
+
+    ApiMessage? emojiMsg = chnl.value.messages.value.firstWhereOrNull((element) => element.id == msgId);
+
+    if( emojiMsg != null)
+     {
+       emojiMsg.msgAttribute.userReaction[userID] = emojiType.name;
+       print("Updated Emoji Reaction.....................");
+       emojiMsg.msgAttribute.userReaction.forEach((key, value) {
+         print("Key: ${key}, value:${value}");
+       });
+     }
+  }
+
 
 }

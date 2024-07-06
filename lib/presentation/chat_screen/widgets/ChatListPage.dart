@@ -17,11 +17,12 @@ class ChatListPage extends StatelessWidget{
   //ScrollController controller;
   GroupedItemScrollController itemScrollController;
   Function(VisibilityInfo) chatItemVisibilityChangeListener;
+  Function emojiCallbackFunction;
  // final itemPositionsListener = ItemPositionsListener.create();
  // ItemPositionsListener itemPositionsListener;
   BuildContext context;
   ChatListPage(
-      this.myId, this.msgs, this.userMap, this.itemScrollController, this.chatItemVisibilityChangeListener, this.context,this.initalScrollIndex,{
+      this.myId, this.msgs, this.userMap, this.itemScrollController, this.chatItemVisibilityChangeListener, this.context,this.initalScrollIndex, this.emojiCallbackFunction,{
         Key? key,
       }) : super(
     key: key,
@@ -83,21 +84,21 @@ class ChatListPage extends StatelessWidget{
   Widget _getItem(BuildContext ctx, ApiMessage item) {
   return Container(
       child:
-      MessageBox( context: context,myId: myId, msg: item, userMap: userMap),
+      MessageBox( context: context,myId: myId, msg: item, userMap: userMap, emojiCallbackFunction: emojiCallbackFunction ),
       padding: const EdgeInsets.all(8),
     );
   }
 
   Widget _getIndexItem(BuildContext context, ApiMessage item, int index)
   {
-    print('Building Chat Msg with Idx:${index} , MsgID:${item.id} ');
+   // print('Building Chat Msg with Idx:${index} , MsgID:${item.id} ');
     return VisibilityDetector(
       key: ValueKey(index),
       onVisibilityChanged: chatItemVisibilityChangeListener,
       child: Container(
         key: ValueKey(index),
         child:
-        MessageBox( context: context,myId: myId, msg: item, userMap: userMap),
+        MessageBox( context: context,myId: myId, msg: item, userMap: userMap, emojiCallbackFunction: this.emojiCallbackFunction),
         padding: const EdgeInsets.all(8),
       ),
     );

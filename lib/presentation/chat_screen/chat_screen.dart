@@ -102,13 +102,14 @@ class ChatScreen extends GetView<ChatController> {
     ]);
   }
 
-  Widget _buildMsgList(String myId, List<ApiMessage> messages, GroupedItemScrollController itemScrollController,Function(VisibilityInfo) chatItemVisibilityChangeListener, BuildContext context, int initialScrollIndex) {
+  Widget _buildMsgList(String myId, List<ApiMessage> messages, GroupedItemScrollController itemScrollController,Function(VisibilityInfo) chatItemVisibilityChangeListener,
+      BuildContext context, int initialScrollIndex) {
     Map<String,ChnlParticipent>userMap = Map.fromIterable(controller.chnl.value.users,
         key: (e) => e.userID,
         value: (e) => e);
     return Expanded(
       flex: 6,
-      child: ChatListPage(myId,messages,userMap, itemScrollController, chatItemVisibilityChangeListener, context, initialScrollIndex),
+      child: ChatListPage(myId, messages,userMap, itemScrollController, chatItemVisibilityChangeListener, context, initialScrollIndex, controller.emojiCallbackFunctionForUser),
     //  child: ChatItemPage(myId: myId, msgs: messages, userMap: userMap), -- Item detection not working
     );
   }

@@ -33,6 +33,34 @@ class MessageRep extends GetxService
         resp =  ChnlMsgResp.fromMap(response.body);
       }
 
+      // Set Msg Attribute At Msg Level Instated of Parent Response level
+      resp.content.forEach((element) {
+        if(null != element.msgAttribute)
+        {
+          element.message.msgAttribute = element.msgAttribute!;
+          // If User reaction is not empty then populate Count by Reaction Type
+         /*
+          if(element.message.msgAttribute.userReaction.isNotEmpty)
+          {
+            // Step 1: Get unique values using a set
+            Set<String> uniqueValues = element.message.msgAttribute.userReaction.values.toSet();
+            // Step 2: Count occurrences of each unique value
+            Map<String, int> uniqueValueCounts = {};
+            for (var value in uniqueValues) {
+              int count = element.message.msgAttribute.userReaction.values.where((v) => v == value).length;
+              uniqueValueCounts[value] = count;
+
+              // Output the results
+              uniqueValueCounts.forEach((value, count) {
+                print('Value "$value" occurs $count times');
+              });
+              element.message.msgAttribute.userReactionByType = uniqueValueCounts;
+            }
+
+          }
+          */
+        }
+      });
     }catch(e)
     {
       logError(e);

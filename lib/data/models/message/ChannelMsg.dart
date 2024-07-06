@@ -2,6 +2,7 @@
 import 'package:anchor_getx/data/models/message/ApiMessage.dart';
 
 import '../../../core/utils/Helper.dart';
+import 'MsgAttribute.dart';
 
 class ChannelMsg{
   late String id;
@@ -10,6 +11,7 @@ class ChannelMsg{
   late String msgID;
   late DateTime? createdOn;
   late ApiMessage message;
+  late MsgAttribute? msgAttribute;
 
   Map<String, dynamic> toMap() {
     return {
@@ -19,6 +21,7 @@ class ChannelMsg{
       'msgID': this.msgID,
       'createdOn': this.createdOn,
       'message': this.message,
+      'msgAttribute' : this.msgAttribute,
     };
   }
 
@@ -29,8 +32,10 @@ class ChannelMsg{
       chnlID: map['chnlID'] as String,
       msgID: map['msgID'] as String,
       createdOn: map['createdOn'] == null ? null : DateTime.parse(map['createdOn']),
-      message: ApiMessage.fromMap(map['message']),
+      message: ApiMessage.fromMap(map['message']), 
+      msgAttribute : map['msgAttribute'] == null ? null :  MsgAttribute.fromMap(map['msgAttribute']),
     );
+
   }
 
   ChannelMsg({
@@ -39,6 +44,7 @@ class ChannelMsg{
     required this.chnlID,
     required this.msgID,
     required this.createdOn,
-    required this.message,
-  });
+    required this.message, 
+    this.msgAttribute,
+  }) ;
 }

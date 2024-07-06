@@ -99,7 +99,8 @@ class ConversationList extends StatelessWidget
           badges.Badge(
               badgeStyle: BadgeStyle
             (badgeColor: Colors.blueAccent,),
-            badgeContent: Text(userChannel.unreadCount.value.toString(),
+            badgeContent:
+            Text(userChannel.unreadCount.value.toString(),
             //style: theme.textTheme.titleMedium,
                ),
             ignorePointer: false,

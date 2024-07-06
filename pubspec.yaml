@@ -42,6 +42,9 @@ dependencies:
   shadow: ^1.5.0
   widget_zoom: ^0.0.4
   visibility_detector: ^0.4.0+2
+  like_button: ^2.0.5
+  flutter_reaction_button: ^3.0.0+3
+  animated_emoji: ^3.1.0
 
 
 dev_dependencies: 
@@ -53,6 +56,14 @@ flutter:
     - assets/
     - assets/images/
     - assets/sound/
+    - packages/animated_emoji/lottie/rocket.json
+    - packages/animated_emoji/lottie/victory.json
+    - packages/animated_emoji/lottie/waveDark.json
+    - packages/animated_emoji/lottie/brokenHeart.json
+    - packages/animated_emoji/lottie/smile.json
+    - packages/animated_emoji/lottie/rocket.json
+    - packages/animated_emoji/lottie/sunglassesFace.json
+
   fonts: 
     - family: Inter
       fonts: 
