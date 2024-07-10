@@ -365,11 +365,36 @@ class ChatController extends GetxController {
 
     if( emojiMsg != null)
      {
-       emojiMsg.msgAttribute.userReaction[userID] = emojiType.name;
+       bool updateToServer = false ;
+       // If UserReaction is Present alreadt
+       if(emojiMsg.msgAttribute.userReaction.value.containsKey(userID))
+        {
+          // Step 1 : Check if Reaction is change
+          String prvReaction = emojiMsg.msgAttribute.userReaction.value[userID]!;
+          if(prvReaction.compareTo(emojiType.name) != 0)
+           {
+             updateToServer = true;
+             emojiMsg.msgAttribute.userReaction[userID] = emojiType.name;
+           }
+         // Update Reaction and Call the API to Update Server
+        }
+       else {
+         // Add New Reaction for Respective User
+         updateToServer = true;
+         emojiMsg.msgAttribute.userReaction[userID] = emojiType.name;
+       }
+
+       if(updateToServer)
+       {
+         // Call API to Update User Reaction on Message
+         messageService.updateMsgReactionToServer(selectedChnlID, msgId, emojiType.name);
+       }
+       /*
        print("Updated Emoji Reaction.....................");
        emojiMsg.msgAttribute.userReaction.forEach((key, value) {
          print("Key: ${key}, value:${value}");
        });
+       */
      }
   }
 

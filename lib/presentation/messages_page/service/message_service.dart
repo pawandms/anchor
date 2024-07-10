@@ -266,21 +266,6 @@ class MessageService extends GetxService  {
     }
   }
 
-  /*
-  void addMessage(ApiMessage msg)
-  {
-    try{
-      Future<ApiMessage> response =  sendMessage(msg);
-    }
-    catch(e)
-    {
-      rethrow;
-    }
-
-  }
-
-   */
-
   Future<ApiMessage?> sendMessage(ApiMessage msg)
   async {
     ApiMessage? resp;
@@ -408,6 +393,36 @@ class MessageService extends GetxService  {
     }
 
     return result;
+  }
+
+  Future<void> updateMsgReactionToServer( String chnlID, String msgId, String msgReaction)
+  async {
+    try{
+   String? userID = apiClient.getLoggedInUserID();
+      if(null == userID)
+      {
+        throw new ApiException("Invalid logged in User");
+      }
+
+      String editMsgUrl = EnvConfig.getEditMsgUrl(userID, chnlID, msgId);
+      final _body = {
+        "actionType": 'MsgReaction',
+        "msgReaction" : msgReaction
+      };
+   final jsonString = json.encode(_body);
+      final response = await apiClient.post(editMsgUrl,jsonString, headers:{});
+      if (response.statusCode == HttpStatus.ok) {
+
+      } else {
+        logError('Update msg Reaction failed with Status :${response.statusCode}');
+      }
+
+    }
+    catch(e)
+    {
+      logError(e);
+    }
+
   }
 
 

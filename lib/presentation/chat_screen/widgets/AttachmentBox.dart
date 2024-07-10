@@ -60,52 +60,55 @@ class AttachmentBox extends StatelessWidget {
     displayAvatar = displayUserName;
     //displayUserName = false;
 
-    return Row(
-      mainAxisAlignment: msg.createdBy == myId
-          ? MainAxisAlignment.end
-          : MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: msg.createdBy == myId
-              ? CrossAxisAlignment.end
-              : CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: (MediaQuery.of(ctx).size.width < 600) ? MediaQuery.of(ctx).size.width * 0.50 : MediaQuery.of(ctx).size.width * 0.40,
-              child: Align(
-                alignment: msg.createdBy == myId
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
-                child:  //Obx(()=> _attachmentComponent(msg, ctx  )),
+    return InkWell(
+      onLongPress: _enableMsgReactionMenu,
+      child: Row(
+        mainAxisAlignment: msg.createdBy == myId
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: msg.createdBy == myId
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: (MediaQuery.of(ctx).size.width < 600) ? MediaQuery.of(ctx).size.width * 0.50 : MediaQuery.of(ctx).size.width * 0.40,
+                child: Align(
+                  alignment: msg.createdBy == myId
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  child:  //Obx(()=> _attachmentComponent(msg, ctx  )),
 
-                Card(
-                 // color: Colors.white,
-                  borderOnForeground: true,
-                  elevation: 10.0,
-                  surfaceTintColor: Colors.white70,
-                  shadowColor: Colors.white,
-                  /*
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: const Radius.circular(10.0),
-                        topRight: const Radius.circular(10.0),
+                  Card(
+                   // color: Colors.white,
+                    borderOnForeground: true,
+                    elevation: 10.0,
+                    surfaceTintColor: Colors.white70,
+                    shadowColor: Colors.white,
+                    /*
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: const Radius.circular(10.0),
+                          topRight: const Radius.circular(10.0),
 
-                      )
+                        )
+                    ),
+
+                     */
+                    margin: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
+                    child: Obx(()=> _attachmentComponent(msg, ctx  )),
                   ),
 
-                   */
-                  margin: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
-                  child: Obx(()=> _attachmentComponent(msg, ctx  )),
                 ),
-
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -422,5 +425,10 @@ class AttachmentBox extends StatelessWidget {
         child: widget,
       ),
     );
+  }
+
+  void _enableMsgReactionMenu()
+  {
+    print("LogPress on AttachmentBox to enable Msg Reaction Menu");
   }
 }

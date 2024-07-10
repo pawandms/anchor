@@ -1,6 +1,3 @@
-import 'package:anchor_getx/presentation/adv_chat_screen/AdvChatScreen.dart';
-import 'package:anchor_getx/presentation/adv_chat_screen/binding/AdvChatScreenBinding.dart';
-import 'package:anchor_getx/presentation/adv_chat_screen/controller/AdvChatController.dart';
 import 'package:anchor_getx/presentation/message_screen/binding/messageScreenBinding.dart';
 import 'package:anchor_getx/presentation/message_screen/message_screen.dart';
 import 'package:anchor_getx/presentation/splash_screen/splash_screen.dart';
@@ -285,14 +282,6 @@ class AppRoutes {
       page: () => MessageScreen(),
       bindings: [
         MessageScreenBinding(),
-      ],
-      // middlewares: [RouteGuard()],
-    ),
-    GetPage(
-      name: advChatScreen,
-      page: () => AdvChatScreen(),
-      bindings: [
-        AdvChatScreenBinding(),
       ],
       // middlewares: [RouteGuard()],
     ),

@@ -44,5 +44,9 @@ class EnvConfig{
     return contentUrl+"/"+"attachment/"+type.name+"/"+id+"?cntLength=$cntLength&extension=$extension&token=$token";
   }
 
+  static getEditMsgUrl(String userID, String chnlID, String msgId)
+  {
+    return getMessage+"/"+"user"+"/"+userID+"/"+chnlID+"/"+msgId+"/"+"edit";
+  }
 
 }

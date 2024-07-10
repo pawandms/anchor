@@ -4,35 +4,31 @@ import 'dart:js_util';
 
 import 'package:anchor_getx/data/enums/MsgReactionType.dart';
 import 'package:animated_emoji/emoji.dart';
+import 'package:animated_emoji/emoji_data.dart';
 import 'package:animated_emoji/emojis.g.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 /// Demo widget that demonstrates how to use [AnimationController] with [AnimatedEmoji].
-class HoverEmoji extends StatefulWidget {
+class EmojiIcon extends StatefulWidget {
   /// Demo widget that demonstrates how to use [AnimationController] with [AnimatedEmoji].
-  final String msgId;
   MsgReactionType emojiType;
-  Rx<int> count;
   double size;
-   Function (String msgId, MsgReactionType emoiType ) callbackFunction;
-  HoverEmoji(
+  //final Function(String msgId, MsgReactionType emoiType ) callbackFunction;
+  EmojiIcon(
       {
     super.key,
-    required this.msgId,
     this.size = 25,
-    int itemCount = 0,
     required this.emojiType,
-    required this.callbackFunction
+    //required this.callbackFunction
 
-  }): count = itemCount.obs
-  ;
+  });
 
   @override
-  State<HoverEmoji> createState() => _HoverEmojiState();
+  State<EmojiIcon> createState() => _EmojiIconState();
 }
 
-class _HoverEmojiState extends State<HoverEmoji>
+class _EmojiIconState extends State<EmojiIcon>
     with SingleTickerProviderStateMixin {
   late final AnimationController controller;
 
@@ -42,6 +38,7 @@ class _HoverEmojiState extends State<HoverEmoji>
    // widget.emojiType = MsgReactionTypeExtension.getType(widget.emojiTxt);
     controller = AnimationController(
       vsync: this,
+      duration: Duration()
     );
   }
 
@@ -58,53 +55,28 @@ class _HoverEmojiState extends State<HoverEmoji>
       onEnter: (event) {
         controller.forward(from: 0);
       },
-      child: Tooltip(
-        message: widget.emojiType.name,
-        child: Padding(
-          padding: const EdgeInsets.only(right: 3),
-          child: _getEmojiWidget(widget.emojiType, widget.size,widget.count.value),
-        ),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 3),
+        child: _getEmojiWidget(widget.emojiType, widget.size),
       ),
     );
   }
 
 
 
-  Widget _getEmojiWidget(MsgReactionType type, double _size, int itemCount)
+  Widget _getEmojiWidget(MsgReactionType type, double _size)
   {
-    print('Building Emoji With Type:${type.name}, count:${itemCount}');
     Widget result = SizedBox.shrink();
-   // MsgReactionType type = MsgReactionTypeExtension.getType(emojiTxt);
-    if((type != null) & (type != MsgReactionType.Unknown))
+    if((type != null))
     {
-      result =  InkWell(
-        onTap: _EmojiClickedEvent,
-        child: Wrap(
-          crossAxisAlignment: WrapCrossAlignment.start,
-         // spacing: 5,
-          children: [
-            _getEmojiIcon(type, _size),
-            Padding(
-              padding: const EdgeInsets.only(left: 2, right: 3),
-              child: Text(
-                itemCount.toString(),
-                style: TextStyle(
-                  color: Colors.black,
-
-                ),
-              ),
-            )
-          ],
-        ),
-      );
-
+      result =  _getEmojiIcon(type, _size);
     }
    return result;
   }
 
   void _EmojiClickedEvent()
   {
-    widget.callbackFunction( widget.msgId, widget.emojiType);
+    //widget.callbackFunction( widget.msgId, widget.emojiType);
   }
 
   Widget _getEmojiIcon(MsgReactionType type, double _size)
@@ -210,6 +182,18 @@ class _HoverEmojiState extends State<HoverEmoji>
     {
       result = AnimatedEmoji(
         AnimatedEmojis.surprised,
+        controller: controller,
+        size: _size,
+        onLoaded: (duration) {
+          // Get the duration of the animation.
+          controller.duration = duration;
+        },
+      );
+    }
+    else  if(type == MsgReactionType.Unknown)
+    {
+      result = AnimatedEmoji(
+        AnimatedEmojis.thumbsUp.withSkinTone(SkinTone.light),
         controller: controller,
         size: _size,
         onLoaded: (duration) {
