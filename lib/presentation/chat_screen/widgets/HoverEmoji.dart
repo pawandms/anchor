@@ -1,7 +1,3 @@
-
-
-import 'dart:js_util';
-
 import 'package:anchor_getx/data/enums/MsgReactionType.dart';
 import 'package:animated_emoji/emoji.dart';
 import 'package:animated_emoji/emojis.g.dart';

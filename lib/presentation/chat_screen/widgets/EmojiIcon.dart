@@ -1,13 +1,10 @@
 
 
-import 'dart:js_util';
-
 import 'package:anchor_getx/data/enums/MsgReactionType.dart';
 import 'package:animated_emoji/emoji.dart';
 import 'package:animated_emoji/emoji_data.dart';
 import 'package:animated_emoji/emojis.g.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 /// Demo widget that demonstrates how to use [AnimationController] with [AnimatedEmoji].
 class EmojiIcon extends StatefulWidget {

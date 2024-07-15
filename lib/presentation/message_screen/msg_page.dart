@@ -1,28 +1,21 @@
 
-import 'package:anchor_getx/presentation/message_screen/controller/messageScreenController.dart';
-
 import 'package:anchor_getx/core/app_export.dart';
-import 'package:anchor_getx/presentation/message_screen/msg_page.dart';
 import 'package:anchor_getx/presentation/message_screen/widgets/ConversationList.dart';
 import 'package:flutter/material.dart';
-
-import '../../data/models/channel/ChnlParticipents.dart';
 import '../../data/models/channel/UserChannel.dart';
 import '../../widgets/app_bar/appbar_leading_image.dart';
-import '../../widgets/app_bar/appbar_title.dart';
 import '../../widgets/app_bar/appbar_trailing_image.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
+import 'controller/messageScreenController.dart';
 
-// ignore_for_file: must_be_immutable
-class MessageScreen extends GetView<MessageScreenController> {
-  MessageScreen({Key? key}) : super(key: key);
-
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+class MsgPage extends StatelessWidget
+{
+  //MessageScreenController controller = Get.put(MessageScreenController());
+  MessageScreenController controller;
+  MsgPage(this.controller);
 
   @override
   Widget build(BuildContext context) {
-    return MsgPage(controller);
-    /*
     return SafeArea(
         child: Scaffold(
             appBar: _buildAppBar(),
@@ -40,11 +33,8 @@ class MessageScreen extends GetView<MessageScreenController> {
                       SizedBox(height: 10.v),
                       _buildMessagesList()
                     ]))));
-
-     */
   }
 
-  /// Section Widget
   PreferredSizeWidget _buildAppBar() {
     return CustomAppBar(
         leadingWidth: 40.h,
@@ -54,29 +44,13 @@ class MessageScreen extends GetView<MessageScreenController> {
             onTap: () {
               onTapArrowBack();
             }),
-      title: AppbarTitle(
-        onTap: (){
-          Get.toNamed(
-            AppRoutes.appNavigationScreen,
-          );
-        },
-          text: 'channel list',
-          margin:
-          EdgeInsets.only(left: 108.h, top: 10.v, bottom: 6.v))
-        //text: controller.messageService.selectedChnl.value.name,
-
-        /*
         actions: [
           AppbarTrailingImage(
               imagePath: ImageConstant.imgAddDeepPurpleA200,
               margin: EdgeInsets.symmetric(horizontal: 16.h, vertical: 13.v))
-        ]
-
-         */
-    );
+        ]);
   }
 
-  /// Section Widget
   Widget _buildMessagesList() {
     return Obx(() => Expanded(
       child: ListView.separated(
@@ -100,23 +74,23 @@ class MessageScreen extends GetView<MessageScreenController> {
             UserChannel model = controller.userChnlMap[key]!;
             //  .channel[index];
             return InkWell(
-              onTap: () {
-                onChannelSelection(model.chnlId);
-              },
+                onTap: () {
+                  onChannelSelection(model.chnlId);
+                },
                 child: ConversationList(model, onChannelSelection,context, controller)
             );
           }),
     ));
   }
 
-  /// Navigates to the previous screen.
   onTapArrowBack() {
     Get.back();
   }
 
-   onChannelSelection(String selectedChannelId)
+  onChannelSelection(String selectedChannelId)
   {
     controller.setSelectedChannel(selectedChannelId);
   }
+
 
 }

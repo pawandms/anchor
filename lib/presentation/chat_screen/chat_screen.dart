@@ -30,7 +30,7 @@ class ChatScreen extends GetView<ChatController> {
               appBar: _buildAppBar(),
               body:Container(
                   width: double.maxFinite,
-                  padding: EdgeInsets.symmetric(vertical: 5.v),
+                  padding: EdgeInsets.symmetric(vertical: 10.v, ),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

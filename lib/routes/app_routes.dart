@@ -1,3 +1,5 @@
+import 'package:anchor_getx/presentation/home_screen/binding/home_screen_binding.dart';
+import 'package:anchor_getx/presentation/home_screen/home_screen.dart';
 import 'package:anchor_getx/presentation/message_screen/binding/messageScreenBinding.dart';
 import 'package:anchor_getx/presentation/message_screen/message_screen.dart';
 import 'package:anchor_getx/presentation/splash_screen/splash_screen.dart';
@@ -121,6 +123,7 @@ class AppRoutes {
   static const String appNavigationScreen = '/app_navigation_screen';
 
   static const String initialRoute = '/initialRoute';
+  static const String homeScreen = '/home';
 
   static List<GetPage> pages = [
     GetPage(
@@ -163,6 +166,14 @@ class AppRoutes {
         transition: Transition.cupertino,
 
 
+    ),
+    GetPage(
+      name: homeScreen,
+      page: () => HomeScreen(key: Key('HomeScreen')),
+      bindings: [
+        HomeScreenBinding(),
+      ],
+      transition: Transition.cupertino,
     ),
     GetPage(
       name: notificationScreen,

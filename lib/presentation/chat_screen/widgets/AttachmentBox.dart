@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/widgets/VideoPlayerView.dart';
+import 'package:anchor_getx/widgets/flick_player.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
@@ -76,7 +77,7 @@ class AttachmentBox extends StatelessWidget {
                 : CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: (MediaQuery.of(ctx).size.width < 600) ? MediaQuery.of(ctx).size.width * 0.50 : MediaQuery.of(ctx).size.width * 0.40,
+                width: (MediaQuery.of(ctx).size.width < 600) ? MediaQuery.of(ctx).size.width * 0.70 : MediaQuery.of(ctx).size.width * 0.60,
                 child: Align(
                   alignment: msg.createdBy == myId
                       ? Alignment.centerRight
@@ -240,7 +241,7 @@ class AttachmentBox extends StatelessWidget {
                 bottomRight: Radius.circular(18.0),
               )
           ),
-         // margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+          //margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
           child: media,
         )
        /*
@@ -375,28 +376,39 @@ class AttachmentBox extends StatelessWidget {
   Widget _getMsgAttachmentItem(BuildContext wcontext,  Attachment item) {
     Widget result = SizedBox.shrink();
     if(item.type == MediaInputType.Image)
-      result = Container(
-        padding: EdgeInsets.all(5),
+      {
+        result = Container(
+          padding: EdgeInsets.all(5),
           constraints: BoxConstraints(
             //minHeight: 200,
-           // minWidth: 200,
+            // minWidth: 200,
 
           ),
-        //constraints: BoxConstraints.expand(width: 300),
-       // width: 200,
-       // color: Colors.blue,
-        child: CustomImageView(
-            imagePath: getAttachmentUrl(item).url,
-            // height: 400.adaptSize,
-            // width: 400.adaptSize,
-             fit: BoxFit.cover,
-            radius: BorderRadius.circular(
-              05,
-            )
-        ),
-      );
-    if(item.type == MediaInputType.Video)
-      result =  VideoPlayerView(input: getAttachmentUrl(item), context: wcontext, key: Key(item.contentID+"_MsgCard"),);
+          //constraints: BoxConstraints.expand(width: 300),
+          // width: 200,
+          // color: Colors.blue,
+          child: CustomImageView(
+              imagePath: getAttachmentUrl(item).url,
+              // height: 400.adaptSize,
+              // width: 400.adaptSize,
+              fit: BoxFit.cover,
+              radius: BorderRadius.circular(
+                05,
+              )
+          ),
+        );
+      }
+    else if(item.type == MediaInputType.Video)
+      {
+       // result = FlickPlayer(key:Key(item.contentID+"_MsgCard") , input: getAttachmentUrl(item));
+        result = Container(
+          padding: EdgeInsets.all(5),
+          child: FlickPlayer(key:Key(item.contentID+"_MsgCard") , input: getAttachmentUrl(item), autoPlay: true, ),
+        );
+
+      }
+
+
 
     return result;
    // return ZoomWidget(result, item.id);

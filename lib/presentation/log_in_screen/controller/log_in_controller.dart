@@ -56,7 +56,8 @@ class LogInController extends GetxController {
         /// Set isLogin to true
         _authManager.login(response!);
         Get.toNamed(
-          AppRoutes.messageScreen,
+          //AppRoutes.messageScreen,
+          AppRoutes.homeScreen,
         );
 
       } else {

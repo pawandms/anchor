@@ -53,8 +53,6 @@ class ApiMessage{
       attachments: List.of(map["attachments"])
           .map((i) => Attachment.fromMap(i))
           .toList(),
-
-
       createdBy: map['createdBy'] == null? null : map['createdBy'] as String,
      // createdOn: map['createdOn'] == null ? DateTime.now() : DateTime.parse(map['createdOn']),
       createdOn: map['createdOn'] == null ? DateTime.now() : Helper.getLocalDateFromUtcDateString(map['createdOn']),
@@ -73,8 +71,8 @@ class ApiMessage{
     this.modifiedBy,
     this.modifiedOn,
   }) : attachments = attachments ?? [],
-  attachmentType = AttachmentType.Network
-  // msgAttribute = MsgAttribute(recipientCount: 0, readUserCount: 0)
+  attachmentType = AttachmentType.Network,
+   msgAttribute = MsgAttribute(recipientCount: 0, readUserCount: 0)
  ;
 
 }

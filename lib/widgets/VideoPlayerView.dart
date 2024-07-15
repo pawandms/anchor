@@ -29,7 +29,7 @@ class VideoPlayerView extends StatefulWidget {
     allowedScreenSleep,
        // required this.dataSourceType,
   }):   zoomAndPan = zoomAndPan ?? false,
-        showOptions = showOptions ?? false,
+        showOptions = showOptions ?? true,
         showControls = showControls?? true,
         allowFullScreen = allowFullScreen?? true,
         allowedScreenSleep = allowedScreenSleep ?? true
@@ -82,7 +82,7 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
       zoomAndPan: widget.zoomAndPan,
       showOptions: widget.showOptions,
       controlsSafeAreaMinimum: EdgeInsets.all(10),
-      showControls: false,
+      showControls: widget.showControls,
       allowFullScreen: widget.allowFullScreen,
       allowedScreenSleep: widget.allowedScreenSleep,
 
@@ -112,43 +112,15 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
       );
     */
 
-    return Padding(
-      padding: const EdgeInsets.all(1.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: _chewieController != null ?  Chewie(controller: _chewieController!)
-                    :  const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                  ],
-                )
-            ),
-          ),
-
-          /*
-           Expanded(
-               child: Center(
-                 child: _chewieController != null ?
-                 Chewie(controller: _chewieController!)
-          : const Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-      CircularProgressIndicator(),
-      SizedBox(height: 20),
-      Text('Loading'),
-      ],
-      ),
-      ),
-               )
-        */
-
-        ],
-      ),
+    return AspectRatio(
+        aspectRatio: 16 / 9,
+        child: _chewieController != null ?  Chewie(controller: _chewieController!)
+            :  const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+          ],
+        )
     )  ;
 
   }

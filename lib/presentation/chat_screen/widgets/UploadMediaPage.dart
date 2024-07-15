@@ -13,6 +13,7 @@ import '../../../data/models/media/MediaInput.dart';
 import '../../../data/models/message/Attachment.dart';
 import '../../../widgets/app_bar/appbar_leading_image.dart';
 import '../../../widgets/app_bar/custom_app_bar.dart';
+import '../../../widgets/flick_player.dart';
 import '../controller/chat_controller.dart';
 import 'MsgInputField.dart';
 
@@ -41,7 +42,9 @@ class UploadMediaPage extends StatelessWidget{
     mediaList.value.forEach((element) {
       print(element.key);
     }
+
     );
+    mediaList.refresh();
    }
 
   void deleteMediaInput(int itemKey)
@@ -67,7 +70,7 @@ class UploadMediaPage extends StatelessWidget{
   Widget build(BuildContext context) {
      return Obx (()=>  Column(
         mainAxisAlignment: MainAxisAlignment.start,
-       crossAxisAlignment: CrossAxisAlignment.start,
+      // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Flexible(
               flex: 3,
@@ -191,8 +194,6 @@ class UploadMediaPage extends StatelessWidget{
     }
     else if(media.type == MediaInputType.Image)
     {
-      print("file path:"+File(media.file!.path).uri.toString());
-
       return ClipRRect(
         borderRadius: BorderRadius.circular(24),
         child: GetPlatform.isWeb ?
@@ -211,7 +212,7 @@ class UploadMediaPage extends StatelessWidget{
         CustomImageView(
           imagePath: media.file!.path,
           imgType: ImageType.file,
-         fit: boxFit,
+         fit: BoxFit.fill,
          // height: 161.v,
          // width: 117.h,
           radius: BorderRadius.circular(
@@ -227,9 +228,10 @@ class UploadMediaPage extends StatelessWidget{
       ClipRRect(
         borderRadius: BorderRadius.circular(24),
         child: SizedBox.fromSize(
-          // size: const Size.fromRadius(144),
-            child: type == 0 ? VideoPlayerView(input: media,context:  context,key: Key(media.key.toString()), )
-                :VideoPlayerView(input: media,context:  context,key: Key(media.key.toString()+"_Selected"),)
+           child: type == 0 ? FlickPlayer(input: media,key: Key(media.key.toString()), autoPlay: false, )
+           : FlickPlayer(input: media,key: Key(media.key.toString()+"_Selected"), autoPlay: true, )
+            //child: type == 0 ? VideoPlayerView(input: media,context:  context,key: Key(media.key.toString()), )
+             //   :VideoPlayerView(input: media,context:  context,key: Key(media.key.toString()+"_Selected"),)
         ),
       ),
       );
@@ -277,7 +279,9 @@ class UploadMediaPage extends StatelessWidget{
     ApiMessage msg = new ApiMessage(id: msgID,  type: type, body: msgTxt,createdBy:myId , createdOn: DateTime.now(), modifiedBy: myId, modifiedOn: DateTime.now());
     if(mediaList.isNotEmpty)
     {
+      print('Convert Upload File to Attachment Object Started.....');
       List<Attachment> attachments =  Helper.convertMediaInputToAttachment(mediaList, myId);
+      print('Convert Upload File to Attachment Object Completed....');
       msg.attachments = attachments;
       msg.attachmentType = AttachmentType.Local;
 

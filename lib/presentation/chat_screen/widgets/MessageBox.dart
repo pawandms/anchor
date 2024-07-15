@@ -103,7 +103,7 @@ class MessageBox extends StatelessWidget {
               ),
             if(msg.attachments.isNotEmpty)
               SizedBox(
-                 // width: SizeUtils.width * 0.70,
+                  //width: SizeUtils.width * 0.70,
                   child: AttachmentBox(ctx: context, myId: myId, msg: msg )),
             Row(
               children: [
@@ -219,14 +219,14 @@ class MessageBox extends StatelessWidget {
     return Shadow(child: CustomImageView(
     imagePath: messageService.getContentUrl(img),
     height: 50.adaptSize,
-  width: 50.adaptSize,
-  fit: BoxFit.contain,
+    width: 50.adaptSize,
+    fit: BoxFit.contain,
   //border: Border.all(color: Colors.black),
-  margin: EdgeInsets.only(left: 05.h),
-  radius: BorderRadius.circular(
-  20.h,
-  ),
-  ));
+    margin: EdgeInsets.only(left: 05.h),
+    radius: BorderRadius.circular(
+    20.h,
+    ),
+    ));
 
   }
 
