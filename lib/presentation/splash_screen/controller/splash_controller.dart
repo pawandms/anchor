@@ -29,7 +29,7 @@ class SplashController extends GetxController {
       if(_authmanager.isLogged.isTrue)
       {
         Get.toNamed(
-          AppRoutes.messageScreen,
+          AppRoutes.homeScreen,
         );
       }
       else {

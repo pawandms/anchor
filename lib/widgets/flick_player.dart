@@ -97,6 +97,8 @@ class _FlickPlayerState extends State<FlickPlayer>
         flickVideoWithControls: FlickVideoWithControls(
           closedCaptionTextStyle: TextStyle(fontSize: 8),
          controls: FlickPortraitControls(
+           fontSize: 4,
+           //iconSize: 5,
 
         ),
 

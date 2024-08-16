@@ -1,6 +1,5 @@
-final Map<String, String> enUs = {
-
-  'greeting': 'Hello, How are you?',
+final Map<String, String> inHn = {
+  'greeting': 'नमस्ते आप कैसे हैं?',
   // Splash Screen
   "lbl_social": "Social",
 

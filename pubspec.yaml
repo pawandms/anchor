@@ -6,7 +6,8 @@ environment:
 dependencies: 
   flutter: 
     sdk: flutter
-  get:
+  get: ^4.6.6
+  #get: 5.0.0-release-candidate-6
   get_storage:
   connectivity_plus: ^5.0.2
   shared_preferences: ^2.2.2

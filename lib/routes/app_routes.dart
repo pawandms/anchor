@@ -173,7 +173,8 @@ class AppRoutes {
       bindings: [
         HomeScreenBinding(),
       ],
-      transition: Transition.cupertino,
+      //transition: Transition.cupertino,
+      middlewares: [RouteGuard()],
     ),
     GetPage(
       name: notificationScreen,

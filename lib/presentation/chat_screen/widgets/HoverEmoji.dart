@@ -112,6 +112,7 @@ class _HoverEmojiState extends State<HoverEmoji>
         AnimatedEmojis.thumbsUp,
         controller: controller,
         size: _size,
+        source: AnimatedEmojiSource.asset,
         onLoaded: (duration) {
           // Get the duration of the animation.
           controller.duration = duration;

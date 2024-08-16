@@ -1,11 +1,15 @@
 
 import 'dart:collection';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:intl/intl.dart';
 import '../../data/enums/MsgReactionType.dart';
+import '../../data/enums/MsgType.dart';
 import '../../data/models/media/MediaInput.dart';
+import '../../data/models/message/ApiMessage.dart';
 import '../../data/models/message/Attachment.dart';
 import '../../presentation/chat_screen/widgets/EmojiIcon.dart';
 import '../../presentation/chat_screen/widgets/HoverEmoji.dart';
@@ -163,9 +167,9 @@ class Helper{
     reactionItems.add(_getReactionItem(MsgReactionType.Love));
     reactionItems.add(_getReactionItem(MsgReactionType.Smile));
     reactionItems.add(_getReactionItem(MsgReactionType.Laugh));
-    reactionItems.add(_getReactionItem(MsgReactionType.Wink));
+   // reactionItems.add(_getReactionItem(MsgReactionType.Wink));
     reactionItems.add(_getReactionItem(MsgReactionType.Angry));
-    reactionItems.add(_getReactionItem(MsgReactionType.Sad));
+    //reactionItems.add(_getReactionItem(MsgReactionType.Sad));
     reactionItems.add(_getReactionItem(MsgReactionType.Surprised));
 
     return reactionItems;
@@ -197,11 +201,27 @@ class Helper{
           reactionWidgetList.add(reactionWidget);
 
       });
-      result =  Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          //crossAxisAlignment: CrossAxisAlignment.start,
-          children: reactionWidgetList
+
+    result =   Container(
+      child: Wrap(
+         // alignment: WrapAlignment.center,
+          children:reactionWidgetList ,
+        ),
+    );
+
+     /*
+      result =  Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+         //   mainAxisAlignment: MainAxisAlignment.start,
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: reactionWidgetList
+        ),
       );
+
+
+      */
+
 
 
     }
@@ -210,5 +230,216 @@ class Helper{
 
   }
 
+  int getMsgCategory(MsgType msgType, String myId, String msgCreator)
+  {
+    int result = 0;
+    if ((msgType == MsgType.System) || (msgType == MsgType.Notification))
+   {
+     result = 3;
+   }
+    else {
+      if (( null != msgCreator) || ( null != myId))
+     {
+       if (msgCreator == myId)
+       {
+         result = 1;
+
+       }
+       else {
+         result = 2;
+       }
+     }
+
+    }
+
+    return result;
+  }
+
+  Widget buildMsgBoxCard(ApiMessage msg, int msgType)
+  {
+    Widget result = SizedBox.shrink();
+
+    if( msgType == 1)
+    {
+      result = _buildMyMsgCard(msg);
+    }
+    else if (msgType == 2)
+    {
+      result = _buildSenderMsgCard(msg);
+    }
+    else if (msgType == 3)
+   {
+     result = _buildSystemMsgCard(msg);
+   }
+
+    return result;
+  }
+  Widget _buildMyMsgCard(ApiMessage msg)
+  {
+    return Card(
+      color: Colors.blue,
+      borderOnForeground: true,
+      elevation: 10.0,
+      surfaceTintColor: Colors.blue,
+      shadowColor: Colors.black,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0),
+            topLeft: Radius.circular(
+                18.0
+            ),
+            bottomRight: Radius.circular(
+                0
+            ),
+          )
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+      child: _buildMyMsgText(msg),
+    );
+  }
+
+  Widget _buildSenderMsgCard(ApiMessage msg)
+  {
+    return Card(
+      color: Colors.white,
+      borderOnForeground: true,
+      elevation: 10.0,
+      surfaceTintColor: Colors.redAccent,
+      shadowColor: Colors.blue,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0),
+            topLeft: Radius.circular(
+                18.0
+            ),
+            bottomRight: Radius.circular(
+                0
+            ),
+          )
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+      child: _buildSenderMsgText(msg),
+    );
+  }
+
+  Widget _buildSystemMsgCard(ApiMessage msg)
+  {
+    return Card(
+      color: Colors.blueGrey,
+      borderOnForeground: true,
+      elevation: 10.0,
+      surfaceTintColor: Colors.white,
+      shadowColor: Colors.black,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: const Radius.circular(10.0),
+            topRight: const Radius.circular(10.0),
+            topLeft: Radius.circular(
+                10.0
+            ),
+            bottomRight: Radius.circular(
+                10.0
+            ),
+          )
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+      child: _buildSystemMsgText(msg),
+    );
+  }
+  Widget buildMsgTxt(ApiMessage msg, int msgType)
+  {
+    Widget result = SizedBox.shrink();
+    if(msgType == 1)
+    {
+      // Build my Msg Txt
+      result = _buildMyMsgText(msg);
+    }
+    else if (msgType == 2)
+    {
+      // Build Sender Msg Txt
+     result =  _buildSenderMsgText(msg);
+    }
+    else if (msgType == 3)
+   {
+     // Build System Msg Txt
+     result = _buildSystemMsgText(msg);
+   }
+
+    return result;
+  }
+
+  Widget _buildMyMsgText(ApiMessage msg)
+  {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 24.0),
+          child: (msg.body.length > 10) ? Text(msg.body.trim(), style: TextStyle(color:Colors.white))
+              : Text(msg.body.trim()+"          ",
+            style:TextStyle(color: Colors.white)
+          ),
+        ),
+        Positioned(
+            bottom: 4,
+            right: 8,
+            child: Text(
+              DateFormat.jm().format(msg.createdOn),
+              style: TextStyle(color: Colors.white)
+            )
+        )
+
+      ],
+    );
+  }
+
+  Widget _buildSenderMsgText(ApiMessage msg)
+  {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 24.0),
+          child: (msg.body.length > 10) ? Text(msg.body.trim(), style: TextStyle(color:Colors.black87),)
+              : Text(msg.body.trim()+"          ",
+            style: TextStyle(color:Colors.black87),
+          ),
+        ),
+        Positioned(
+            bottom: 4,
+            right: 8,
+            child: Text(
+              DateFormat.jm().format(msg.createdOn),
+              style: TextStyle(color:Colors.black87),
+            )
+        )
+
+      ],
+    );
+  }
+
+  Widget _buildSystemMsgText(ApiMessage msg)
+  {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 24.0),
+          child: (msg.body.length > 10) ? Text(msg.body.trim(), style: TextStyle(color:Colors.white))
+              : Text(msg.body.trim()+"          ",
+              style:TextStyle(color: Colors.white)
+          ),
+        ),
+        Positioned(
+            bottom: 4,
+            right: 8,
+            child: Text(
+                DateFormat.jm().format(msg.createdOn),
+                style: TextStyle(color: Colors.white)
+            )
+        )
+
+      ],
+    );
+  }
 
 }

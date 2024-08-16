@@ -29,6 +29,7 @@ class _EmojiIconState extends State<EmojiIcon>
     with SingleTickerProviderStateMixin {
   late final AnimationController controller;
 
+
   @override
   void initState() {
     super.initState();
@@ -85,6 +86,7 @@ class _EmojiIconState extends State<EmojiIcon>
         AnimatedEmojis.thumbsUp,
         controller: controller,
         size: _size,
+        source: AnimatedEmojiSource.asset,
         onLoaded: (duration) {
           // Get the duration of the animation.
           controller.duration = duration;
@@ -97,6 +99,7 @@ class _EmojiIconState extends State<EmojiIcon>
         AnimatedEmojis.thumbsDown,
         controller: controller,
         size: _size,
+        source: AnimatedEmojiSource.asset,
         onLoaded: (duration) {
           // Get the duration of the animation.
           controller.duration = duration;
@@ -109,6 +112,7 @@ class _EmojiIconState extends State<EmojiIcon>
         AnimatedEmojis.redHeart,
         controller: controller,
         size: _size,
+        source: AnimatedEmojiSource.asset,
         onLoaded: (duration) {
           // Get the duration of the animation.
           controller.duration = duration;
@@ -121,6 +125,7 @@ class _EmojiIconState extends State<EmojiIcon>
         AnimatedEmojis.smile,
         controller: controller,
         size: _size,
+        source: AnimatedEmojiSource.asset,
         onLoaded: (duration) {
           // Get the duration of the animation.
           controller.duration = duration;
@@ -133,6 +138,7 @@ class _EmojiIconState extends State<EmojiIcon>
         AnimatedEmojis.laughing,
         controller: controller,
         size: _size,
+        source: AnimatedEmojiSource.asset,
         onLoaded: (duration) {
           // Get the duration of the animation.
           controller.duration = duration;
@@ -145,6 +151,7 @@ class _EmojiIconState extends State<EmojiIcon>
         AnimatedEmojis.wink,
         controller: controller,
         size: _size,
+        source: AnimatedEmojiSource.asset,
         onLoaded: (duration) {
           // Get the duration of the animation.
           controller.duration = duration;
@@ -157,6 +164,7 @@ class _EmojiIconState extends State<EmojiIcon>
         AnimatedEmojis.angry,
         controller: controller,
         size: _size,
+        source: AnimatedEmojiSource.asset,
         onLoaded: (duration) {
           // Get the duration of the animation.
           controller.duration = duration;
@@ -169,6 +177,7 @@ class _EmojiIconState extends State<EmojiIcon>
         AnimatedEmojis.sad,
         controller: controller,
         size: _size,
+        source: AnimatedEmojiSource.asset,
         onLoaded: (duration) {
           // Get the duration of the animation.
           controller.duration = duration;
@@ -181,6 +190,7 @@ class _EmojiIconState extends State<EmojiIcon>
         AnimatedEmojis.surprised,
         controller: controller,
         size: _size,
+        source: AnimatedEmojiSource.asset,
         onLoaded: (duration) {
           // Get the duration of the animation.
           controller.duration = duration;
@@ -193,6 +203,7 @@ class _EmojiIconState extends State<EmojiIcon>
         AnimatedEmojis.thumbsUp.withSkinTone(SkinTone.light),
         controller: controller,
         size: _size,
+        source: AnimatedEmojiSource.asset,
         onLoaded: (duration) {
           // Get the duration of the animation.
           controller.duration = duration;

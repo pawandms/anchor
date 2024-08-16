@@ -18,7 +18,7 @@ import '../../../widgets/custom_image_view.dart';
 import '../../messages_page/service/message_service.dart';
 import 'package:shadow/shadow.dart';
 
-class AttachmentBox extends StatelessWidget {
+class MsgAttachmentComponent extends StatelessWidget {
   final BuildContext ctx;
   final ApiMessage msg;
   final String myId;
@@ -26,7 +26,7 @@ class AttachmentBox extends StatelessWidget {
   //final Map<String,ChnlParticipent>userMap;
 
 
-   AttachmentBox({
+  MsgAttachmentComponent({
     super.key,
     required this.ctx,
     required this.myId,
@@ -37,16 +37,6 @@ class AttachmentBox extends StatelessWidget {
 
   @override
   Widget build(ctx) {
-    /*
-    const BoxDecoration chatBackgroundDecoration = BoxDecoration(
-        gradient: LinearGradient(
-            colors: [
-              Color(0xFFe3edff),
-              Color(0xFFcad8fd)
-            ]
-        )
-    );
-    */
     bool
     displayUserName = true,
         displayAvatar = true;
@@ -61,54 +51,22 @@ class AttachmentBox extends StatelessWidget {
     displayAvatar = displayUserName;
     //displayUserName = false;
 
-    return InkWell(
-      onLongPress: _enableMsgReactionMenu,
-      child: Row(
-        mainAxisAlignment: msg.createdBy == myId
-            ? MainAxisAlignment.end
-            : MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: msg.createdBy == myId
-                ? CrossAxisAlignment.end
-                : CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: (MediaQuery.of(ctx).size.width < 600) ? MediaQuery.of(ctx).size.width * 0.70 : MediaQuery.of(ctx).size.width * 0.60,
-                child: Align(
-                  alignment: msg.createdBy == myId
-                      ? Alignment.centerRight
-                      : Alignment.centerLeft,
-                  child:  //Obx(()=> _attachmentComponent(msg, ctx  )),
+    return Container(
+      //width: SizeUtils.width * 0.70,
+      child: InkWell(
+        onLongPress: _enableMsgReactionMenu,
+        child:  Container(
+           child:  Card(
+              // color: Colors.white,
+              borderOnForeground: true,
+              elevation: 10.0,
+              surfaceTintColor: Colors.white70,
+              shadowColor: Colors.white,
+              margin: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
+              child: Obx(()=> _attachmentComponent(msg, ctx  )),
+            )
+        )
 
-                  Card(
-                   // color: Colors.white,
-                    borderOnForeground: true,
-                    elevation: 10.0,
-                    surfaceTintColor: Colors.white70,
-                    shadowColor: Colors.white,
-                    /*
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: const Radius.circular(10.0),
-                          topRight: const Radius.circular(10.0),
-
-                        )
-                    ),
-
-                     */
-                    margin: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
-                    child: Obx(()=> _attachmentComponent(msg, ctx  )),
-                  ),
-
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }
@@ -158,11 +116,11 @@ class AttachmentBox extends StatelessWidget {
       }
 
     }
-    print ("Preparing attachment Box Items Completed.....with Item Size:"+items.length.toString());
-    return SizedBox(
-      //width: _width,
+  //  print ("Preparing attachment Box Items Completed.....with Item Size:"+items.length.toString());
+    return Container(
       child:
       GridView.count(
+
         shrinkWrap: true,
        // primary: true,
        // padding: const EdgeInsets.all(01),
@@ -170,15 +128,6 @@ class AttachmentBox extends StatelessWidget {
         mainAxisSpacing: 01,
         crossAxisCount: _crossAxisCount,
         children: items,
-       /*
-        children: List.generate(items.length, (index) =>
-            Container(
-              color: Colors.green,
-              alignment: Alignment.topLeft,
-              child: items[index]
-            )
-        ),
-        */
 
       ),
 
@@ -226,38 +175,8 @@ class AttachmentBox extends StatelessWidget {
           print("click on Attachmet with ID:"+attachment.contentID+" , for Msg:"+msg.id);
           openUploadPreviewDialog(msg, attachment);
         },
-        child:
-        Card(
-          color: Colors.white,
-          borderOnForeground: true,
-          elevation: 10.0,
-          surfaceTintColor: Colors.white,
-          shadowColor: Colors.black,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: const Radius.circular(10.0),
-                topRight: const Radius.circular(10.0),
-                topLeft: Radius.circular(18.0),
-                bottomRight: Radius.circular(18.0),
-              )
-          ),
-          //margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
-          child: media,
-        )
-       /*
-        SizedBox(
-          child: Shadow(
-            options: ShadowOptions(
-              offset: Offset(5, 5),
-              scale: 1,
-              blur: 4,
-            ),
-            child:media
-            ,
-          ),
-        ),
-       */
-      );
+        child: media
+        );
     }
     catch(e,stacktrace)
     {
@@ -277,8 +196,6 @@ class AttachmentBox extends StatelessWidget {
         },
         child: Stack(
           alignment: AlignmentDirectional.center,
-         //clipBehavior: Clip.antiAliasWithSaveLayer,
-         // fit: StackFit.expand,
           children: <Widget>[
             Shadow(
               options: ShadowOptions(
@@ -375,8 +292,21 @@ class AttachmentBox extends StatelessWidget {
 
   Widget _getMsgAttachmentItem(BuildContext wcontext,  Attachment item) {
     Widget result = SizedBox.shrink();
+    Widget itemwg = SizedBox.shrink();
+
+
     if(item.type == MediaInputType.Image)
       {
+        itemwg = CustomImageView(
+            imagePath: getAttachmentUrl(item).url,
+            // height: 400.adaptSize,
+            // width: 400.adaptSize,
+            fit: BoxFit.cover,
+            radius: BorderRadius.circular(
+              05,
+            )
+        );
+        /*
         result = Container(
           padding: EdgeInsets.all(5),
           child: CustomImageView(
@@ -389,20 +319,26 @@ class AttachmentBox extends StatelessWidget {
               )
           ),
         );
+
+         */
       }
     else if(item.type == MediaInputType.Video)
       {
-       // result = FlickPlayer(key:Key(item.contentID+"_MsgCard") , input: getAttachmentUrl(item));
+        itemwg = FlickPlayer(key:Key(item.contentID+"_MsgCard") , input: getAttachmentUrl(item), autoPlay: false, );
+
+        /*
         result = Container(
 
           padding: EdgeInsets.all(5),
-          child: FlickPlayer(key:Key(item.contentID+"_MsgCard") , input: getAttachmentUrl(item), autoPlay: true, ),
+          child: FlickPlayer(key:Key(item.contentID+"_MsgCard") , input: getAttachmentUrl(item), autoPlay: false, ),
         );
-
+        */
       }
 
-
-
+    result = Container(
+      padding: EdgeInsets.all(5),
+      child: itemwg,
+    );
     return result;
    // return ZoomWidget(result, item.id);
 

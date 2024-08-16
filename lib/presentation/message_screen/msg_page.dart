@@ -58,12 +58,12 @@ class MsgPage extends StatelessWidget
           shrinkWrap: true,
           separatorBuilder: (context, index) {
             return Padding(
-                padding: EdgeInsets.symmetric(vertical: 12.0.v),
+                padding: EdgeInsets.symmetric(vertical: 2.0.v),
                 child: SizedBox(
                     width: double.maxFinite,
                     child: Divider(
-                        height: 2.v,
-                        thickness: 2.v,
+                        height: 1.v,
+                        thickness: 1.v,
                         color: theme.colorScheme.secondaryContainer)));
           },
           itemCount:

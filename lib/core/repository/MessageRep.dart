@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/data/apiClient/api_client.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
+//import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 import 'package:loggy/loggy.dart';
 
 import '../../data/models/message/ChnlMsgResp.dart';
@@ -38,27 +38,7 @@ class MessageRep extends GetxService
         if(null != element.msgAttribute)
         {
           element.message.msgAttribute = element.msgAttribute!;
-          // If User reaction is not empty then populate Count by Reaction Type
-         /*
-          if(element.message.msgAttribute.userReaction.isNotEmpty)
-          {
-            // Step 1: Get unique values using a set
-            Set<String> uniqueValues = element.message.msgAttribute.userReaction.values.toSet();
-            // Step 2: Count occurrences of each unique value
-            Map<String, int> uniqueValueCounts = {};
-            for (var value in uniqueValues) {
-              int count = element.message.msgAttribute.userReaction.values.where((v) => v == value).length;
-              uniqueValueCounts[value] = count;
 
-              // Output the results
-              uniqueValueCounts.forEach((value, count) {
-                print('Value "$value" occurs $count times');
-              });
-              element.message.msgAttribute.userReactionByType = uniqueValueCounts;
-            }
-
-          }
-          */
         }
       });
     }catch(e)

@@ -5,14 +5,14 @@ class MsgAttribute{
 
   late int recipientCount = 0;
   late int readUserCount = 0;
-  RxMap<String,String> userReaction = RxMap();
+  late RxMap<String,String> userReaction;
 
   MsgAttribute(
       {
         required this.recipientCount,
         required this.readUserCount,
         userReaction,
-      });
+      }) : userReaction = userReaction ?? RxMap();
 
   Map<String, dynamic> toMap() {
     return {

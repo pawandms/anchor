@@ -373,6 +373,17 @@ class MessageService extends GetxService  {
 
    */
 
+  String getUserProfileUrl(MediaImage img)
+  {
+    String result = '';
+    if(null != img)
+    {
+      result = apiClient.getContentUrl(img.entityId, img.entityType);
+    }
+    return result;
+  }
+
+
 
   String getContentUrl(MediaImage img)
   {
