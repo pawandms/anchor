@@ -1,3 +1,6 @@
+import 'package:anchor_getx/presentation/splash_screen/controller/splash_controller.dart';
+import 'package:anchor_getx/presentation/splash_screen/splash_screen.dart';
+import 'package:anchor_getx/routes/app_pages.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +9,8 @@ import 'package:loggy/loggy.dart';
 
 import 'core/app_export.dart';
 import 'core/authentication_manager.dart';
+import 'modules/splash/controllers/splash_service.dart';
+import 'modules/splash/views/splash_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,17 +28,8 @@ Future<void> main() async {
     ),
   );
   runApp(MyApp());
-  /*
-  SystemChrome.setPreferredOrientations([
-    //DeviceOrientation.portraitUp,
-    DeviceOrientation.landscapeLeft,
-    //DeviceOrientation.landscapeRight,
-  ]).then((value) {
 
-    runApp(MyApp());
-  });
 
-   */
 }
 
 class MyApp extends StatelessWidget {
@@ -41,7 +37,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
-      return GetMaterialApp(
+      return GetMaterialApp.router(
         debugShowCheckedModeBanner: false,
        theme: ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -52,9 +48,26 @@ class MyApp extends StatelessWidget {
         fallbackLocale: Locale('en', 'US'),
         title: 'anchor_getx',
         initialBinding: InitialBindings(),
-        initialRoute: AppRoutes.initialRoute,
-        getPages: AppRoutes.pages,
+          getPages: AppPages.routes,
+          /*
+          builder: (context, child) {
+            return FutureBuilder<void>(
+             // key: ValueKey('initFuture'),
+              future: Get.find<SplashService>().init(),
+             // future: Get.find<SplashController>().init(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return child ?? SizedBox.shrink();
+                }
+                return SplashView();
+               // return SplashScreen();
+              },
+            );
+          }
+          */
       );
     });
   }
 }
+
+

@@ -62,7 +62,7 @@ class MsgAttachmentComponent extends StatelessWidget {
               elevation: 10.0,
               surfaceTintColor: Colors.white70,
               shadowColor: Colors.white,
-              margin: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
+              margin: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
               child: Obx(()=> _attachmentComponent(msg, ctx  )),
             )
         )
@@ -293,8 +293,6 @@ class MsgAttachmentComponent extends StatelessWidget {
   Widget _getMsgAttachmentItem(BuildContext wcontext,  Attachment item) {
     Widget result = SizedBox.shrink();
     Widget itemwg = SizedBox.shrink();
-
-
     if(item.type == MediaInputType.Image)
       {
         itemwg = CustomImageView(
@@ -324,7 +322,7 @@ class MsgAttachmentComponent extends StatelessWidget {
       }
     else if(item.type == MediaInputType.Video)
       {
-        itemwg = FlickPlayer(key:Key(item.contentID+"_MsgCard") , input: getAttachmentUrl(item), autoPlay: false, );
+        itemwg = FlickPlayer(key:Key(item.contentID+"_MsgCard") , input: getAttachmentUrl(item), autoPlay: true, );
 
         /*
         result = Container(
@@ -336,7 +334,7 @@ class MsgAttachmentComponent extends StatelessWidget {
       }
 
     result = Container(
-      padding: EdgeInsets.all(5),
+      padding: EdgeInsets.all(3),
       child: itemwg,
     );
     return result;

@@ -286,7 +286,8 @@ class UploadMediaPage extends StatelessWidget{
       msg.attachmentType = AttachmentType.Local;
 
     }
-    Navigator.pop(Get.overlayContext!, true);
+    Get.rootDelegate.popRoute();
+    //Navigator.pop(Get.overlayContext!, true);
    // Get.back(closeOverlays: true);
     chatController.addNewMessageToChat(msg);
 

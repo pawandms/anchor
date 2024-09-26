@@ -197,6 +197,7 @@ final Map<String, String> enUs = {
   "lbl_steven_ford": "Steven Ford",
   "lbl_stories": "Stories",
   "lbl_streams": "Streams",
+  "lbl_products": "Products",
   "lbl_trending": "Trending",
   "lbl_vrindha": "Vrindha",
   "lbl_windy_wandah": "Windy Wandah",

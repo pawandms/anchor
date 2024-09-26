@@ -204,7 +204,7 @@ class Helper{
 
     result =   Container(
       child: Wrap(
-         // alignment: WrapAlignment.center,
+          alignment: WrapAlignment.start,
           children:reactionWidgetList ,
         ),
     );
@@ -294,7 +294,7 @@ class Helper{
             ),
           )
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+      margin: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
       child: _buildMyMsgText(msg),
     );
   }
@@ -344,7 +344,7 @@ class Helper{
             ),
           )
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+      margin: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
       child: _buildSystemMsgText(msg),
     );
   }

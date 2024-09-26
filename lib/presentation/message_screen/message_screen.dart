@@ -111,7 +111,8 @@ class MessageScreen extends GetView<MessageScreenController> {
 
   /// Navigates to the previous screen.
   onTapArrowBack() {
-    Get.back();
+    //Get.back();
+    Get.rootDelegate.popRoute();
   }
 
    onChannelSelection(String selectedChannelId)

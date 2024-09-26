@@ -5,19 +5,33 @@ import '../presentation/log_in_screen/models/login_response_model.dart';
 import 'cache_manager.dart';
 
 class AuthenticationManager extends GetxService with CacheManager {
-
   Future<AuthenticationManager> init() async => this;
-  final isLogged = false.obs;
+ // static AuthenticationManager get to => Get.find();
 
-  void logOut() {
+  final isLogged = false.obs;
+  bool get isLoggedInValue => isLogged.value;
+
+  Future<void> logOut() async {
+    await removeLoginResp();
     isLogged.value = false;
     //removeToken();
   }
 
   void login(LoginResponseModel resp) async {
-    isLogged.value = true;
     //Token is cached
     await saveLoginResp(resp);
+    isLogged.value = true;
+
+  }
+
+  bool isUserLoggedIn()
+  {
+    bool result = false;
+    final resp = getLoginResp();
+    if (resp != null) {
+      result = true;
+    }
+    return result;
   }
 
   void checkLoginStatus() {

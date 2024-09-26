@@ -1,10 +1,12 @@
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/data/models/channel/UserChannel.dart';
+import 'package:flutter/material.dart';
 import 'package:loggy/loggy.dart';
 
 import '../../../core/constants/AppConfig.dart';
 import '../../../core/service/AudioService.dart';
 import '../../../data/models/message/ApiMessage.dart';
+import '../../../routes/app_pages.dart';
 import '../../messages_page/service/message_service.dart';
 
 /// A controller class for the InviteFriendsScreen.
@@ -15,8 +17,11 @@ class MessageScreenController extends  GetxController  {
   late final MessageService messageService;
   //late final EventService eventService;
   late RxMap<String,UserChannel> userChnlMap =  RxMap<String,UserChannel>();
+  late Map<String,UserChannel> searchChnlMap = Map();
+  TextEditingController searchController = TextEditingController();
 
- //RxList<UserChannel> channel = <UserChannel>[].obs;
+
+  //RxList<UserChannel> channel = <UserChannel>[].obs;
   Rx<bool> isLoading = false.obs;
 
   @override
@@ -27,17 +32,19 @@ class MessageScreenController extends  GetxController  {
     getUserChannel();
 
   }
-
-
   Future<void> getUserChannel()
   async {
     try{
       userChnlMap.value = await messageService.getUserChannels();
-      userChnlMap.value.forEach((key, value) {
+      searchChnlMap = Map.fromEntries(userChnlMap.entries);
+      print("User Channel Map Size:"+userChnlMap.length.toString()+" , Search Size:"+searchChnlMap.length.toString());
+
+      /*userChnlMap.value.forEach((key, value) {
         String unreadDate = null != value.unReadDate ? value.unReadDate.toString() : 'Null';
         String unreadMsgID = null != value.unReadMsgID ? value.unReadMsgID.toString() : 'Null';
         print("Name:"+value.name+", UnReadCount:"+value.unreadCount.toString()+", UnReadDate:$unreadDate , UnreadMsgID:$unreadMsgID");
-      });
+      });*/
+
       //userChnlMap.refresh();
     }
     catch(e, stacktrace )
@@ -50,8 +57,8 @@ class MessageScreenController extends  GetxController  {
   void setSelectedChannel(String chnlID)
   {
     // selectedChnl = Rx(userChnlMap[chnlID]!);
-    Get.toNamed(AppRoutes.chatScreen,
-        parameters: {"chnlID" : chnlID});
+    //Get.toNamed(AppRoutes.chatScreen, parameters: {"chnlID" : chnlID});
+    Get.rootDelegate.toNamed(Routes.CHAT_DETAILS(chnlID), parameters: {"chnlID" : chnlID});
   }
 
 
@@ -85,4 +92,18 @@ class MessageScreenController extends  GetxController  {
     }
   }
 
+  void messageScreenSearch(String searchString)
+  {
+    if(searchString.isEmpty)
+    {
+      userChnlMap.value = searchChnlMap;
+    }
+    else if((searchString.isNotEmpty) && (searchString.length >= 2))
+    {
+      userChnlMap.value = Map.fromEntries(searchChnlMap.entries.where((element) => element.value.name.isCaseInsensitiveContains(searchString)));
+     // print('Searching for Value:$searchString , With Result Count:'+userChnlMap.value.length.toString());
+    }
+
+
+  }
 }

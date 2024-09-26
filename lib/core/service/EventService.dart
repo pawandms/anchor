@@ -38,7 +38,7 @@ class EventService extends GetxService{
   void processEvent(String subjet, String data)
   {
     try{
-      print("Revent Event Details are :"+data);
+      print("Event Event Details are :"+data);
       Map<String,dynamic> jsonMap = jsonDecode(data);
       Event event =  Event.fromMap(jsonMap);
     if( null == messageService)
@@ -59,7 +59,6 @@ class EventService extends GetxService{
           case EventType.Chnl_Add_Msg:
             processMsgAddToChnl(logInUser, event);
           break;
-
           default:
 
         }
@@ -85,7 +84,7 @@ class EventService extends GetxService{
        setMsgNotificationOnMsgScreen(event);
 
        //Set Msg Notification on Chat Screen if Chat is open for Same Channel
-       setMsgNotificationOnChatScreen(event);
+      // setMsgNotificationOnChatScreen(event);
 
       //messageService?.addNewMsgToChnl(event.entityId, event.message);
      }

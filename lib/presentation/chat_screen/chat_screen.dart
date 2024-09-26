@@ -110,12 +110,11 @@ class ChatScreen extends GetView<ChatController> {
     return Expanded(
       flex: 6,
       child: ChatListPage(myId, messages,userMap, itemScrollController, chatItemVisibilityChangeListener, context, initialScrollIndex, controller.emojiCallbackFunctionForUser),
-    //  child: ChatItemPage(myId: myId, msgs: messages, userMap: userMap), -- Item detection not working
-    );
+       );
   }
-
   /// Navigates to the previous screen.
   onTapClose() {
-    Get.back();
+   // Get.back();
+    Get.rootDelegate.popRoute();
   }
 }

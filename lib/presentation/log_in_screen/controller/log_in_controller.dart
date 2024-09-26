@@ -5,6 +5,7 @@ import 'package:loggy/loggy.dart';
 
 import '../../../core/authentication_manager.dart';
 import '../../../core/utils/my_dialog.dart';
+import '../../../routes/app_pages.dart';
 import '../models/login_request_model.dart';
 import '../service/login_service.dart';
 
@@ -24,10 +25,17 @@ class LogInController extends GetxController {
 
   Rx<bool> isShowPassword = true.obs;
   Rx<bool> isLoading = false.obs;
+  String toUrl = '';
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+
+    if(Get.parameters.containsKey('then'))
+    {
+      toUrl = Get.parameters['then']!;
+    }
+
     _loginService = Get.put(LoginService());
   //  _loginService = Get.find();
     emailController.text = 'user1@anchor.com';
@@ -55,10 +63,15 @@ class LogInController extends GetxController {
       if ((response != null) & (response?.valid == true)) {
         /// Set isLogin to true
         _authManager.login(response!);
-        Get.toNamed(
-          //AppRoutes.messageScreen,
-          AppRoutes.homeScreen,
-        );
+        if(toUrl.isNotEmpty)
+        {
+         // Get.offNamed(toUrl);
+          Get.rootDelegate.offNamed(toUrl);
+        }
+        else {
+          //Get.offNamed(Routes.HOME);
+          Get.rootDelegate.offNamed(Routes.HOME);
+        }
 
       } else {
         if( null != response)

@@ -90,19 +90,6 @@ class ProfileBoxWidget extends StatelessWidget {
                      onPressed: () {},
                    ),
                  ),
-
-
-                 CircleAvatar(
-                   backgroundColor: Colors.blue,
-                   radius: 20,
-                   child: IconButton(
-                     padding: EdgeInsets.zero,
-                     icon: Icon(IconData(0xe492, fontFamily: 'MaterialIcons')),
-                     color: Colors.white,
-                     onPressed: () {},
-                   ),
-                 ),
-
                  CircleAvatar(
                    backgroundColor: Colors.blue,
                    radius: 20,

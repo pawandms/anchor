@@ -1,5 +1,8 @@
+import 'package:anchor_getx/presentation/search_screen/widgets/contactsearches_item_widget.dart';
+
 import '../search_screen/widgets/recentsearches_item_widget.dart';
 import 'controller/search_controller.dart';
+import 'models/contact_item_model.dart';
 import 'models/recentsearches_item_model.dart';
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/widgets/app_bar/appbar_leading_image.dart';
@@ -16,14 +19,15 @@ class SearchScreen extends GetWidget<SearchController> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: _buildAppBar(),
-        body: Container(
-          width: double.maxFinite,
-          padding: EdgeInsets.symmetric(vertical: 20.v),
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      appBar: _buildAppBar(),
+      body: Container(
+        width: double.maxFinite,
+        padding: EdgeInsets.symmetric(vertical: 20.v),
+        child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Align(
                 alignment: Alignment.centerLeft,
@@ -41,6 +45,7 @@ class SearchScreen extends GetWidget<SearchController> {
                 child: CustomSearchView(
                   controller: controller.searchController,
                   hintText: "lbl_search".tr,
+                  onChanged:controller.searchString ,
                 ),
               ),
               SizedBox(height: 28.v),
@@ -50,17 +55,6 @@ class SearchScreen extends GetWidget<SearchController> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  /// Section Widget
-  PreferredSizeWidget _buildAppBar() {
-    return CustomAppBar(
-      leadingWidth: double.maxFinite,
-      leading: AppbarLeadingImage(
-        imagePath: ImageConstant.imgVector,
-        margin: EdgeInsets.fromLTRB(19.h, 16.v, 377.h, 16.v),
       ),
     );
   }
@@ -89,6 +83,20 @@ class SearchScreen extends GetWidget<SearchController> {
   }
 
   /// Section Widget
+  PreferredSizeWidget _buildAppBar() {
+    return CustomAppBar(
+      leadingWidth: double.maxFinite,
+      leading: AppbarLeadingImage(
+        imagePath: ImageConstant.imgVector,
+        margin: EdgeInsets.fromLTRB(19.h, 16.v, 377.h, 16.v),
+        onTap: () => {
+        Get.rootDelegate.popRoute()
+        },
+      ),
+    );
+  }
+
+  /// Section Widget
   Widget _buildRecentSearches() {
     return Obx(
       () => ListView.separated(
@@ -99,7 +107,7 @@ class SearchScreen extends GetWidget<SearchController> {
           index,
         ) {
           return Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0.v),
+            padding: EdgeInsets.symmetric(vertical: 2.0.v),
             child: SizedBox(
               width: double.maxFinite,
               child: Divider(
@@ -110,12 +118,11 @@ class SearchScreen extends GetWidget<SearchController> {
             ),
           );
         },
-        itemCount:
-            controller.searchModelObj.value.recentsearchesItemList.value.length,
+        itemCount:controller.recentsearchesItemList.value.length,
+           // controller.searchModelObj.value.recentsearchesItemList.value.length,
         itemBuilder: (context, index) {
-          RecentsearchesItemModel model = controller
-              .searchModelObj.value.recentsearchesItemList.value[index];
-          return RecentsearchesItemWidget(
+          ContactItemModel model = controller.recentsearchesItemList.value[index];
+          return ContactsearchesItemWidget(
             model,
           );
         },

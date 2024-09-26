@@ -99,7 +99,7 @@ class ChatListPage extends StatelessWidget{
         key: ValueKey(index),
         child:
         MessageBox( context: context,myId: myId, msg: item, userMap: userMap, emojiCallbackFunction: this.emojiCallbackFunction),
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(2),
       ),
     );
   }

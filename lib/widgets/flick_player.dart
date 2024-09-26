@@ -17,13 +17,14 @@ class FlickPlayer extends StatefulWidget
   bool autoPlay;
   bool isMute;
   String url = 'https://github.com/GeekyAnts/flick-video-player-demo-videos/blob/master/example/iceland_compressed.mp4?raw=true';
+  Key key;
   FlickPlayer(
       {
-        super.key,
+        required this.key,
         required this.input,
         this.autoPlay = false,
         this.isMute = true,
-      });
+      }) : super(key: key);
 
   @override
   State<FlickPlayer> createState() => _FlickPlayerState();
@@ -45,7 +46,6 @@ class _FlickPlayerState extends State<FlickPlayer>
     {
       if(GetPlatform.isWeb)
       {
-
         _videoPlayerController = VideoPlayerController.asset(widget.input.file!.path);
         //_videoPlayerController = VideoPlayerController.file(File(widget.input.file!.path));
       }
@@ -59,8 +59,6 @@ class _FlickPlayerState extends State<FlickPlayer>
       autoPlay: widget.autoPlay,
       videoPlayerController: _videoPlayerController,
     );
-
-
     if(widget.isMute)
     {
       flickManager.flickControlManager?.mute();
@@ -94,11 +92,14 @@ class _FlickPlayerState extends State<FlickPlayer>
       },
       child: FlickVideoPlayer(
         flickManager: flickManager,
+        webKeyDownHandler: (event, manager) {
+          return null;
+        },
         flickVideoWithControls: FlickVideoWithControls(
-          closedCaptionTextStyle: TextStyle(fontSize: 8),
+          closedCaptionTextStyle: TextStyle(fontSize: 4),
          controls: FlickPortraitControls(
-           fontSize: 4,
-           //iconSize: 5,
+           fontSize: 2,
+           iconSize: 10,
 
         ),
 

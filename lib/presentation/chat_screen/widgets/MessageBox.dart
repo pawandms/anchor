@@ -43,7 +43,7 @@ class MessageBox extends StatelessWidget {
   @override
   Widget build(context) {
     return Container(
-      padding: EdgeInsets.only(left: 14,right: 14,top: 10,bottom: 10),
+      padding: EdgeInsets.only(left: 02,right: 02,top: 10,bottom: 5),
       child: _buildMsgWidget(context, myId, msg),
     );
   }
@@ -53,24 +53,15 @@ class MessageBox extends StatelessWidget {
   {
     Widget result = SizedBox.shrink();
     Widget msgComponent = SizedBox.shrink();
-    int leftFlex = 0;
-    int rightFlex = 0;
-    bool isMyMsg;
     int msgType = helper.getMsgCategory(msg.type, myId, msg.createdBy!);
     if(msgType > 0)
    {
      if(msgType == 1)
       {
-        isMyMsg = true;
-        leftFlex = 1;
-        rightFlex = 2;
         msgComponent = _buildMyMsgComponent(_context, myId, msg, msgType);
       }
      else if (msgType == 2)
      {
-       leftFlex = 2;
-       rightFlex = 1;
-       isMyMsg = false;
        msgComponent =  _buildSenderMsgComponent(_context, myId, msg, msgType);
      }
      else if (msgType == 3)
@@ -98,7 +89,7 @@ class MessageBox extends StatelessWidget {
                child: SizedBox.shrink()
            ),
            Expanded(
-               flex: 2,
+               flex: 3,
                child: msgComponent
            )
          ],
@@ -118,7 +109,7 @@ class MessageBox extends StatelessWidget {
 
             ),
             Expanded(
-                flex: 2,
+                flex: 3,
                 child: msgComponent
             ),
             Expanded(
@@ -290,7 +281,7 @@ class MessageBox extends StatelessWidget {
 
   Widget _buildReactionStatusWidget(ApiMessage msg)
   {
-   return Obx(() =>  Padding(padding: EdgeInsets.only(top: 5, right: 20),
+   return Obx(() =>  Padding(padding: EdgeInsets.only(top: 5, right: 5),
       child: _getReactionWidget(msg.id, msg.msgAttribute.userReaction),
     ));
   }
@@ -538,7 +529,7 @@ class MessageBox extends StatelessWidget {
           String userProfileUrl = messageService.getUserProfileUrl(cp.profileImage!);
           if(userProfileUrl.isNotEmpty)
           {
-            //profileUrl = userProfileUrl;
+            profileUrl = userProfileUrl;
           }
         }
 

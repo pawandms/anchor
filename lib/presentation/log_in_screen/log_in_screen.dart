@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 
 // ignore_for_file: must_be_immutable
 class LogInScreen extends GetWidget<LogInController> {
-  LogInScreen({required Key key}) : super(key: key);
+  //LogInScreen({required Key key}) : super(key: key);
+  LogInScreen({super.key});
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 

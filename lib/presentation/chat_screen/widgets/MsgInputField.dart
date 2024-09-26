@@ -352,7 +352,9 @@ class MsgInputField extends StatelessWidget{
         || (type == ContentSourceType.Camera)
     )
     {
-      Navigator.pop(context);
+      //Navigator.pop(context);
+      Get.rootDelegate.popRoute();
+
       print("Icon Selected with Type:"+type.name);
       List<XFile>? _paths = [] ;
       try {

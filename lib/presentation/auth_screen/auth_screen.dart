@@ -1,3 +1,4 @@
+import '../../routes/app_pages.dart';
 import 'controller/auth_controller.dart';
 import 'package:anchor_getx/core/app_export.dart';
 import 'package:anchor_getx/widgets/custom_elevated_button.dart';
@@ -194,15 +195,23 @@ class AuthScreen extends GetWidget<AuthController> {
 
   /// Navigates to the logInScreen when the action is triggered.
   onTapLogIn() {
+    Get.rootDelegate.toNamed(Routes.LOGIN);
+    /*
     Get.toNamed(
       AppRoutes.logInScreen,
     );
+
+     */
   }
 
   /// Navigates to the signUpScreen when the action is triggered.
   onTapSignUp() {
+    Get.rootDelegate.toNamed(Routes.SIGNUP_SCREEN);
+   /*
     Get.toNamed(
       AppRoutes.signUpScreen,
     );
+
+    */
   }
 }

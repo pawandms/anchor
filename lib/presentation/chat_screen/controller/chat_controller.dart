@@ -25,6 +25,7 @@ import '../models/scroll_location.dart';
 /// current chatModelObj
 class ChatController extends GetxController {
 
+
  // Rx<ChatModel> chatModelObj = ChatModel().obs;
   late String selectedChnlID;
   late Rx<UserChannel> chnl;
@@ -43,14 +44,16 @@ class ChatController extends GetxController {
   // Chat Message Item Position Listener
   final itemPositionsListener = ItemPositionsListener.create();
   late ChatScrollPosition chatScrollPosition = new ChatScrollPosition(initFlag: false);
+
   @override
   onInit()  async {
-
-    selectedChnlID = Get.parameters['chnlID']!;
+    selectedChnlID = Get.parameters['channelId']!;
     apiClient = Get.find<ApiClient>();
     messageService = Get.find<MessageService>();
     prepareData();
- //   addItemPositionListenerToMsgController();
+    Get.log('ChatController created with id: $selectedChnlID');
+
+    //   addItemPositionListenerToMsgController();
   }
 
 

@@ -4,7 +4,7 @@ import '../../../core/app_export.dart';
 class RecentsearchesItemModel {
   RecentsearchesItemModel({
     this.kevinAllsrub,
-    this.kevinAllsrub1,
+    required this.kevinAllsrub1,
     this.yourEFriendsOn,
     this.id,
   }) {
