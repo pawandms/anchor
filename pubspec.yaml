@@ -58,13 +58,15 @@ flutter:
     - assets/
     - assets/images/
     - assets/sound/
-    - packages/animated_emoji/lottie/rocket.json
-    - packages/animated_emoji/lottie/victory.json
-    - packages/animated_emoji/lottie/waveDark.json
-    - packages/animated_emoji/lottie/brokenHeart.json
+    - packages/animated_emoji/lottie/thumbsUp.json
+    - packages/animated_emoji/lottie/thumbsDown.json
+    - packages/animated_emoji/lottie/redHeart.json
     - packages/animated_emoji/lottie/smile.json
-    - packages/animated_emoji/lottie/rocket.json
-    - packages/animated_emoji/lottie/sunglassesFace.json
+    - packages/animated_emoji/lottie/laughing.json
+    - packages/animated_emoji/lottie/wink.json
+    - packages/animated_emoji/lottie/angry.json
+    - packages/animated_emoji/lottie/sad.json
+    - packages/animated_emoji/lottie/surprised.json
 
   fonts: 
     - family: Inter

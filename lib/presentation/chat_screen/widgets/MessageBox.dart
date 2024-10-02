@@ -316,115 +316,6 @@ class MessageBox extends StatelessWidget {
     );
   }
 
-
-/*
-  Widget _buildMsgStatusComponent(ApiMessage msg, bool isSender)
-  {
-    Widget result = SizedBox.shrink();
-    if(isSender)
-    {
-      result = Obx(() =>   Align(
-         heightFactor: 3,
-         widthFactor: 2,
-          alignment: AlignmentDirectional.bottomStart,
-          child:
-          _getMsgStatus(msg.msgEvent.value)
-
-      ));
-    }
-
-
-    return result;
-  }
-
- */
-   /*
-  @override
-  Widget build(context) {
-    const BoxDecoration chatBackgroundDecoration = BoxDecoration(
-        gradient: LinearGradient(
-            colors: [
-              Color(0xFFe3edff),
-              Color(0xFFcad8fd)
-            ]
-        )
-    );
-
-    bool
-    displayUserName = true,
-        displayAvatar = true;
-
-    if (msg.createdBy == myId){
-      displayUserName = false;
-    } else
-      {
-        displayUserName = true;
-      }
-
-    displayAvatar = displayUserName;
-    //displayUserName = false;
-
-    return Obx(() => Row(
-      mainAxisAlignment: msg.createdBy == myId
-          ? MainAxisAlignment.end
-          : MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (displayAvatar)
-          Padding(
-            padding: const EdgeInsets.only(top: 12.0, left: 8.0),
-            child: getUserProfileImage(msg.createdBy!)
-
-          ),
-        if (!displayAvatar)
-          const SizedBox(width: 40),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: msg.createdBy == myId
-              ? CrossAxisAlignment.end
-              : CrossAxisAlignment.start,
-          children: [
-            if (displayUserName)
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0, top: 10),
-                child: Text( getUserName(msg.createdBy!),
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: Colors.blueAccent,
-                  ),
-                ),
-              ),
-            if(msg.attachments.isNotEmpty)
-              SizedBox(
-                  //width: SizeUtils.width * 0.70,
-                  child: AttachmentBox(ctx: context, myId: myId, msg: msg )),
-            Row(
-              children: [
-                _prepareReactionWidget(myId, msg),
-               // _generateMessageBox(msg),
-                Align(
-                    heightFactor: 3,
-                    widthFactor: 2,
-                    alignment: AlignmentDirectional.bottomStart,
-                    child:
-                    //  msg.actionType == MsgActionType.Sending ?
-                    _getMsgStatus(msg.msgEvent.value)
-
-                ),
-
-              ],
-            ),
-            Padding(padding: EdgeInsets.only(top: 5, right: 20),
-              child: _getReactionWidget(msg.id, msg.msgAttribute.userReaction),
-            )
-
-          ],
-        ),
-
-
-      ],
-    ));
-  }
-  */
   Widget _getMsgStatus(MsgEventType type)
   {
     Widget result = SizedBox.shrink();
@@ -460,18 +351,6 @@ class MessageBox extends StatelessWidget {
         ),
       );
     }
-
-    /*
-    else  if(type == MsgEventType.View)
-    {
-      result =  Icon(
-        Icons.fact_check_outlined,
-        size: 20,
-        color: Colors.blue,
-      );
-    }
-
-     */
    return result;
 
   }
@@ -648,66 +527,10 @@ class MessageBox extends StatelessWidget {
     );
   }
 
-  /*
-  ReactionButton<String> _prepareReactionWidget(String myId, ApiMessage msg)
-  {
-    Map<String,String> reactionTypeMap =  msg.msgAttribute.userReaction.value;
-
-    MsgReactionType curReaction = MsgReactionType.Like;
-    // find If Reaction is already done by Current user
-    if( reactionTypeMap.containsKey(myId))
-    {
-      String reacTxt = reactionTypeMap[myId]!;
-      curReaction =  MsgReactionTypeExtension.getType(reacTxt);
-    }
-
-    Widget msgBox = _generateMessageBox(msg);
-    return helper.buildReactionWidget(msg.id, curReaction, msgBox, _emojiCallbackFunction);
-
-  }
-  void _reactionWidgetCallBackFunction(Reaction<String>? reaction)
-  {
-    print('Current Selected Reaction is :${reaction?.value}');
-  }
-
-  */
   Widget _getReactionWidget(String msgId, Map<String, String> reactionTypeMap)
   {
     print("Builing Reaction Tile for MsgID:${msgId}, with ReactionMap:${reactionTypeMap.length} ");
    return  helper.getReactionWidget(msgId, reactionTypeMap, _emojiCallbackFunction);
-
-    /*
-    Widget result = SizedBox.shrink();
-    Map<String, int> emojiValueCounts = {};
-    if(reactionTypeMap.isNotEmpty)
-    {
-      // Step 1: Get unique values using a set
-      Set<String> uniqueValues = reactionTypeMap.values.toSet();
-      // Step 2: Count occurrences of each unique value
-      uniqueValues.forEach((value) {
-
-        int count = reactionTypeMap.values.where((v) => v == value).length;
-        emojiValueCounts[value] = count;
-      });
-      List<Widget> reactionWidgetList = [];
-
-      emojiValueCounts.forEach((key, value) {
-        MsgReactionType emojiType = MsgReactionTypeExtension.getType(key);
-        Widget reactionWidget = HoverEmoji(msgId: msgId, emojiType: emojiType, size: 25, itemCount: value, callbackFunction: _emojiCallbackFunction, );
-        reactionWidgetList.add(reactionWidget);
-      });
-      result =  Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //crossAxisAlignment: CrossAxisAlignment.start,
-          children: reactionWidgetList
-      );
-
-
-    }
-
-
-    return result;
-    */
   }
 
   void _emojiCallbackFunction(String msgId, MsgReactionType emojiType)
@@ -716,92 +539,4 @@ class MessageBox extends StatelessWidget {
     emojiCallbackFunction(this.myId, msgId, emojiType);
   }
 
-  /*
-  Widget _buildEmojiIcon(MsgReactionType type)
-  {
-   return  Container(
-     padding: EdgeInsets.all(2),
-     width: 50.0,
-     height: 50.0,
-    decoration: BoxDecoration(
-       shape: BoxShape.circle,
-       //border: Border.all(color: Colors.black)
-      ),
-      child: EmojiIcon(emojiType: type),
-
-    );
-  }
-
-  Widget _generateMessageBox(ApiMessage msg)
-  {
-    return SizedBox(
-      width: SizeUtils.width * 0.76,
-      child: Align(
-        alignment: msg.createdBy == myId
-            ? Alignment.centerRight
-            : Alignment.centerLeft,
-        child: InkWell(
-          onTap: (){
-            if(msg.msgEvent.value == MsgEventType.Sending)
-            {
-              msg.msgEvent.value = MsgEventType.Sent;
-              print("click on Msg Box with ID:"+msg.id+" , with MsgType:"+msg.msgEvent.value.name);
-
-            }
-            else if (msg.msgEvent.value == MsgEventType.Sent)
-            {
-              msg.msgEvent.value = MsgEventType.Sending;
-              print("click on Msg Box with ID:"+msg.id+" , with MsgType:"+msg.msgEvent.value.name);
-            }
-            else {
-              msg.msgEvent.value = MsgEventType.Sending;
-              print("click on Msg Box with ID:"+msg.id+" , with MsgType:"+msg.msgEvent.value.name);
-            }
-          },
-          child: Card(
-            color: msg.createdBy == myId ? Colors.green : Colors.white,
-            borderOnForeground: true,
-            elevation: 10.0,
-            surfaceTintColor: Colors.red,
-            shadowColor: Colors.black,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: const Radius.circular(10.0),
-                  topRight: const Radius.circular(10.0),
-                  topLeft: Radius.circular(
-                      msg.createdBy == myId ? 18.0 : 0
-                  ),
-                  bottomRight: Radius.circular(
-                      msg.createdBy == myId ? 0 : 18.0
-                  ),
-                )
-            ),
-            margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 24.0),
-                  child: (msg.body.length > 10) ? Text(msg.body.trim(), style: TextStyle(color: msg.createdBy == myId ? Colors.white : Colors.black),)
-                      : Text(msg.body.trim()+"          ",
-                    style: TextStyle(color: msg.createdBy == myId ? Colors.white : Colors.black),
-                  ),
-                ),
-                Positioned(
-                    bottom: 4,
-                    right: 8,
-                    child: Text(
-                      DateFormat.jm().format(msg.createdOn),
-                      style: TextStyle(color: msg.createdBy == myId ? Colors.white : Colors.black),
-                    )
-                ),
-
-              ],
-            ),
-          ),
-
-        ),
-      ),
-    );
-  }
-*/
 }

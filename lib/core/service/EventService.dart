@@ -59,6 +59,8 @@ class EventService extends GetxService{
           case EventType.Chnl_Add_Msg:
             processMsgAddToChnl(logInUser, event);
           break;
+
+
           default:
 
         }
@@ -84,7 +86,7 @@ class EventService extends GetxService{
        setMsgNotificationOnMsgScreen(event);
 
        //Set Msg Notification on Chat Screen if Chat is open for Same Channel
-      // setMsgNotificationOnChatScreen(event);
+       setMsgNotificationOnChatScreen(event);
 
       //messageService?.addNewMsgToChnl(event.entityId, event.message);
      }

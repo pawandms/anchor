@@ -13,11 +13,11 @@ class DashboardView extends GetView<DashboardController> {
           () => Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+              SelectableText(
                 'DashboardView is working',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: Colors.blue),
               ),
-              Text('Time: ${controller.now.value.toString()}'),
+              SelectableText('Time: ${controller.now.value.toString()}'),
             ],
           ),
         ),

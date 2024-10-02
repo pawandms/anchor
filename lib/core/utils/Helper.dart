@@ -376,8 +376,8 @@ class Helper{
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 24.0),
-          child: (msg.body.length > 10) ? Text(msg.body.trim(), style: TextStyle(color:Colors.white))
-              : Text(msg.body.trim()+"          ",
+          child: (msg.body.length > 10) ? SelectableText(msg.body.trim(), style: TextStyle(color:Colors.white), )
+              : SelectableText(msg.body.trim()+"          ",
             style:TextStyle(color: Colors.white)
           ),
         ),
